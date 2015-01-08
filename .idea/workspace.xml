@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7b7cd5db-1130-454a-af80-a1b965ce965c" name="Default" comment="remove .idea folder">
-      <change type="DELETED" beforePath="C:\xampp\htdocs\kandydrupal\sites\all\modules\kandy\.idea\scopes\scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\xampp\htdocs\kandydrupal\sites\all\modules\kandy\.idea\workspace.xml" afterPath="" />
+    <list default="true" id="7b7cd5db-1130-454a-af80-a1b965ce965c" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
     </list>
     <ignored path="kandy.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -157,7 +156,11 @@
       <created>1420691206063</created>
       <updated>1420691206063</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="remove .idea folder">
+      <created>1420691380937</created>
+      <updated>1420691380937</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
