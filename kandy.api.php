@@ -58,7 +58,8 @@ function getKandyUserData()
  */
 function getDomainAccessToken()
 {
-    include_once('/includes/RestClient.php');
+    $modulePath = drupal_get_path('module', 'kandy');
+    include_once($modulePath . '/includes/RestClient.php');
     $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
     $kandyDomainSecretKey = variable_get(
         'kandy_domain_secret_key',
@@ -223,6 +224,8 @@ function getKandyUserByUserId($userId){
  */
 function getDomain()
 {
+    $modulePath = drupal_get_path('module', 'kandy');
+    include_once($modulePath . '/includes/RestClient.php');
     $params = array(
         'key'               => KANDY_API_KEY,
         'domain_api_secret' => KANDY_DOMAIN_SECRET_KEY
@@ -232,7 +235,6 @@ function getDomain()
     $url = KANDY_API_BASE_URL . 'domains/details' . '?'
         . $fieldsString;
 
-    include_once('/includes/RestClient.php');
     try {
         $response = (new RestClient())->get($url)->getContent();
     } catch (Exception $ex) {
