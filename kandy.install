@@ -1,0 +1,90 @@
+<?php
+function kandy_schema()
+{
+    $schema['kandy_users'] = array(
+        'description' => t('The base table for kandy users.'),
+        'fields'      => array(
+            'id'           => array(
+                'description' => t('The primary identifier for a kandy user.'),
+                'type'        => 'int',
+                'unsigned'    => true,
+                'not null'    => true
+            ),
+            'user_id'      => array(
+                'description' => t(
+                    'The kandy user id'
+                ),
+                'type'        => 'varchar',
+                'length'      => 255,
+                'not null'    => true,
+                'default'     => ''
+            ),
+            'first_name'   => array(
+                'description' => t('The first name of kandy user'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'last_name'    => array(
+                'description' => t('The last name of kandy user'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'password'     => array(
+                'description' => t('The password of kandy user'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'email'        => array(
+                'description' => t('The email of kandy user'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'domain_name'  => array(
+                'description' => t('The domain name of kandy application'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'api_key'      => array(
+                'description' => t('The api key of kandy application'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'api_secret'   => array(
+                'description' => t('The api secret key of kandy application'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'main_user_id' => array(
+                'description' => t('The user id of system user'),
+                'type'        => 'varchar',
+                'length'      => 255,
+            ),
+            'created_at'   => array(
+                'description' => t('The created time of kandy user'),
+                'type'        => 'datetime',
+                'length'      => 255,
+            ),
+            'updated_at'   => array(
+                'description' => t('The updated time of kandy user'),
+                'type'        => 'datetime',
+                'length'      => 255,
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+    return $schema;
+}
+
+function kandy_install()
+{
+    // Create my tables.
+    drupal_install_schema('kandy');
+}
+
+function kandy_uninstall()
+{
+    // Drop my tables.
+    drupal_uninstall_schema('kandy');
+}
+
+?>

@@ -1,0 +1,349 @@
+/*
+test pusblish
+*/
+.kandyVideo {
+    margin-right: 10px;
+    float: left;
+}
+
+.kandyVideo .video {
+    display: block;
+}
+
+.kandyVideo .title {
+    margin: 5px 0px;
+}
+
+/*
+
+=====KANDY VIDEO CALL STYLE=====
+*/
+.kandyButton {
+    overflow: auto;
+}
+
+.kandyButton .kandyButtonComponent {
+    margin: 15px 0px;
+}
+
+.kandyButton .kandyButtonComponent input {
+    width: 90px;
+    float: left;
+    margin-right: 5px;
+}
+
+.kandyButton .kandyButtonComponent input[type='text'] {
+    width: 250px;
+}
+
+.kandyButton .kandyButtonComponent input[type='button'] {
+    width: 90px;
+    cursor: pointer;
+}
+
+.kandyButton .kandyButtonComponent .someonesCalling {
+    display: none;
+}
+
+.kandyButton .kandyButtonComponent .someonesCalling {
+    display: none;
+}
+
+.kandyButton .kandyVideoButtonOnCall {
+    display: none;
+}
+
+.kandyButton .kandyVideoButtonCalling {
+    display: none;
+}
+
+.kandyButton .kandyVideoButtonSomeonesCalling {
+    display: none;
+}
+.kandyButton .videoVoiceCallHolder{
+    display: none;
+}
+
+/*KANDY ADDRESS BOOK */
+.kandyAddressBook .kandyAddressContactList {
+    background-color: lightslategray;
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid black
+}
+
+.kandyAddressBook .kandyAddressContactList .myContacts Title {
+    text-align: center;
+    text-decoration: underline
+}
+
+.kandyAddressBook .kandyDirectorySearch {
+    margin-top: 20px
+}
+
+.kandyAddressBook .kandyDirSearchTitle {
+    text-align: center;
+    text-decoration: underline
+}
+
+.kandyAddressBook .kandyDirSearchResults {
+    background-color: lightgray;
+    padding: 5px 10px;
+    border: 1px solid black
+}
+
+.kandyAddressBook .userid {
+    width: 190px;
+    display: inline-block
+}
+
+.kandyAddressBook .presence {
+    width: 130px;
+    display: inline-block
+}
+
+.kandyAddressBook .kandyContactItem {
+    padding: 5px;
+}
+
+.kandyAddressBook .kandySearchItem {
+    padding: 5px;
+}
+
+.kandyStatus{
+    margin-bottom: 10px;
+}
+
+/* KANDY CHAT STYLE */
+/* KANDY CHAT STYLE */
+.kandyChat .imUsername {
+    display: inline-block;
+    width: 200px
+}
+
+.kandyChat .imMessageToSend {
+    width: 96%;
+}
+
+.kandyChat .messages {
+    border: solid black 1px
+}
+
+.kandyChat .imMessage {
+    display: inline-block;
+    width: 275px
+}
+
+.kandyChat .kandyMessages {
+    width: 100%;
+    height: 425px;
+    overflow: auto;
+}
+
+.my-message {
+    color: #0995FF;
+}
+
+.their-message {
+    color: #F47063;
+}
+
+.kandyChat .btnSendMessage {
+    width: 100%;
+}
+
+/* CSS for tab */
+
+.cd-tabs {
+    position: relative;
+    max-width: 960px;
+    margin: 2em 0;
+    height: 400px!important;
+}
+
+.cd-tabs nav {
+    width: 32%;
+    height: 100%;
+    float: left;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0px;
+    -webkit-box-shadow: inset 0px 0px 2px #aaa;/* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    inset 0px 0px 2px #aaa;/* Firefox 3.5 - 3.6 */
+    box-shadow:inset 0px 0px 2px #aaa;
+}
+
+.cd-tabs-navigation {
+    width: 100%;
+    margin: 0;
+    padding: 0px 3px !important;
+    list-style: none;
+}
+
+.cd-tabs-navigation li {
+    float: left;
+    width: 98%;
+}
+
+.cd-tabs-navigation a {
+    background-color: #ffffff !important;
+    position: relative;
+    display: block;
+    height: 30px;
+    font-size: 0.75rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #000;
+    padding: 5px;
+}
+
+.no-touch .cd-tabs-navigation a:hover {
+    font-weight: 700;
+    background-color: rgba(233, 230, 202, 0.3);
+}
+
+.cd-tabs-navigation a.selected {
+    background-color: #ffffff !important;
+    font-weight: 700;
+}
+
+.cd-tabs-navigation a::before {
+    /* icons */
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    margin-left: -10px;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    background-repeat: no-repeat;
+}
+
+.cd-tabs-navigation a[data-content='inbox']::before {
+    background-position: 0 0;
+}
+
+.cd-tabs-navigation a[data-content='new']::before {
+    background-position: -20px 0;
+}
+
+.cd-tabs-navigation a[data-content='gallery']::before {
+    background-position: -40px 0;
+}
+
+.cd-tabs-navigation a[data-content='store']::before {
+    background-position: -60px 0;
+}
+
+.cd-tabs-navigation a[data-content='settings']::before {
+    background-position: -80px 0;
+}
+
+.cd-tabs-navigation a[data-content='trash']::before {
+    background-position: -100px 0;
+}
+
+.cd-tabs-navigation a[data-content='inbox'].selected::before {
+    background-position: 0 -20px;
+}
+
+.cd-tabs-navigation a[data-content='new'].selected::before {
+    background-position: -20px -20px;
+}
+
+.cd-tabs-navigation a[data-content='gallery'].selected::before {
+    background-position: -40px -20px;
+}
+
+.cd-tabs-navigation a[data-content='store'].selected::before {
+    background-position: -60px -20px;
+}
+
+.cd-tabs-navigation a[data-content='settings'].selected::before {
+    background-position: -80px -20px;
+}
+
+.cd-tabs-navigation a[data-content='trash'].selected::before {
+    background-position: -100px -20px;
+}
+
+.cd-tabs-content {
+    background: #ffffff;
+    height: 100%;
+    width: 64%;
+    float: left;
+    margin: 0px !important;
+
+    padding: 0px !important;
+}
+
+.cd-tabs-content li {
+    display: none;
+    padding: 0px 0px 0px 10px;
+}
+
+.cd-tabs-content li.selected {
+    display: block;
+    -webkit-animation: cd-fade-in 0.5s;
+    -moz-animation: cd-fade-in 0.5s;
+    animation: cd-fade-in 0.5s;
+}
+
+.cd-tabs-content li p {
+    font-size: 14px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #8493bf;
+    margin-bottom: 2em;
+}
+
+@-webkit-keyframes cd-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes cd-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes cd-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.input-message {
+    float: left;
+    width: 87%;
+}
+
+.button-send {
+    width: 12%;
+    float: right;
+}
+.clear-fix {
+    clear: both;
+}
+
+.contact-heading {
+    float: left;
+    width: 32%;
+}
+
+.chat-with-message {
+    float: left;
+    padding-left: 1.4em;
+    display: none;
+}

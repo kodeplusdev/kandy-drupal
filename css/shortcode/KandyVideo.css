@@ -1,0 +1,8 @@
+.myVideoStyle .video{
+   background-color: #5bc0de !important;
+}
+
+.myButtonStyle {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

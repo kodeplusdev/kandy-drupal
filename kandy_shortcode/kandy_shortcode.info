@@ -1,0 +1,7 @@
+name = Kandy Shortcode
+description = Provides kandy shortcode tags to be used within site content.
+package = Kandy
+core = 7.x
+dependencies[] = filter
+dependencies[] = shortcode
+dependencies[] = kandy

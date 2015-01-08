@@ -1,0 +1,545 @@
+<?php
+/**
+ * Define our shortcodes and their titles, descriptions, and callback functions
+ *
+ * See comments below for explanation
+ */
+function kandy_shortcode_shortcode_info() {
+
+    $shortcodes['kandyVideo'] = array(
+        'title' => t('Kandy Video'),
+        'description' => t('Show kandy video'),
+        'process callback' => 'kandy_shortcode_shortcode_kandyVideo',
+        //'settings callback' => '_shortcode_settings_form', TODO
+        //'tips callback' => 'kandy_shortcode_kandy_video_tip',
+    );
+
+    $shortcodes['kandyVideoButton'] = array(
+        'title' => t('Kandy Video Button'),
+        'description' => t('Show kandy video button'),
+        'process callback' => 'kandy_shortcode_shortcode_kandyVideoButton',
+        //'settings callback' => '_shortcode_settings_form', TODO
+       // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+    );
+
+    $shortcodes['kandyVoiceButton'] = array(
+        'title' => t('Kandy Voice Button'),
+        'description' => t('Show kandy voice button'),
+        'process callback' => 'kandy_shortcode_shortcode_kandyVoiceButton',
+        //'settings callback' => '_shortcode_settings_form', TODO
+        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+    );
+
+    $shortcodes['kandyStatus'] = array(
+        'title' => t('Kandy Status'),
+        'description' => t('Show kandy status'),
+        'process callback' => 'kandy_shortcode_shortcode_kandyStatus',
+        //'settings callback' => '_shortcode_settings_form', TODO
+        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+    );
+
+    $shortcodes['kandyAddressBook'] = array(
+        'title' => t('Kandy Address Book'),
+        'description' => t('Show kandy address book'),
+        'process callback' => 'kandy_shortcode_shortcode_kandyAddressBook',
+        //'settings callback' => '_shortcode_settings_form', TODO
+        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+    );
+
+    $shortcodes['kandyChat'] = array(
+        'title' => t('Kandy Chat'),
+        'description' => t('Show kandy chat'),
+        'process callback' => 'kandy_shortcode_shortcode_kandyChat',
+        //'settings callback' => '_shortcode_settings_form', TODO
+        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+    );
+    return $shortcodes;
+}
+
+/**
+ * Define our variables (parameters) for each shortcode
+ */
+function kandy_shortcode_theme() {
+    return array(
+        'shortcode_kandyVideo' => array(
+            'variables' => array('id' => ''),
+        ),
+        'shortcode_kandyVideoButton' => array(
+            'variables' => array('id' => ''),
+        )
+
+    );
+}
+
+/**
+ * Kandy Setup load js, login
+ */
+function kandy_setup(){
+    global $user;
+
+    $modulePath = drupal_get_path('module', 'kandy');
+    if (module_exists('kandy') && $user) {
+        module_load_include('php', 'kandy', 'kandy.api');
+        $assignUser = getAssignKandyUser($user->uid);
+        if($assignUser){
+            $userName = $assignUser->user_id;
+            $password = $assignUser->password;
+            $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
+            if(variable_get('kandy_jquery_reload', 1)){
+                drupal_add_js(KANDY_JQUERY);
+            }
+            drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL));
+            drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
+
+            drupal_add_js(
+                "if (window.login == undefined){
+                window.login = function() {
+                                        KandyAPI.Phone.login('" . $kandyApiKey . "', '" . $userName . "', '" . $password . "');
+                    };
+                }",
+                'inline'
+            );
+
+            drupal_add_js($modulePath . '/js/kandyDrupal.js');
+            drupal_add_css($modulePath . '/css/kandyDrupal.css',  array('group' => 'kandy', 'weight' => 1));
+            $result = array("success" => true, "message" => '');
+        } else {
+            $result = array("success" => false, "message" => 'Can not found kandy user');
+        }
+
+    } else {
+        $result = array("success" => false, "message" => 'Can not found kandy module');
+    }
+    return $result;
+
+}
+
+/**
+ * kandy shortcode init every page
+ * clear cace before render shortcode
+ */
+function kandy_shortcode_init(){
+    if ($node = menu_get_object()) {
+        if(isset($node->nid)){
+            $nid = $node->nid;
+            cache_clear_all("field:node:$nid", 'cache_field');
+        }
+
+    }
+}
+
+/**
+ * Kandy Video Content
+ * @param $attrs
+ * @return null|string
+ */
+function kandy_shortcode_shortcode_kandyVideo($attrs) {
+    $output = "";
+    if(!empty($attrs)){
+        $result = kandy_setup();
+        if($result['success']) {
+            // init title attribute
+            if(isset($attrs['title'])){
+                $title = $attrs['title'];
+            } else {
+                $title = 'Kandy Video';
+            }
+
+            //init class attribute
+            $class = 'kandyVideo ';
+            if(isset($attrs['class'])){
+                $class .= $attrs['class'] ;
+            }
+
+            //init id attribute
+            $id = 'kandy-video-'. rand() . ' ';
+            if(isset($attrs['id'])){
+                $id = $attrs['id'] ;
+            }
+
+            //init htmlOptions
+            $htmlOptionsAttributes = '';
+            if (!isset($attrs['style'])) {
+                $htmlOptionsAttributes = "style = 'width: 300px; height: 225px;background-color: darkslategray;'";
+            }
+
+            foreach ($attrs as $key => $value) {
+                if ($key != "id" && $key != "class" && $key != "title") {
+                    $htmlOptionsAttributes .= $key . "= '" . $value . "'";
+                }
+            }
+
+            $output = '<div class="'. $class .'">';
+            $output .= '<p class="title">' . $title .'</p>';
+            $output .= '<span class="video" id="' . $id .'"  '. $htmlOptionsAttributes.'></span>';
+            $output .= '</div>';
+        } else {
+            $output = t('Kandy setup fail');
+        }
+    }
+    return $output;
+
+}
+
+/**
+ * Kandy Video Button Content
+ * @param $attrs
+ * @return null|string
+ */
+function kandy_shortcode_shortcode_kandyVideoButton($attrs) {
+    if(!empty($attrs)){
+        $result = kandy_setup();
+        if($result['success']) {
+            $modulePath = drupal_get_path('module', 'kandy');
+            drupal_add_js($modulePath . '/js/shortcode/KandyVideo.js');
+            drupal_add_css($modulePath . '/css/shortcode/KandyVideo.css', array('group' => 'kandy', 'weight' => 100));
+
+            //init class attribute
+            $class = 'kandyButton ';
+            if(isset($attrs['class'])){
+                $class .= $attrs['class'] ;
+            }
+
+            //init id attribute
+            $id = 'kandy-video-button'. rand() . ' ';
+            if(isset($attrs['id'])){
+                $id = $attrs['id'] ;
+            }
+
+            $output = '<div class="'. $class .'" id ="' . $id .'">' .
+                '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="incomingCall">' .
+                '<label>Incoming Call...</label>' .
+                '<input class="btmAnswerVideoCall" type="button" value="Answer" onclick="kandy_answerVideoCall(this)"/>'.
+                '</div>'.
+
+                '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">'.
+                '<label>User to call</label>'.
+                '<input id="callOutUserId" type="text" value=""/>'.
+                '<input class="btnCall" id="callBtn" type="button" value="Call" onclick="kandy_makeVideoCall(this)"/>'.
+                '</div>'.
+
+                '<div class="kandyButtonComponent kandyVideoButtonCalling" id="calling">' .
+                '<label>Calling...</label>' .
+                '<input type="button" class="btnEndCall" value="End Call" onclick="kandy_endCall(this)"/>' .
+                '</div>'.
+                '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="onCall">' .
+                '<label>You are connected!</label>' .
+                '<input class="btnEndCall" type="button" value="End Call" onclick="kandy_endCall(this)"/>'.
+                '</div>'.
+                '</div>';
+        } else {
+            $output = t('Kandy setup fail');
+        }
+        return $output;
+    }
+
+}
+
+/**
+ * Kandy Voice Button Content
+ * @param $attrs
+ * @return null|string
+ */
+function kandy_shortcode_shortcode_kandyVoiceButton($attrs) {
+
+    if(!empty($attrs)){
+        $result = kandy_setup();
+        if($result['success']) {
+            $modulePath = drupal_get_path('module', 'kandy');
+            drupal_add_js($modulePath . '/js/shortcode/KandyVoice.js');
+            drupal_add_css($modulePath . '/css/shortcode/KandyVoice.css', array('group' => 'kandy', 'weight' => 100));
+            //init class attribute
+            $class = 'kandyButton ';
+            if(isset($attrs['class'])){
+                $class .= $attrs['class'] ;
+            }
+
+            //init id attribute
+            $id = 'kandy-voice-button'. rand() . ' ';
+            if(isset($attrs['id'])){
+                $id = $attrs['id'] ;
+            }
+
+            //init incomingLabel attribute
+            $incomingLabel = 'Incoming Call...';
+            if(isset($attrs['incomingLabel'])){
+                $incomingLabel = $attrs['incomingLabel'] ;
+            }
+
+            //init incomingLabel attribute
+            $incomingButtonText = 'Answer';
+            if(isset($attrs['incomingButtonText'])){
+                $incomingButtonText = $attrs['incomingButtonText'] ;
+            }
+
+            //init callOutLabel attribute
+            $callOutLabel = 'User to call';
+            if(isset($attrs['callOutLabel'])){
+                $callOutLabel = $attrs['callOutLabel'] ;
+            }
+
+            //init callOutButtonText attribute
+            $callOutButtonText = 'Call';
+            if(isset($attrs['callOutButtonText'])){
+                $callOutButtonText = $attrs['callOutButtonText'] ;
+            }
+
+            //init callOutLabel attribute
+            $callingLabel = 'Calling...';
+            if(isset($attrs['callingLabel'])){
+                $callingLabel = $attrs['callingLabel'] ;
+            }
+
+            //init callOutButtonText attribute
+            $callingButtonText = 'End Call';
+            if(isset($attrs['callingButtonText'])){
+                $callingButtonText = $attrs['callingButtonText'] ;
+            }
+
+            //init callOutLabel attribute
+            $onCallLabel = 'You are connected!';
+            if(isset($attrs['onCallLabel'])){
+                $onCallLabel = $attrs['onCallLabel'] ;
+            }
+
+            //init callOutButtonText attribute
+            $onCallButtonText = 'End Call';
+            if(isset($attrs['onCallButtonText'])){
+                $onCallButtonText = $attrs['onCallButtonText'] ;
+            }
+
+            $output = '<div class="'. $class .'" id ="'. $id .'">' .
+                            '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="incomingCall">' .
+                                '<label>'. $incomingLabel .'</label>' .
+                                '<input class="btnAnswerVoiceCall" type="button" value="'. $incomingButtonText .'" onclick="kandy_answerVoiceCall(this)"/>'.
+                            '</div>'.
+
+                            '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">'.
+                                '<label>'. $callOutLabel .'</label>'.
+                                '<input id="callOutUserId" type="text" value=""/>'.
+                                '<input class="btnCall" id="callBtn" type="button" value="'. $callOutButtonText .'" onclick="kandy_makeVoiceCall(this)"/>'.
+                            '</div>'.
+
+                            '<div class="kandyButtonComponent kandyVideoButtonCalling" id="calling">' .
+                                '<label>'. $callingLabel .'</label>' .
+                                '<input type="button" class="btnEndCall" value="'. $callingButtonText .'" onclick="kandy_endCall(this)"/>' .
+                            '</div>'.
+                            '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="onCall">' .
+                                '<label>'. $onCallLabel .'</label>' .
+                                '<input class="btnEndCall" type="button" value=" '. $onCallButtonText .' " onclick="kandy_endCall(this)"/>'.
+                            '</div>'.
+                            '<div class="videoVoiceCallHolder">
+                                <span class="video"></span>
+                            </div>' .
+                    '</div>';
+        } else {
+            $output = t('Kandy setup fail');
+        }
+        return $output;
+    }
+
+}
+
+function kandy_shortcode_shortcode_kandyStatus($attrs) {
+
+    if(!empty($attrs)){
+        $result = kandy_setup();
+        if($result['success']) {
+
+            // init title attribute
+            if(isset($attrs['title'])){
+                $title = $attrs['title'];
+            } else {
+                $title = 'My Status';
+            }
+            //init class attribute
+            $class = 'kandyStatus ';
+            if(isset($attrs['class'])){
+                $class .= $attrs['class'] ;
+            }
+
+            //init id attribute
+            $id = 'kandy-status'. rand() . ' ';
+            if(isset($attrs['id'])){
+                $id = $attrs['id'] ;
+            }
+
+            //init htmlOptions attribute
+            $htmlOptionsAttributes = '';
+
+            if (!isset($attrs['style'])) {
+                $htmlOptionsAttributes = "style = 'width: 100px;'";
+            }
+            foreach ($attrs as $key => $value) {
+                if ($key != "id" && $key != "class" && $key != "title") {
+                    $htmlOptionsAttributes .= $key . "= '" . $value . "'";
+                }
+            }
+            $output = '<div class="'. $class .'">'.
+                            '<span class="title"> ' . $title.' </span><select id="'. $id .'" class="dropDown" '. $htmlOptionsAttributes .' onchange="kandy_myStatusChanged($(this).val())">'.
+                                '<option value="0" selected>Available</option>'.
+                                '<option value="1">Unavailable</option>'.
+                                '<option value="2">Away</option>'.
+                                '<option value="3">Out To Lunch</option>'.
+                                '<option value="4">Busy</option>'.
+                                '<option value="5">On Vacation</option>'.
+                                '<option value="6">Be Right Back</option>'.
+                            '</select>'.
+                        '</div>';
+        } else {
+            $output = t('Kandy setup fail');
+        }
+        return $output;
+    }
+
+}
+
+/**
+ * Kandy Presence
+ * @param $attrs
+ * @return null|string
+ */
+function kandy_shortcode_shortcode_kandyAddressBook($attrs) {
+
+    if(!empty($attrs)){
+        $result = kandy_setup();
+        if($result['success']) {
+            $modulePath = drupal_get_path('module', 'kandy');
+            drupal_add_js($modulePath . '/js/shortcode/KandyAddressBook.js');
+            drupal_add_css($modulePath . '/css/shortcode/KandyAddressBook.css', array('group' => 'kandy', 'weight' => 100));
+
+            // init title attribute
+            if(isset($attrs['title'])){
+                $title = $attrs['title'];
+            } else {
+                $title = 'My Contact';
+            }
+            //init class attribute
+            $class = 'kandyAddressBook ';
+            if(isset($attrs['class'])){
+                $class .= $attrs['class'] ;
+            }
+
+            //init id attribute
+            $id = 'kandy-address-book'. rand() . ' ';
+            if(isset($attrs['id'])){
+                $id = $attrs['id'] ;
+            }
+
+            //init id attribute
+            $userLabel = 'User';
+            if(isset($attrs['userLabel'])){
+                $userLabel = $attrs['userLabel'] ;
+            }
+
+            //init id attribute
+            $searchLabel = 'Search';
+            if(isset($attrs['searchLabel'])){
+                $searchLabel = $attrs['searchLabel'] ;
+            }
+
+            //init id attribute
+            $searchResultLabel = 'Directory Search Results';
+            if(isset($attrs['searchResultLabel'])){
+                $searchResultLabel = $attrs['searchResultLabel'] ;
+            }
+
+            //init htmlOptions attribute
+            $htmlOptionsAttributes = '';
+
+            foreach ($attrs as $key => $value) {
+                if ($key != "id" && $key != "class" && $key != "title") {
+                    $htmlOptionsAttributes .= $key . "= '" . $value . "'";
+                }
+            }
+            $output = '<div class="'. $class.'" id="'. $id.'" '. $htmlOptionsAttributes .'>'.
+                            '<div class="kandyAddressContactList">'.
+                                '<div class="myContactsTitle"><p>'. $title.'</p></div>'.
+                            '</div>'.
+
+                            '<form class="kandyDirectorySearch" onsubmit="return false;">'.
+                            $userLabel. ' : <input id="kandySearchUserName" type="text" value=""/>'.
+                                '<input type="submit" value="'. $searchLabel .'" onclick="kandy_searchDirectoryByUserName();return false;"/>'.
+                            '</form>'.
+
+                            '<div class="kandyDirSearchResults" id="dirSearchResults">'.
+                                '<div class="kandyDirSearchTitle">'. $searchResultLabel .'</div>'.
+                            '</div>'.
+                        '</div>';
+        } else {
+            $output = t('Kandy setup fail');
+        }
+        return $output;
+    }
+
+}
+
+/**
+ * Kandy Chat Content
+ * @param $attrs
+ * @return null|string
+ */
+function kandy_shortcode_shortcode_kandyChat($attrs) {
+
+    if(!empty($attrs)){
+        $result = kandy_setup();
+        if($result['success']) {
+            $modulePath = drupal_get_path('module', 'kandy');
+            drupal_add_js($modulePath . '/js/shortcode/KandyChat.js');
+            drupal_add_css($modulePath . '/css/shortcode/KandyChat.css', array('group' => 'kandy', 'weight' => 100));
+            //init class attribute
+            $class = 'kandyChat ';
+            if(isset($attrs['class'])){
+                $class .= $attrs['class'] ;
+            }
+
+            //init id attribute
+            $id = 'kandy-chat'. rand() . ' ';
+            if(isset($attrs['id'])){
+                $id = $attrs['id'] ;
+            }
+
+            //init contacts label attribute
+            $contactLabel = 'Contacts';
+            if(isset($attrs['contactLabel'])){
+                $contactLabel = $attrs['contactLabel'] ;
+            }
+
+            //init htmlOptions attribute
+            $htmlOptionsAttributes = '';
+
+            foreach ($attrs as $key => $value) {
+                if ($key != "id" && $key != "class" && $key != "title") {
+                    $htmlOptionsAttributes .= $key . "= '" . $value . "'";
+                }
+            }
+            // get current kandy user
+            global $user;
+            $assignUser = getAssignKandyUser($user->uid);
+            if($assignUser) {
+                $output = '<div class="' . $class .' cd-tabs" id="'. $id .'" '. $htmlOptionsAttributes .' >'.
+                    '<input type="hidden" class="kandy_current_username" value="'. $assignUser->user_id .'"/>'.
+                    '<div class="chat-heading">
+                        <div class="contact-heading">
+                            '. $contactLabel .'
+                        </div>
+                        <div class="chat-with-message">
+                            Chatting with <span class="chat-friend-name"></span>
+                        </div>
+                        <div class="clear-fix"></div>
+                    </div>'.
+                    '<nav><ul class="cd-tabs-navigation"></ul></nav>'.
+                    '<ul class="cd-tabs-content"></ul>'.
+                    '<div style="clear: both;"></div>'.
+                '</div>';
+            } else {
+                $output = 'Not found kandy user';
+            }
+
+        } else {
+            $output = t('Kandy setup fail');
+        }
+        return $output;
+    }
+
+}
