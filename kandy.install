@@ -6,7 +6,7 @@ function kandy_schema()
         'fields'      => array(
             'id'           => array(
                 'description' => t('The primary identifier for a kandy user.'),
-                'type'        => 'int',
+                'type'        => 'serial',
                 'unsigned'    => true,
                 'not null'    => true
             ),

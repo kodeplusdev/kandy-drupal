@@ -77,6 +77,7 @@ function getDomainAccessToken()
     try {
         $response = (new RestClient())->get($url)->getContent();
     } catch (Exception $ex) {
+        watchdog_exception('kandy ', $ex);
         return array(
             'success' => false,
         );
@@ -125,6 +126,7 @@ function listUsers($type = KANDY_USER_ALL, $remote = false)
             try {
                 $response = (new RestClient())->get($url, $headers)->getContent();
             } catch (Exception $ex) {
+                watchdog_exception('kandy ', $ex);
                 return array(
                     'success' => false,
                     'message' => $ex->getMessage()
@@ -238,6 +240,7 @@ function getDomain()
     try {
         $response = (new RestClient())->get($url)->getContent();
     } catch (Exception $ex) {
+        watchdog_exception('kandy ', $ex);
         return array(
             'success' => false,
             'message' => $ex->getMessage()
@@ -330,9 +333,13 @@ function syncUsers()
                 'message' => "Sync successfully"
             );
         }
-        catch (Exception $e) {
+        catch (Exception $ex) {
             $transaction->rollback();
-
+            watchdog_exception('kandy ', $ex);
+            $result = array(
+                'success' => false,
+                'message' => "Error Data"
+            );
         }
 
     } else {
@@ -381,6 +388,7 @@ function assignKandyUser($userId, $mainUserId){
         }
 
     } catch(Exception $ex){
+        watchdog_exception('kandy ', $ex);
         return false;
     }
 
@@ -410,6 +418,7 @@ function unassignKandyUser($mainUserId){
             return false;
         }
     } catch(Exception $ex){
+        watchdog_exception('kandy ', $ex);
         return false;
     }
 
