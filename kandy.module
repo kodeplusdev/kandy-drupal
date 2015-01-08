@@ -92,6 +92,7 @@ function kandy_menu()
         'page callback'   => 'drupal_get_form',
         'page arguments'  => array('file_edit_form'),
         'access callback' => true,
+        'type' => MENU_CALLBACK
     );
     return $items;
 }
@@ -159,8 +160,8 @@ function assignment_sync_page()
         drupal_goto($returnPath);
     } else {
         drupal_set_message(t('Sync Fail'), 'error');
-
-        return l(t('Try Again'), url('admin/config/content/kandy/sync', array('absolute' => true)));
+        drupal_set_message(l(t('See log'), url('admin/reports/dblog', array('absolute' => true))));
+        return l(t('Try Again'), url('admin/config/content/kandy/assignment/sync', array('absolute' => true)));
     }
 
 }
@@ -255,12 +256,24 @@ function assignment_edit_form()
             );
             return $form;
         } else {
-            drupal_set_message(t('Invalid user id'), 'error');
+            /*drupal_set_message(t('Invalid user id'), 'error');*/
+            drupal_goto(
+                url(
+                    'admin/config/content/kandy',
+                    array('absolute' => true)
+                )
+            );
             return array();
         }
 
     } else {
-        drupal_set_message(t('Invalid user id'), 'error');
+        /*drupal_set_message(t('Invalid user id'), 'error');*/
+        drupal_goto(
+            url(
+                'admin/config/content/kandy',
+                array('absolute' => true)
+            )
+        );
         return array();
     }
 
@@ -541,7 +554,13 @@ function file_edit_form()
 
 
     } else {
-        drupal_set_message(t('Invalid parameter'), 'error');
+        /*drupal_set_message(t('Invalid parameter'), 'error');*/
+        drupal_goto(
+            url(
+                'admin/config/content/kandy',
+                array('absolute' => true)
+            )
+        );
         return array();
     }
 
@@ -567,7 +586,13 @@ function file_edit_form_submit($form, $form_state)
             drupal_set_message(t('Some errors with your file. Please try again', 'error'));
         }
     } else {
-        drupal_set_message(t('Invalid parameters'), 'error');
+        /*drupal_set_message(t('Invalid parameters'), 'error');*/
+        drupal_goto(
+            url(
+                'admin/config/content/kandy',
+                array('absolute' => true)
+            )
+        );
 
     }
 

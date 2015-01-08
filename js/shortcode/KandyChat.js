@@ -1,6 +1,13 @@
+/**
+ * You login successfully
+ */
 window.loginsuccess_callback = function () {
     changeUIState('LOGGED_IN');
 }
+
+/**
+ * You login fail
+ */
 window.loginfailed_callback = function () {
     alert("Login failed");
 }
