@@ -61,11 +61,11 @@ function kandy_schema()
             ),
             'created_at'   => array(
                 'description' => t('The created time of kandy user'),
-                'type'        => 'datetime',
+                'mysql_type' => 'DATETIME',
             ),
             'updated_at'   => array(
                 'description' => t('The updated time of kandy user'),
-                'type'        => 'datetime',
+                'mysql_type' => 'DATETIME',
             ),
         ),
         'primary key' => array('id'),
