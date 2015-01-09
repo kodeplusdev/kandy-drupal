@@ -174,7 +174,7 @@ function kandy_shortcode_shortcode_kandyVideo($attrs) {
             $output .= '<span class="video" id="' . $id .'"  '. $htmlOptionsAttributes.'></span>';
             $output .= '</div>';
         } else {
-            $output = t('Kandy setup fail');
+            $output = '<p>Can not setup kandy video...</p>';
         }
     }
     return $output;
@@ -228,7 +228,7 @@ function kandy_shortcode_shortcode_kandyVideoButton($attrs) {
                 '</div>'.
                 '</div>';
         } else {
-            $output = t('Kandy setup fail');
+            $output = '<p>' . t('Can not setup kandy video button...') . '<p>';
         }
         return $output;
     }
@@ -333,7 +333,7 @@ function kandy_shortcode_shortcode_kandyVoiceButton($attrs) {
                             </div>' .
                     '</div>';
         } else {
-            $output = t('Kandy setup fail');
+            $output = '<p>' . t('Can not setup kandy voice button...') . '<p>';
         }
         return $output;
     }
@@ -387,7 +387,7 @@ function kandy_shortcode_shortcode_kandyStatus($attrs) {
                             '</select>'.
                         '</div>';
         } else {
-            $output = t('Kandy setup fail');
+            $output = '<p>' . t('Can not setup kandy status...') . '<p>';
         }
         return $output;
     }
@@ -467,7 +467,7 @@ function kandy_shortcode_shortcode_kandyAddressBook($attrs) {
                             '</div>'.
                         '</div>';
         } else {
-            $output = t('Kandy setup fail');
+            $output = '<p>' . t('Can not setup kandy address book...') . '<p>';
         }
         return $output;
     }
@@ -537,7 +537,7 @@ function kandy_shortcode_shortcode_kandyChat($attrs) {
             }
 
         } else {
-            $output = t('Kandy setup fail');
+            $output = '<p>' . t('Can not setup kandy video...') . '<p>';
         }
         return $output;
     }

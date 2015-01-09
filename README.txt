@@ -78,23 +78,15 @@ HOW TO USE :
 
 
 
-    - Example:
+ EXAMPLE:
 
     + Kandy Voice Call
         [kandyVoiceButton class= "myButtonStyle" id ="my-voice-button"][/kandyVoiceButton]
 
     + Kandy Video Call
         [kandyVideoButton class="myButtonStype"][/kandyVideoButton]
-        [kandyVideo
-            title="Me"
-            id="myVideo"
-            style = "width: 300px; height: 225px;background-color: darkslategray;"]
-        [/kandyVideo]
-        [kandyVideo
-            title="Their"
-            id="theirVideo"
-            style = "width: 300px; height: 225px;background-color: darkslategray;"]
-        [/kandyVideo]
+        [kandyVideo title="Me" id="myVideo" style = "width: 300px; height: 225px;background-color: darkslategray;"][/kandyVideo]
+        [kandyVideo title="Their" id="theirVideo" style = "width: 300px; height: 225px;background-color: darkslategray;"][/kandyVideo]
 
     + Kandy Presence
         [kandyStatus class="myStatusStype" id="myStatus"][/kandyStatus]
@@ -114,67 +106,67 @@ HOW TO USE :
 
         ==========================================================================================
 
-        KANDY ADMINISTRATION
+KANDY ADMINISTRATION :
 
         + User assignment:
 
-        Click KANDY USER ASSIGNMENT to sync kandy user for your application
-        Select user and click edit button to assign kandy user
+            * Click KANDY USER ASSIGNMENT to sync kandy user for your application
+            * Select user and click edit button to assign kandy user
 
         + Style customization
 
-        * Click KANDY STYLE CUSTOMIZATION to edit kandy shortcode(video, voice, chat...) style
-        * Select appropriate file then click edit
+            * Click KANDY STYLE CUSTOMIZATION to edit kandy shortcode(video, voice, chat...) style
+            * Select appropriate file then click edit
 
         + Script customization
 
-        * Click KANDY SCRIPT CUSTOMIZATION to edit kandy shortcode(video, voice, chat...) script
-        * Select appropriate file then click edit
-        * All support callback:
+            * Click KANDY SCRIPT CUSTOMIZATION to edit kandy shortcode(video, voice, chat...) script
+            * Select appropriate file then click edit
+            * All support callback:
 
-            window.loginsuccess_callback = function () {
-               //do something when you login successfully
-            }
-            window.loginfailed_callback = function () {
-                //do something when you login fail
-            }
-            window.callincoming_callback = function (call, isAnonymous) {
-                //do something when your are calling
-            }
-            window.oncall_callback = function (call) {
-                //do something when you are oncall
-            }
-            window.callanswered_callback = function (call, isAnonymous) {
-                //do something when someone answer your call
-            }
+                window.loginsuccess_callback = function () {
+                   //do something when you login successfully
+                }
+                window.loginfailed_callback = function () {
+                    //do something when you login fail
+                }
+                window.callincoming_callback = function (call, isAnonymous) {
+                    //do something when your are calling
+                }
+                window.oncall_callback = function (call) {
+                    //do something when you are oncall
+                }
+                window.callanswered_callback = function (call, isAnonymous) {
+                    //do something when someone answer your call
+                }
 
-            window.callended_callback = function () {
-               //do something when someone end  your call
-            }
+                window.callended_callback = function () {
+                   //do something when someone end  your call
+                }
 
-            window.answerVideoCall_callback = function (stage) {
-                //do something when you answer video call
-            }
-            window.answerVoiceCall_callback = function (stage) {
-                //do something when you answer voice call
-            }
+                window.answerVideoCall_callback = function (stage) {
+                    //do something when you answer video call
+                }
+                window.answerVoiceCall_callback = function (stage) {
+                    //do something when you answer voice call
+                }
 
-            window.makeCall_callback = function (stage) {
-               //do something when you make call
-            }
+                window.makeCall_callback = function (stage) {
+                   //do something when you make call
+                }
 
-            window.endCall_callback = function (stage) {
-               //do something when you click end call button
-            }
+                window.endCall_callback = function (stage) {
+                   //do something when you click end call button
+                }
 
-            window.remotevideoinitialized_callack(videoTag){
-               //do something with your remote video
-            }
+                window.remotevideoinitialized_callack(videoTag){
+                   //do something with your remote video
+                }
 
-            window.localvideoinitialized_callback = function(videoTag){
-                //do some thing with your local video
-            }
+                window.localvideoinitialized_callback = function(videoTag){
+                    //do some thing with your local video
+                }
 
-            window.presencenotification_callack = function() {
-                //do something with status notification
-            }
+                window.presencenotification_callack = function() {
+                    //do something with status notification
+                }
