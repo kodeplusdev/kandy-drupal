@@ -12,7 +12,7 @@ define('KANDY_SSL_VERIFY', false);
 define('KANDY_USER_TABLE', 'kandy_users');
 define('KANDY_API_KEY', 'dcb5e07c8408491aa315e2d39bf2d104');
 define('KANDY_DOMAIN_SECRET_KEY', 'b8ccfe45cf4d4e14ac10ae272a31fd2a');
-
+define('KANDY_DOMAIN_NAME', 'yomenu.com');
 define('KANDY_VIDEO_WRAPPER_CLASS_DEFAULT', 'kandyVideoWrapper');
 define('KANDY_VIDEO_STYLE_DEFAULT', 'width: 340px; height: 250px;background-color: darkslategray;');
 define('KANDY_VIDEO_MY_TITLE_DEFAULT', 'me');
@@ -370,6 +370,19 @@ function kandy_form($form, &$form_state)
         '#maxlength'     => 255,
         '#description'   => t('The api key to get data from server.'),
         '#required'      => true,
+    );
+
+    $form['kandy_domain_name'] = array(
+        '#type'          => 'textfield',
+        '#title'         => t('Domain name'),
+        '#default_value' => variable_get(
+            'kandy_domain_name',
+            KANDY_DOMAIN_NAME
+        ),
+        '#size'          => 100,
+        '#maxlength'     => 255,
+        '#description'   => t('The domain name of kandy user to get data from server.'),
+        '#required'      => false,
     );
 
     $form['kandy_js_url'] = array(

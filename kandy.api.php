@@ -226,11 +226,24 @@ function getKandyUserByUserId($userId){
  */
 function getDomain()
 {
+    $domainName = variable_get('kandy_domain_name', KANDY_DOMAIN_NAME);
+    if(!empty($domainName)){
+        return array(
+            'success' => true,
+            'data'    => $domainName,
+        );
+    }
     $modulePath = drupal_get_path('module', 'kandy');
     include_once($modulePath . '/includes/RestClient.php');
+
+    $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
+    $kandyDomainSecretKey = variable_get(
+        'kandy_domain_secret_key',
+        KANDY_DOMAIN_SECRET_KEY
+    );
     $params = array(
-        'key'               => KANDY_API_KEY,
-        'domain_api_secret' => KANDY_DOMAIN_SECRET_KEY
+        'key'               => $kandyApiKey,
+        'domain_api_secret' => $kandyDomainSecretKey
     );
 
     $fieldsString = http_build_query($params);
