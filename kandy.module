@@ -10,9 +10,9 @@ define('KANDY_JQUERY', "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquer
 define('KANDY_JQUERY_RELOAD', false);
 define('KANDY_SSL_VERIFY', false);
 define('KANDY_USER_TABLE', 'kandy_users');
-define('KANDY_API_KEY', 'dcb5e07c8408491aa315e2d39bf2d104');
-define('KANDY_DOMAIN_SECRET_KEY', 'b8ccfe45cf4d4e14ac10ae272a31fd2a');
-define('KANDY_DOMAIN_NAME', 'yomenu.com');
+define('KANDY_API_KEY', '');
+define('KANDY_DOMAIN_SECRET_KEY', '');
+define('KANDY_DOMAIN_NAME', '');
 define('KANDY_VIDEO_WRAPPER_CLASS_DEFAULT', 'kandyVideoWrapper');
 define('KANDY_VIDEO_STYLE_DEFAULT', 'width: 340px; height: 250px;background-color: darkslategray;');
 define('KANDY_VIDEO_MY_TITLE_DEFAULT', 'me');
