@@ -84,13 +84,13 @@ Home page: http://www.kandy.io/
 ### Quick Examples: 
 **Kandy Voice Call**
 ```sh
-[kandyVoiceButton class= "myButtonStyle" id ="my-voice-button"][/kandyVoiceButton]
+[kandyVoiceButton class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
 ```
 **Kandy Video Call**: use a video call button and two video(**myVideo** and **theirVideo** id is required).
    ```sh
 [kandyVideoButton class="myButtonStype"][/kandyVideoButton]
-[kandyVideo title="Me" id="myVideo" style = "width: 300px; height: 225px;background-color: darkslategray;"][/kandyVideo]
-[kandyVideo title="Their"  id="theirVideo" style = "width: 300px; height: 225px;background-color: darkslategray;"][/kandyVideo]
+[kandyVideo title="Me" id="myVideo"][/kandyVideo]
+[kandyVideo title="Their"  id="theirVideo"][/kandyVideo]
 ```
 **Kandy Presence**: use a kandystatus and kandy addressbook compobent
 ```sh
