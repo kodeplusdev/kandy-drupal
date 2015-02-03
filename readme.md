@@ -176,7 +176,7 @@ module_load_include('php', 'kandy', 'kandy.api');
 ```
 After load kandy module succucessfully you can use all support api:
 
-** 1. Get kandy user data for assignment table**
+**1. Get kandy user data for assignment table**
 ```sh
 Kandy_getUserData();
 ```
