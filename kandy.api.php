@@ -9,7 +9,7 @@ define('KANDY_USER_UNASSIGNED', 3);
  * Get Kandy User Data for assignment table
  * @return array
  */
-function getKandyUserData()
+function Kandy_getUserData()
 {
     // We are extending the PagerDefault class here.
     // It has a default of 10 rows per page.
@@ -30,7 +30,7 @@ function getKandyUserData()
             array('query' => array('id' => $row->uid), 'absolute' => true)
         );
 
-        $kandyUser = getAssignKandyUser($row->uid);
+        $kandyUser = Kandy_getAssignUser($row->uid);
 
         $tableCell = array(
             'uid'  => $row->uid,
@@ -56,7 +56,7 @@ function getKandyUserData()
  * @return array A list of message and data
  * @throws RestClientException
  */
-function getDomainAccessToken()
+function Kandy_getDomainAccessToken()
 {
     $modulePath = drupal_get_path('module', 'kandy');
     include_once($modulePath . '/includes/RestClient.php');
@@ -80,6 +80,8 @@ function getDomainAccessToken()
         watchdog_exception('kandy ', $ex);
         return array(
             'success' => false,
+            'message' => $ex->getMessage(),
+            'data' => ''
         );
     }
 
@@ -87,12 +89,14 @@ function getDomainAccessToken()
     if ($response->message == 'success') {
         return array(
             'success' => true,
+            'message' => '',
             'data'    => $response->result->domain_access_token,
         );
     } else {
         return array(
             'success' => false,
-            'message' => $response->message
+            'message' => $response->message,
+            'data' => ''
         );
     }
 }
@@ -103,13 +107,13 @@ function getDomainAccessToken()
  * @param bool $remote
  * @return array
  */
-function listUsers($type = KANDY_USER_ALL, $remote = false)
+function Kandy_listUsers($type = KANDY_USER_ALL, $remote = false)
 {
     $result = array();
 
     // get data from server
     if ($remote) {
-        $getTokenResponse = getDomainAccessToken();
+        $getTokenResponse = Kandy_getDomainAccesstoken();
         if ($getTokenResponse['success']) {
             $domainAccessToken = $getTokenResponse['data'];
             $params = array(
@@ -140,7 +144,7 @@ function listUsers($type = KANDY_USER_ALL, $remote = false)
             }
         }
     } else {
-        $getDomainNameResponse = getDomain();
+        $getDomainNameResponse = Kandy_getDomain();
         if($getDomainNameResponse['success']){
             $domainName = $getDomainNameResponse['data'];
             if ($type == KANDY_USER_ALL) {
@@ -179,10 +183,10 @@ function listUsers($type = KANDY_USER_ALL, $remote = false)
  * @param $mainUserId
  * @return mixed
  */
-function getAssignKandyUser($mainUserId)
+function Kandy_getAssignUser($mainUserId)
 {
     $result = null;
-    $getDomainNameResponse = getDomain();
+    $getDomainNameResponse = Kandy_getDomain();
 
     if ($getDomainNameResponse['success']) {
         $domainName = $getDomainNameResponse['data'];
@@ -198,19 +202,19 @@ function getAssignKandyUser($mainUserId)
 }
 
 /**
- * get kandy user by user_id
- * @param $userId
+ * get kandy user by kandy user_id
+ * @param $kandyUserId
  * @return mixed
  */
-function getKandyUserByUserId($userId){
+function Kandy_getUserByUserId($kandyUserId){
     $result = null;
-    $getDomainNameResponse = getDomain();
+    $getDomainNameResponse = Kandy_getDomain();
 
     if ($getDomainNameResponse['success']) {
         $domainName = $getDomainNameResponse['data'];
         $query = db_select('kandy_users')
                 ->fields('kandy_users')
-                ->condition('user_id', $userId, '=')
+                ->condition('user_id', $kandyUserId, '=')
                 ->condition('domain_name', $domainName, '=');
         $queryData = $query->execute();
         $result = $queryData->fetchObject();
@@ -219,12 +223,12 @@ function getKandyUserByUserId($userId){
     return $result;
 }
 /**
- * Get the domain from domain key in the configuration
+ * Get the domain from domain key in the configuration or remote server
  *
  * @return array A list of message the data
  * @throws RestClientException
  */
-function getDomain()
+function Kandy_getDomain()
 {
     $domainName = variable_get('kandy_domain_name', KANDY_DOMAIN_NAME);
     if(!empty($domainName)){
@@ -256,6 +260,7 @@ function getDomain()
         watchdog_exception('kandy ', $ex);
         return array(
             'success' => false,
+            'data' => '',
             'message' => $ex->getMessage()
         );
     }
@@ -265,10 +270,12 @@ function getDomain()
         return array(
             'success' => true,
             'data'    => $response->result->domain->domain_name,
+            'message' => ''
         );
     } else {
         return array(
             'success' => false,
+            'data' =>'',
             'message' => $response->message
         );
     }
@@ -278,10 +285,10 @@ function getDomain()
  *
  * @return array A json status and message
  */
-function syncUsers()
+function Kandy_syncUsers()
 {
-    $kandyUsers = listUsers(KANDY_USER_ALL, true);
-    $getDomainNameResponse = getDomain();
+    $kandyUsers = Kandy_listUsers(KANDY_USER_ALL, true);
+    $getDomainNameResponse = Kandy_getDomain();
 
     if ($getDomainNameResponse['success']) {
         $domainName = $getDomainNameResponse['data'];
@@ -315,7 +322,7 @@ function syncUsers()
                     'api_secret' => $kandyUser->user_api_secret,
                     'updated_at' => date("Y-m-d H:i:s"),
                 );
-                $kandyUserModel = getKandyUserByUserId($kandyUser->user_id);
+                $kandyUserModel = Kandy_getUserByUserId($kandyUser->user_id);
 
                 if(!$kandyUserModel){
                     // insert
@@ -370,9 +377,9 @@ function syncUsers()
  * @param $mainUserId
  * @return bool
  */
-function assignKandyUser($userId, $mainUserId){
+function Kandy_assignUser($kandyUserId, $mainUserId){
     try{
-        $getDomainNameResponse = getDomain();
+        $getDomainNameResponse = Kandy_getDomain();
         if ($getDomainNameResponse['success'] == true) {
             $domainName = $getDomainNameResponse['data'];
 
@@ -392,7 +399,7 @@ function assignKandyUser($userId, $mainUserId){
                         'main_user_id' => $mainUserId,
                     )
                 )
-                ->condition('user_id', $userId, '=')
+                ->condition('user_id', $kandyUserId, '=')
                 ->condition('domain_name', $domainName, '=')
                 ->execute();
             return true;
@@ -412,9 +419,9 @@ function assignKandyUser($userId, $mainUserId){
  * @param $mainUserId
  * @return bool
  */
-function unassignKandyUser($mainUserId){
+function Kandy_unassignUser($mainUserId){
     try{
-        $getDomainNameResponse = getDomain();
+        $getDomainNameResponse = Kandy_getDomain();
         if ($getDomainNameResponse['success'] == true) {
             $domainName = $getDomainNameResponse['data'];
             $num_updated = db_update('kandy_users')

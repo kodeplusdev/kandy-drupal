@@ -167,6 +167,132 @@ window.presencenotification_callack = function() {
 }
 ```
 
+### Kandy API
+You can use kandy module anywhere in your code by following code:
+
+**Load Kandy Module**
+```sh
+module_load_include('php', 'kandy', 'kandy.api');
+```
+After load kandy module succucessfully you can use all support api:
+
+** 1. Get kandy user data for assignment table**
+```sh
+Kandy_getUserData();
+```
+Return:  kandy user object **array**
+
+**2. Get kandy domain access token**
+```sh
+Kandy_getDomainAccessToken();
+```
+Return: **array**
+
+```sh
+$result = array("success" => true,
+                "data" => "data",
+                "message" => '')
+OR
+$result = array("success" => false,
+                "data" => "data",
+                "message" => "message")
+```
+
+**3. Get the kandy domain**
+```sh
+Kandy_getDomain();
+```
+Get kandy domain from kandy settings or remote server
+
+Return: **array **
+
+```sh
+$result = array("success" => true,
+                "data" => "data",
+                "message" => '');
+OR
+$result = array("success" => false,
+                "data" => "data",
+                "message" => "message");
+```
+
+**4. List Kandy User from database/remote**
+```sh
+Kandy_listUsers($type = KANDY_USER_ALL, $remote = false)
+```
+Parameters:
+```sh
+$type(int) :
+    KANDY_USER_ALL: all kandy users from database/remote
+    KANDY_USER_ASSIGNED: all assigned kandy users from database/remote
+    KANDY_USER_UNASSIGNED: all unassigned kandy users from database/remote
+$remote(boolean) :
+    If $remote = true, get kandy users from remote server(kandy server) instead of from database(local). Default is false.
+```
+Return: Kandy user object **array**
+
+**5. Get assigned kandy user by current user id(main_user_id)**
+```sh
+Kandy_getAssignUser($mainUserId)
+```
+Parameters:
+```sh
+$mainUserId(int): normal user id(1, 2, 3....)
+```
+Return kandy user object or null
+
+**6 Get kandy user by kandy user id(kandyUserId)**
+```sh
+Kandy_getUserByUserId($kandyUserId)
+```
+Parameters:
+```sh
+$kandyUserId(int): kandy user id without domain(user1, user2....)
+```
+Return kandy user object or null
+
+**7. Assign a normal user to kandy user**
+```sh
+Kandy_assignUser($kandyUserId, $mainUserId)
+```
+Parameters:
+```sh
+$kandyUserId(string) : kandy user id without domain(user1, user2....)
+$mainuserId(int): normal user id(1, 2, 3....)
+```
+Return: true/false
+
+**8. Unassign a kandy user**
+```sh
+Kandy_unassignUser($mainUserId)
+```
+Parameters:
+```sh
+$mainuserId(int): normal user id(1, 2, 3....)
+```
+Return: true/false
+
+**9. Kandy User synchronization**
+
+Synchronize kandy user from remote server to local
+```sh
+Kandy_syncUsers()
+```
+
+Return: array
+```sh
+$result = array(
+                'success' => true,
+                'message' => "Sync successfully"
+            );
+OR
+$result = array(
+                'success' => false,
+                'message' => "Error Data"
+            );
+
+```
+
 ### Troubleshooting
 - **Kandy Shortcode not working:** check your kandy api key, domain secret key for your application at **admin > config > content > kandy**
 - **Jquery conflict**: Set Jquery reload to true at **admin > config > content > kandy**

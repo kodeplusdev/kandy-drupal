@@ -80,7 +80,7 @@ function kandy_setup(){
     $modulePath = drupal_get_path('module', 'kandy');
     if (module_exists('kandy') && $user) {
         module_load_include('php', 'kandy', 'kandy.api');
-        $assignUser = getAssignKandyUser($user->uid);
+        $assignUser = Kandy_getAssignUser($user->uid);
         if($assignUser){
             $userName = $assignUser->user_id;
             $password = $assignUser->password;
@@ -515,7 +515,7 @@ function kandy_shortcode_shortcode_kandyChat($attrs) {
             }
             // get current kandy user
             global $user;
-            $assignUser = getAssignKandyUser($user->uid);
+            $assignUser = Kandy_getAssignUser($user->uid);
             if($assignUser) {
                 $output = '<div class="' . $class .' cd-tabs" id="'. $id .'" '. $htmlOptionsAttributes .' >'.
                     '<input type="hidden" class="kandy_current_username" value="'. $assignUser->user_id .'"/>'.

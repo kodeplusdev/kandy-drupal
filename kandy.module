@@ -112,7 +112,7 @@ function assignment_page()
         array('data' => t('Actions'))
     );
 
-    $rows = getKandyUserData();
+    $rows = Kandy_getUserData();
 
     $build['sync'] = array(
         '#type' => 'link',
@@ -155,7 +155,7 @@ function assignment_sync_page()
     } else if(isset($_GET['returnPath'])){
         $returnPath = url($_GET['returnPath'], array('absolute' => true));
     }
-    $result = syncUsers();
+    $result = Kandy_syncUsers();
     if($result["success"]){
         drupal_goto($returnPath);
     } else {
@@ -178,10 +178,10 @@ function assignment_edit_form()
         $id = $_GET['id'];
         $user = user_load($id);
         if($user){
-            $kandyUser = getAssignKandyUser($id);
+            $kandyUser = Kandy_getAssignUser($id);
             $activeSelectKandyUser = $kandyUser ? $kandyUser->user_id : NULL;
 
-            $kandyUsersUnassigned = listUsers(KANDY_USER_UNASSIGNED);
+            $kandyUsersUnassigned = Kandy_listUsers(KANDY_USER_UNASSIGNED);
             $selectData[''] = t('None');
             if($activeSelectKandyUser){
                 $selectData[$activeSelectKandyUser] = $activeSelectKandyUser;
@@ -292,9 +292,9 @@ function assignment_edit_form_submit($form, $form_state)
         $userId = $form_state['values']['user_id'];
 
         if (empty($userId)) {
-            unassignKandyUser($mainUserId);
+            Kandy_unassignUser($mainUserId);
         } else {
-            assignKandyUser($userId, $mainUserId);
+            Kandy_assignUser($userId, $mainUserId);
         }
     }
 
@@ -315,45 +315,10 @@ function assignment_edit_form_submit($form, $form_state)
 
 function kandy_form($form, &$form_state)
 {
-    /*$form['assignment_link'] = array(
-        '#type'  => 'link',
-        '#title' => t('User Assignment...'),
-        '#href'  => url(
-            'admin/config/content/kandy/assignment',
-            array(
-                'absolute'   => true
-            )
-        ),
-        '#attributes' => array('style' =>'display: block')
-    );
-
-    $form['style-customize-link'] = array(
-        '#type' => 'link',
-        '#title' => t('Customize Style...'),
-        '#href' => url(
-            'admin/config/content/kandy/style',
-            array(
-                'absolute'   => true
-            )
-        ),
-        '#attributes' => array('style' =>'display: block')
-    );
-
-    $form['script-customize-link'] = array(
-        '#type' => 'link',
-        '#title' => t('Customize Script...'),
-        '#href' => url(
-            'admin/config/content/kandy/script',
-            array(
-                'absolute'   => true
-            )
-        ),
-        '#attributes' => array('style' =>'display: block')
-    );*/
     $form['kandy_api_key'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Api key'),
-        '#default_value' => variable_get('kandy_api_key', KANDY_API_KEY),
+        '#default_value' => variable_get('kandy_api_key', ''),
         '#size'          => 100,
         '#maxlength'     => 255,
         '#description'   => t('The api key to connect to server.'),
@@ -364,7 +329,7 @@ function kandy_form($form, &$form_state)
         '#title'         => t('Domain secret key'),
         '#default_value' => variable_get(
             'kandy_domain_secret_key',
-            KANDY_DOMAIN_SECRET_KEY
+            ''
         ),
         '#size'          => 100,
         '#maxlength'     => 255,
@@ -415,7 +380,6 @@ function kandy_form($form, &$form_state)
         '#type'          => 'select',
         '#title'         => t('Jquery Reload'),
         '#options'       => array(0 => 'No', 1 => 'Yes'),
-        '#default_value' => 1,
         '#description'   => t(
             'Set this to <em>No</em> if you have loaded jquery.'
         ),
