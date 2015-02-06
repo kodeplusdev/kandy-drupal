@@ -86,7 +86,7 @@ function kandy_install()
 function kandy_uninstall()
 {
     // Drop my tables.
-    if(!db_table_exists('kandy_users')){
+    if(db_table_exists('kandy_users')){
         drupal_uninstall_schema('kandy');
     }
 

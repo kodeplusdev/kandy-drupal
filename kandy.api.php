@@ -25,6 +25,9 @@ function Kandy_getUserData()
 
     $rows = array();
     foreach ($result as $row) {
+        if(empty($row->name)){
+            continue;
+        }
         $url = url(
             '/admin/config/content/kandy/assignment/edit',
             array('query' => array('id' => $row->uid), 'absolute' => true)
