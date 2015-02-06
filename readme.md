@@ -5,8 +5,9 @@ Home page: http://www.kandy.io/
 ## User guide
 **Kandy Drupal Plugin** help you use kandy in your website easily by following steps:
 + Install and active **shortcode** module https://www.drupal.org/project/shortcode
-+ Enable shortcode filter at **Configuration > Content Authoring > Text Formats**
-+ Uncheck auto **Convert line breaks into HTML** (should add new text format)
++ Install and active **Kandy** module https://github.com/kodeplusdev/kandydrupal
++ At **Configuration > Content Authoring > Text Formats**, select one of them or add new text format then enable *shortcode filter*
++ Uncheck auto **Convert line breaks into HTML**
 + Configure all required options at **Configuration > Content Authoring > kandy**
 + Create new content(basic page, article, or a new content types) with kandy shortcode syntax.
 

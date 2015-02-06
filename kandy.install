@@ -1,6 +1,7 @@
 <?php
 function kandy_schema()
 {
+
     $schema['kandy_users'] = array(
         'description' => t('The base table for kandy users.'),
         'fields'      => array(
@@ -76,13 +77,19 @@ function kandy_schema()
 function kandy_install()
 {
     // Create my tables.
+    if(!db_table_exists('kandy_users')){
     drupal_install_schema('kandy');
+    }
+
 }
 
 function kandy_uninstall()
 {
     // Drop my tables.
-    drupal_uninstall_schema('kandy');
+    if(!db_table_exists('kandy_users')){
+        drupal_uninstall_schema('kandy');
+    }
+
 }
 
 ?>
