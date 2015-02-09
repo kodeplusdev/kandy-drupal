@@ -9,7 +9,6 @@ window.loginsuccess_callback = function () {
  * You login fail
  */
 window.loginfailed_callback = function () {
-    alert("Login failed");
     changeUIState("LOGGED_OUT");
 }
 /**

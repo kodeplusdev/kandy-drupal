@@ -9,7 +9,7 @@ window.loginsuccess_callback = function () {
  * you login fail
  */
 window.loginfailed_callback = function () {
-    alert("Login failed");
+    //alert("Login failed");
 }
 
 /**
