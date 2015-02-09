@@ -3,12 +3,13 @@
 
 Home page: http://www.kandy.io/
 ## User guide
-**Kandy Drupal Plugin** help you use kandy in your website easily by following steps:
+**Kandy Drupal Module** help you use kandy in your website easily by following steps:
 + Install and active **shortcode** module https://www.drupal.org/project/shortcode
 + Install and active **Kandy** module https://github.com/kodeplusdev/kandydrupal
 + At **Configuration > Content Authoring > Text Formats**, select one of them or add new text format then enable *shortcode filter*
 + Uncheck auto **Convert line breaks into HTML**
 + Configure all required options at **Configuration > Content Authoring > kandy**
++ Synchronize and assign kandy user at **Configuration > Content Authoring > kandy > Kandy User Assignment**
 + Create new content(basic page, article, or a new content types) with kandy shortcode syntax.
 
 ####Kandy components and shortcode syntax:
@@ -101,7 +102,7 @@ Home page: http://www.kandy.io/
 
 **Kandy Chat: **
 ```sh
-[kandyChat class="myChatStyle" id ="my-chat"]
+[kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]
 ```
 
 ####Kandy Administration:

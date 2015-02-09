@@ -10,17 +10,33 @@
     ================================================================================
 </h4>
 
-<h4>
-    <br />
-    <strong>HOW TO INSTALL :</strong>
-</h4>
-
-<p>
-    &nbsp; &nbsp; + Install and enable&nbsp;<strong>shortcode </strong>module https://www.drupal.org/project/shortcode<br />
-    &nbsp; &nbsp; + Enable shortcode filter at <em><strong>Configuration &gt; Content Authoring &gt; Text Formats</strong></em><br />
-    &nbsp; &nbsp; + Uncheck auto &quot;<em><strong>Convert line breaks into HTML</strong></em>&quot; . A good point when you&nbsp;&nbsp;add new text format <em style="line-height: 20.7999992370605px;"><strong>Configuration &gt; Content Authoring &gt; Text Formats &gt; Add text format </strong>(kandy)</em><br />
-    &nbsp; &nbsp; + Configure kandy options at <strong><em>Configuration &gt; Content Authoring &gt; kandy</em></strong>
+<p style="box-sizing: border-box; padding-top: 0.66001rem; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-top: 0px; margin-bottom: 1.33999rem; color: rgb(55, 61, 73); font-family: Georgia, Cambria, serif; font-size: 14px; line-height: 28px;">
+    <span style="box-sizing: border-box; font-weight: 700;">Kandy Drupal Module</span>&nbsp;help you use kandy in your website easily by following steps:
 </p>
+
+<ul style="box-sizing: border-box; margin-bottom: 0.83999rem; padding-top: 0.16001rem; color: rgb(55, 61, 73); font-family: Georgia, Cambria, serif; font-size: 14px; line-height: 28px;">
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        Install and active&nbsp;<span style="box-sizing: border-box; font-weight: 700;">shortcode</span>&nbsp;module&nbsp;<a href="https://www.drupal.org/project/shortcode" style="box-sizing: border-box; cursor: pointer; color: rgb(160, 170, 191); background: 0px 0px;">https://www.drupal.org/project/shortcode</a>
+    </li>
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        Install and active&nbsp;<span style="box-sizing: border-box; font-weight: 700;">Kandy</span>&nbsp;module&nbsp;<a href="https://github.com/kodeplusdev/kandydrupal" style="box-sizing: border-box; cursor: pointer; color: rgb(160, 170, 191); background: 0px 0px;">https://github.com/kodeplusdev/kandydrupal</a>
+    </li>
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        At&nbsp;<span style="box-sizing: border-box; font-weight: 700;">Configuration &gt; Content Authoring &gt; Text Formats</span>, select one of them or add new text format then enable&nbsp;<em style="box-sizing: border-box;">shortcode filter</em>
+    </li>
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        Uncheck auto&nbsp;<span style="box-sizing: border-box; font-weight: 700;">Convert line breaks into HTML</span>
+    </li>
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        Configure all required options at&nbsp;<span style="box-sizing: border-box; font-weight: 700;">Configuration &gt; Content Authoring &gt; kandy</span>
+    </li>
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        Synchronize and assign kandy user at&nbsp;<span style="box-sizing: border-box; font-weight: 700;">Configuration &gt; Content Authoring &gt; kandy &gt; Kandy User Assignment</span>
+    </li>
+    <li style="box-sizing: border-box; -webkit-font-feature-settings: 'kern' 1, 'onum' 1, 'liga' 1; margin-left: 1rem;">
+        Create new content(basic page, article, or a new content types) with kandy shortcode syntax.
+    </li>
+</ul>
 
 <h4>
     ================================================================================
