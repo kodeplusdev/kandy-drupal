@@ -576,5 +576,27 @@ function file_edit_form_submit($form, $form_state)
         );
 
     }
+}
+/**
+ *  Implement Hook_init
+ */
+function kandy_init(){
+    $justLogout = false;
+    if(isset($_COOKIE['Drupal_visitor_kandy_user_logout'])){
+        $justLogout = true;
+    }
+    if($justLogout) {
+        if (module_exists('kandy')) {
+            module_load_include('php', 'kandy', 'kandy.api');
+            kandy_logout();
+        }
+    }
+}
 
+/**
+ * Implement Hook_user_logout
+ */
+function kandy_user_logout(){
+    global $user;
+    user_cookie_save(array('kandy_user_logout' =>$user->uid));
 }

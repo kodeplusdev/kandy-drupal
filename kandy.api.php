@@ -447,4 +447,55 @@ function Kandy_unassignUser($mainUserId){
 
 }
 
+function kandy_logout(){
+    $justLogouUserId = false;
+    if(isset($_COOKIE['Drupal_visitor_kandy_user_logout'])){
+        $justLogouUserId = $_COOKIE['Drupal_visitor_kandy_user_logout'];
+    }
+
+    $modulePath = drupal_get_path('module', 'kandy');
+    if (module_exists('kandy') && $justLogouUserId) {
+        module_load_include('php', 'kandy', 'kandy.api');
+        $assignUser = Kandy_getAssignUser($justLogouUserId);
+        if($assignUser){
+            $userName = $assignUser->user_id;
+            $password = $assignUser->password;
+            $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
+            if(variable_get('kandy_jquery_reload', 1)){
+                drupal_add_js(KANDY_JQUERY);
+            }
+            drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL));
+            drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
+
+            drupal_add_js(
+                "if (window.login == undefined){
+                window.login = function() {
+                                        KandyAPI.Phone.login('" . $kandyApiKey . "', '" . $userName . "', '" . $password . "');
+                    };
+                }
+
+
+                window.kandy_logout = function() {
+                                        KandyAPI.Phone.logout();
+                    };
+                ",
+                'inline'
+            );
+
+            drupal_add_js($modulePath . '/js/kandyDrupal.js');
+            drupal_add_css($modulePath . '/css/kandyDrupal.css',  array('group' => 'kandy', 'weight' => 1));
+            $result = array("success" => true, "message" => '');
+        } else {
+            $result = array("success" => false, "message" => 'Can not found kandy user');
+        }
+
+    } else {
+        $result = array("success" => false, "message" => 'Can not found kandy module');
+    }
+
+    user_cookie_delete('kandy_user_logout');
+    return $result;
+
+}
+
 
