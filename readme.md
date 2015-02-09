@@ -17,7 +17,7 @@ Home page: http://www.kandy.io/
 **Kandy Video Button**: make a video call button component(video call)
 ```sh
 [kandyVideoButton
-        class = "myButtonStype"
+        class = "myButtonStyle"
         id = "my-video-button"
         incomingLabel = "Incoming Call..."
         incomingButtonText = "Answer"
@@ -41,7 +41,7 @@ Home page: http://www.kandy.io/
   **Kandy Voice Button**: make a voice call button component (voice call)
 ```sh
 [kandyVoiceButton
-        class = "myButtonStype"
+        class = "myButtonStyle"
         id = "my-video-button"
         incomingLabel = "Incoming Call..."
         incomingButtonText = "Answer"
@@ -90,17 +90,17 @@ Home page: http://www.kandy.io/
 ```
 **Kandy Video Call**: use a video call button and two video(**myVideo** and **theirVideo** id is required).
    ```sh
-[kandyVideoButton class="myButtonStype"][/kandyVideoButton]
+[kandyVideoButton class="myButtonStyle"][/kandyVideoButton]
 [kandyVideo title="Me" id="myVideo"][/kandyVideo]
 [kandyVideo title="Their"  id="theirVideo"][/kandyVideo]
 ```
 **Kandy Presence**: use a kandystatus and kandy addressbook compobent
 ```sh
-[kandyStatus class="myStatusStype" id="myStatus"][/kandyStatus]
+[kandyStatus class="myStatusStyle" id="myStatus"][/kandyStatus]
 [kandyAddressBook class="myAddressBookStyle" id="myContact"][/kandyAddressBook]
 ```
 
-**Kandy Chat: **
+**Kandy Chat**:
 ```sh
 [kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]
 ```
@@ -164,7 +164,7 @@ window.localvideoinitialized_callback = function(videoTag){
     //do some thing with your local video
 }
 
-window.presencenotification_callack = function() {
+window.presencenotification_callack = function(userId, state, description, activity) {
     //do something with status notification
 }
 ```

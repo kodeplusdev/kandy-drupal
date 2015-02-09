@@ -11,7 +11,7 @@ function kandy_shortcode_shortcode_info() {
         'description' => t('Show kandy video'),
         'process callback' => 'kandy_shortcode_shortcode_kandyVideo',
         //'settings callback' => '_shortcode_settings_form', TODO
-        //'tips callback' => 'kandy_shortcode_kandy_video_tip',
+        'tips callback' => 'kandy_shortcode_kandy_video_tip',
     );
 
     $shortcodes['kandyVideoButton'] = array(
@@ -19,7 +19,7 @@ function kandy_shortcode_shortcode_info() {
         'description' => t('Show kandy video button'),
         'process callback' => 'kandy_shortcode_shortcode_kandyVideoButton',
         //'settings callback' => '_shortcode_settings_form', TODO
-       // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+        'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
     );
 
     $shortcodes['kandyVoiceButton'] = array(
@@ -27,7 +27,7 @@ function kandy_shortcode_shortcode_info() {
         'description' => t('Show kandy voice button'),
         'process callback' => 'kandy_shortcode_shortcode_kandyVoiceButton',
         //'settings callback' => '_shortcode_settings_form', TODO
-        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+        'tips callback' => 'kandy_shortcode_kandy_voice_button_tip',
     );
 
     $shortcodes['kandyStatus'] = array(
@@ -35,7 +35,7 @@ function kandy_shortcode_shortcode_info() {
         'description' => t('Show kandy status'),
         'process callback' => 'kandy_shortcode_shortcode_kandyStatus',
         //'settings callback' => '_shortcode_settings_form', TODO
-        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+        'tips callback' => 'kandy_shortcode_shortcode_kandyStatus_tip',
     );
 
     $shortcodes['kandyAddressBook'] = array(
@@ -43,7 +43,7 @@ function kandy_shortcode_shortcode_info() {
         'description' => t('Show kandy address book'),
         'process callback' => 'kandy_shortcode_shortcode_kandyAddressBook',
         //'settings callback' => '_shortcode_settings_form', TODO
-        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+        'tips callback' => 'kandy_shortcode_shortcode_kandyAddressBook_tip',
     );
 
     $shortcodes['kandyChat'] = array(
@@ -51,9 +51,93 @@ function kandy_shortcode_shortcode_info() {
         'description' => t('Show kandy chat'),
         'process callback' => 'kandy_shortcode_shortcode_kandyChat',
         //'settings callback' => '_shortcode_settings_form', TODO
-        // 'tips callback' => 'kandy_shortcode_kandy_video_button_tip',
+        'tips callback' => 'kandy_shortcode_shortcode_kandyChat_tip',
     );
     return $shortcodes;
+}
+
+/**
+ * Display shortcode kandyVideo help
+ * @param $format
+ * @param $long
+ * @return string
+ */
+function kandy_shortcode_kandy_video_tip($format, $long) {
+    $output = array();
+    $output[] = '<p><strong>' . t('[kandyVideo title="Me" id="myVideo"][/kandyVideo]') . '</strong> ';
+    $output[] = t('Inserts an Kandy Video.') . '</p>';
+
+    return implode(' ', $output);
+}
+
+/**
+ * Display shortcode kandyVideoButton help
+ * @param $format
+ * @param $long
+ * @return string
+ */
+function kandy_shortcode_kandy_video_button_tip($format, $long) {
+    $output = array();
+    $output[] = '<p><strong>' . t('[kandyVideoButton class="myButtonStyle"][/kandyVideoButton]') . '</strong> ';
+    $output[] = t('Inserts an Kandy Video Button. Two kandy video shortcode should be inline.') . '</p>';
+
+    return implode(' ', $output);
+}
+
+/**
+ * Display shortcode kandyVoiceButton help
+ * @param $format
+ * @param $long
+ * @return string
+ */
+function kandy_shortcode_kandy_voice_button_tip($format, $long) {
+    $output = array();
+    $output[] = '<p><strong>' . t('[kandyVoiceButton class= "myButtonStyle" id="my-button"][/kandyVoiceButton]') . '</strong> ';
+    $output[] = t('Inserts an Kandy Voice Button.') . '</p>';
+
+    return implode(' ', $output);
+}
+
+/**
+ * Display shortcode kandyStatus help
+ * @param $format
+ * @param $long
+ * @return string
+ */
+function kandy_shortcode_shortcode_kandyStatus_tip($format, $long) {
+    $output = array();
+    $output[] = '<p><strong>' . t('[kandyStatus class="myStatusStyle" id="myStatus"][/kandyStatus]') . '</strong> ';
+    $output[] = t('Inserts an Kandy Status.') . '</p>';
+
+    return implode(' ', $output);
+}
+
+/**
+ * Display shortcode kandyAddressBook help
+ * @param $format
+ * @param $long
+ * @return string
+ */
+function kandy_shortcode_shortcode_kandyAddressBook_tip($format, $long) {
+    $output = array();
+    $output[] = '<p><strong>' . t('[kandyAddressBook class="myAddressBookStyle" id="myContact"][/kandyAddressBook]') . '</strong> ';
+    $output[] = t('Inserts an Kandy AddressBook.') . '</p>';
+
+    return implode(' ', $output);
+}
+
+/**
+ * Display shortcode kandyChat help
+ * @param $format
+ * @param $long
+ * @return string
+ */
+function kandy_shortcode_shortcode_kandyChat_tip($format, $long) {
+    $output = array();
+    $output[] = '<p><strong>' . t('[kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]') . '</strong> ';
+    $output[] = t('Inserts an Kandy Chat.') . '</p>';
+
+    return implode(' ', $output);
 }
 
 /**

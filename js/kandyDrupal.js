@@ -1,4 +1,4 @@
-//========================KANDY SETUP AND LISTENER CALLBACK ==============
+//========================KANDY SETUP AND LISTENER CALLBACK ===========================
 
 setup = function () {
     // initialize KandyAPI.Phone, passing a config JSON object that contains listeners (event callbacks)

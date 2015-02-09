@@ -1,13 +1,13 @@
 name = Kandy
 description = Allow user use kandy API
 package = Kandy
-version = VERSION
+version = 1.4
 core = 7.x
 files[] = kandy.module
 configure = admin/config/content/kandy
 
 ; Information added by Drupal.org packaging script on 2014-11-19
-version = "7.3.4"
+version = "7.3.4.4"
 project = "drupal"
 datestamp = "1416429488"
 

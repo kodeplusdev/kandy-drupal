@@ -333,7 +333,7 @@ function kandy_form($form, &$form_state)
         ),
         '#size'          => 100,
         '#maxlength'     => 255,
-        '#description'   => t('The api key to get data from server.'),
+        '#description'   => t('The domain secret key to get data from server.'),
         '#required'      => true,
     );
 
