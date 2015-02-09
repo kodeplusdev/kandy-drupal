@@ -667,10 +667,12 @@ var setFocusContact = function (user) {
 var moveContactToTop = function (user) {
     var contact = $(liTabWrapSelector + " li a[" + userHoldingAttribute + "='" + user + "']").parent();
     var active = contact.hasClass(activeClass);
-    // Remove
-    contact.remove();
+
     // Add to top
     prependContact(user, active);
+
+    // Remove
+    contact.remove();
 
 }
 
