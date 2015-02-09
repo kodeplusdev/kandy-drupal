@@ -127,6 +127,16 @@ kandy_presencenotification_callack = function (userId, state, description, activ
     if (typeof presencenotification_callack == 'function') {
         presencenotification_callack(userId, state, description, activity);
     }
+
+    //update chat status
+    if($('.kandyChat').length >0){
+        var liUser = $('.kandyChat .cd-tabs-navigation li#' +userId.replace(/[.@]/g, '_'));
+        var statusItem = liUser.find('i.status');
+        statusItem.text(description);
+
+        liUser.removeClass().addClass('kandy-chat-status-' + description.replace(/ /g,'-').toLowerCase());
+        liUser.attr('title', description);
+    }
 }
 
 /**
@@ -455,8 +465,9 @@ var addExampleBox = function () {
  */
 var getLiContact = function (user, active) {
     // Set false as default
+    var id = user.replace(/[.@]/g, '_');
     var liClass = (typeof active !== 'undefined') ? active : "";
-    var result = '<li class="' + liClass + '"><a ' + userHoldingAttribute + '="' + user + '" href="#">' + user + '</a></li>';
+    var result = '<li id="'+ id +'" class="' + liClass + '"><a ' + userHoldingAttribute + '="' + user + '" href="#">' + user + '</a><i class="status"></i></li>';
     return result
 }
 
@@ -487,21 +498,42 @@ var getLiContent = function (user) {
             </li>';
     return result;
 }
+
+var kandy_contactFilterChanged = function(val){
+    var liUserchat = $(".kandyChat .cd-tabs-navigation li");
+    $.each(liUserchat, function(index, target){
+        var liClass = $(target).attr('class');
+        var currentClass = "kandy-chat-status-" + val;
+        if(val == "all"){
+            $(target).show();
+        } else if(liClass == currentClass){
+            $(target).show();
+        } else {
+            $(target).hide();
+        }
+    });
+}
 /**
  * Load Contact for KandyChat
  */
 kandy_loadContacts_chat = function () {
+
+    var contactListForPresence = [];
     KandyAPI.Phone.retrievePersonalAddressBook(
         function (results) {
             var div = null;
             emptyContact();
             for (i = 0; i < results.length; i++) {
                 prependContact(results[i].contact_user_name);
+                contactListForPresence.push({full_user_id: results[i].contact_user_name});
             }
+
+            KandyAPI.Phone.watchPresence(contactListForPresence);
             addExampleBox();
         },
         function () {
             console.log("Error");
+            addExampleBox();
         }
     );
 };
@@ -591,7 +623,16 @@ var emptyContact = function () {
  * @param user
  */
 var prependContact = function (user) {
-    var liContact = getLiContact(user);
+    var liParent = $(liTabWrapSelector + " li a[" + userHoldingAttribute + "='" + user + "']").parent();
+    var liContact = "";
+    if(liParent.length){
+        liContact =  liParent[0].outerHTML;
+    } else {
+        liContact = getLiContact(user);
+    }
+    //var liContact = getLiContact(user);
+
+
     $(liTabWrapSelector).prepend(liContact);
     if (!$(liContentWrapSelector + " li[" + userHoldingAttribute + "='" + user + "']").length) {
         var liContent = getLiContent(user);
@@ -647,17 +688,13 @@ var moveContactToTopAndSetActive = function (user) {
 // ======================JQUERY READY =======================
 jQuery(document).ready(function ($) {
     //register kandy widget event
-    if ($('.kandyVideo').length
-        || $('.kandyButton').length
-        || $('.kandyAddressBook').length
-        || $('.kandyStatus').length
-        || $('.kandyChat').length) {
-        if (typeof login == 'function') {
-            setup();
-            login();
-            console.log('login....');
-        }
+
+    if (typeof login == 'function') {
+        setup();
+        login();
+        console.log('login....');
     }
+
 
     //only work when kandyChat exists
     if($('.kandyChat').length){

@@ -118,7 +118,6 @@ test pusblish
 /* KANDY CHAT STYLE */
 .kandyChat .imUsername {
     display: inline-block;
-    width: 200px
 }
 
 .kandyChat .imMessageToSend {
@@ -131,13 +130,13 @@ test pusblish
 
 .kandyChat .imMessage {
     display: inline-block;
-    width: 275px
 }
 
 .kandyChat .kandyMessages {
     width: 100%;
     height: 425px;
     overflow: auto;
+    padding:3px 5px;
 }
 
 .my-message {
@@ -147,9 +146,47 @@ test pusblish
 .their-message {
     color: #F47063;
 }
+.kandyChat .chat-heading .contact-heading{
+    margin-bottom: 10px;
+}
+.kandyChat .chat-heading .contact-heading label{
+    display: inline-block;
+}
+.kandyChat .chat-heading .contact-heading select{
+    display: inline-block;
+    width: 110px;
+    padding: 2px 0px;
+}
 
 .kandyChat .btnSendMessage {
     width: 100%;
+}
+
+.kandyChat .cd-tabs-navigation li a{
+
+    text-indent: 16px;
+}
+.kandyChat .cd-tabs-navigation li i.status{
+    font-size: 0.75rem;
+    text-indent: 16px;
+    display: block;
+    line-height: 1em;
+
+}
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-available a{
+    background: url("../img/available.png") left center no-repeat;
+}
+
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-offline a{
+    background: url("../img/offline.png") left center no-repeat;
+}
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-unavailable a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-away a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-busy a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-out-to-lunch a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-on-vacation a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-be-right-back a{
+    background: url("../img/busy.png") left center no-repeat;
 }
 
 /* CSS for tab */
@@ -189,7 +226,6 @@ test pusblish
     background-color: #ffffff !important;
     position: relative;
     display: block;
-    height: 30px;
     font-size: 0.75rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -344,6 +380,6 @@ test pusblish
 
 .chat-with-message {
     float: left;
-    padding-left: 1.4em;
+    padding-left: 10px;
     display: none;
 }
