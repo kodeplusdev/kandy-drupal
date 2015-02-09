@@ -616,7 +616,7 @@ function kandy_shortcode_shortcode_kandyChat($attrs) {
                             <option value="busy">Busy</option>
                             <option value="on-vacation">On Vacation</option>
                             <option value="be-right-back">Be Right Back</option>
-                        </select>
+                            </select>
                         </div>
                         <div class="chat-with-message">
                             Chatting with <span class="chat-friend-name"></span>

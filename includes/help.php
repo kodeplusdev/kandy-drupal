@@ -54,7 +54,7 @@
 <p>
     &nbsp; &nbsp; <strong>+ Kandy Video Call Button</strong><br />
     &nbsp; &nbsp; &nbsp; &nbsp; <span style="color:#696969;">[kandyVideoButton<br />
-	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class = &quot;myButtonStype&quot;<br />
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class = &quot;myButtonStyle&quot;<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; id = &quot;my-video-button&quot;<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; incomingLabel = &#39;Incoming Call...&#39;<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; incomingButtonText = &#39;Answer&#39;<br />
@@ -70,7 +70,7 @@
 <p>
     &nbsp; &nbsp; <strong>+ Kandy Voice Call Button</strong><br />
     &nbsp; &nbsp; &nbsp; &nbsp; <span style="color:#696969;">[kandyVoiceButton<br />
-	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class = &quot;myButtonStype&quot;<br />
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class = &quot;myButtonStyle&quot;<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; id = &quot;my-voice-button&quot;<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; incomingLabel = &#39;Incoming Call...&#39;<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; incomingButtonText = &#39;Answer&#39;<br />
@@ -144,7 +144,7 @@
 
 <p>
     <strong>&nbsp; &nbsp; + Kandy Video Call</strong><br />
-    &nbsp; &nbsp; &nbsp; &nbsp;<span style="color:#696969;">[kandyVideoButton class="myButtonStype"][/kandyVideoButton]<br />
+    &nbsp; &nbsp; &nbsp; &nbsp;<span style="color:#696969;">[kandyVideoButton class="myButtonStyle"][/kandyVideoButton]<br />
 	&nbsp; &nbsp; &nbsp; &nbsp;[kandyVideo title="Me" id="myVideo" style = "width: 300px; height: 225px;background-color: darkslategray;"] [/kandyVideo]<br />
 	&nbsp; &nbsp; &nbsp; &nbsp;[kandyVideo title="Their" &nbsp;id="theirVideo" style = "width: 300px; height: 225px;background-color: darkslategray;"][/kandyVideo]</span>
 </p>
@@ -155,7 +155,7 @@
 
 <p>
     <strong>&nbsp; &nbsp; + Kandy Presence</strong><br />
-    &nbsp; &nbsp; &nbsp; &nbsp; <span style="color:#696969;">[kandyStatus class="myStatusStype" id="myStatus"][/kandyStatus]<br />
+    &nbsp; &nbsp; &nbsp; &nbsp; <span style="color:#696969;">[kandyStatus class="myStatusStyle" id="myStatus"][/kandyStatus]<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; [kandyAddressBook class="myAddressBookStyle" id="myContact"][/kandyAddressBook]</span>
 </p>
 

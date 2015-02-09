@@ -106,7 +106,7 @@ Home page: http://www.kandy.io/
 ```
 
 ####Kandy Administration:
-**Settings: ** 
+**Settings:**
 
 - **API Key:** Kandy API key which found in your kandy account.
 - **Domain Secret Key:** Domain Kandy API key which found in your kandy account.
@@ -127,18 +127,23 @@ Home page: http://www.kandy.io/
 window.loginsuccess_callback = function () {
    //do something when you login successfully
 }
+
 window.loginfailed_callback = function () {
     //do something when you login fail
 }
+
 window.callincoming_callback = function (call, isAnonymous) {
     //do something when your are calling
 }
+
 window.oncall_callback = function (call) {
     //do something when you are oncall
 }
+
 window.callanswered_callback = function (call, isAnonymous) {
     //do something when someone answer your call
 }
+
 window.callended_callback = function () {
    //do something when someone end  your call
 }
@@ -150,12 +155,15 @@ window.answerVoiceCall_callback = function (stage) {
 window.answerVideoCall_callback = function (stage) {
     //do something when you answer video call
 }
+
 window.makeCall_callback = function (stage) {
    //do something when you make call
 }
+
 window.endCall_callback = function (stage) {
    //do something when you click end call button
 }
+
 window.remotevideoinitialized_callack(videoTag){
    //do something with your remote video
 }
@@ -206,7 +214,7 @@ Kandy_getDomain();
 ```
 Get kandy domain from kandy settings or remote server
 
-Return: **array **
+Return: **array**
 
 ```sh
 $result = array("success" => true,
