@@ -159,6 +159,10 @@ function kandy_shortcode_theme() {
  * Kandy Setup load js, login
  */
 function kandy_setup(){
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     global $user;
 
     $modulePath = drupal_get_path('module', 'kandy');
@@ -218,6 +222,10 @@ function kandy_shortcode_init(){
  * @return null|string
  */
 function kandy_shortcode_shortcode_kandyVideo($attrs) {
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     $output = "";
     if(!empty($attrs)){
         $result = kandy_setup();
@@ -271,6 +279,10 @@ function kandy_shortcode_shortcode_kandyVideo($attrs) {
  * @return null|string
  */
 function kandy_shortcode_shortcode_kandyVideoButton($attrs) {
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     if(!empty($attrs)){
         $result = kandy_setup();
         if($result['success']) {
@@ -326,6 +338,10 @@ function kandy_shortcode_shortcode_kandyVideoButton($attrs) {
  */
 function kandy_shortcode_shortcode_kandyVoiceButton($attrs) {
 
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     if(!empty($attrs)){
         $result = kandy_setup();
         if($result['success']) {
@@ -425,7 +441,10 @@ function kandy_shortcode_shortcode_kandyVoiceButton($attrs) {
 }
 
 function kandy_shortcode_shortcode_kandyStatus($attrs) {
-
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     if(!empty($attrs)){
         $result = kandy_setup();
         if($result['success']) {
@@ -484,7 +503,10 @@ function kandy_shortcode_shortcode_kandyStatus($attrs) {
  * @return null|string
  */
 function kandy_shortcode_shortcode_kandyAddressBook($attrs) {
-
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     if(!empty($attrs)){
         $result = kandy_setup();
         if($result['success']) {
@@ -564,7 +586,10 @@ function kandy_shortcode_shortcode_kandyAddressBook($attrs) {
  * @return null|string
  */
 function kandy_shortcode_shortcode_kandyChat($attrs) {
-
+    //do not render shortcode when edit page
+    if(arg(0) == 'node' && arg(2) == 'edit'){
+        return false;
+    }
     if(!empty($attrs)){
         $result = kandy_setup();
         if($result['success']) {
