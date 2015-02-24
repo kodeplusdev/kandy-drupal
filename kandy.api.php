@@ -1,476 +1,523 @@
 <?php
-// KANDY USER FILTERING STATUS
+
+/**
+ * @file
+ * KANDY USER FILTERING STATUS.
+ *
+ * @package : kandy
+ * @subpackage : kandy
+ */
+
 define('KANDY_USER_ALL', 1);
 define('KANDY_USER_ASSIGNED', 2);
 define('KANDY_USER_UNASSIGNED', 3);
 
+/**
+ * Kandy get user data.
+ */
+function kandy_get_user_data() {
+  // We are extending the PagerDefault class here.
+  // It has a default of 10 rows per page.
+  // The extend('PagerDefault') part here does all the magic.
+  $query = db_select('users', 'u')->extend('PagerDefault');
+  $query->fields('u', array('uid', 'name'));
+
+  // Change the number of rows with the limit() call.
+  $result = $query
+    ->limit(10)
+    ->orderBy('u.uid')
+    ->execute();
+
+  $rows = array();
+  foreach ($result as $row) {
+    if (empty($row->name)) {
+      continue;
+    }
+
+    $url = url('/admin/config/content/kandy/assignment/edit',
+      array('query' => array('id' => $row->uid), 'absolute' => TRUE)
+    );
+
+    $kandy_user = kandy_get_assign_user($row->uid);
+
+    $table_cell = array(
+      'uid' => $row->uid,
+      'name' => $row->name,
+      'kandyUser' => ($kandy_user) ? $kandy_user->user_id : NULL,
+      'link' => array(
+        'data' => array(
+          '#type' => 'link',
+          '#title' => t('Edit'),
+          '#href' => $url,
+        ),
+      ),
+    );
+
+    $rows[] = $table_cell;
+  }
+  return $rows;
+}
+
 
 /**
- * Get Kandy User Data for assignment table
- * @return array
+ * Get domain access token.
  */
-function Kandy_getUserData()
-{
-    // We are extending the PagerDefault class here.
-    // It has a default of 10 rows per page.
-    // The extend('PagerDefault') part here does all the magic.
-    $query = db_select('users', 'u')->extend('PagerDefault');
-    $query->fields('u', array('uid', 'name'));
+function kandy_get_domain_access_token() {
+  $module_path = drupal_get_path('module', 'kandy');
+  include_once $module_path . '/includes/RestClient.php';
+  $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
+  $kandy_domain_secret_key = variable_get(
+    'kandy_domain_secret_key',
+    KANDY_DOMAIN_SECRET_KEY
+  );
+  $params = array(
+    'key' => $kandy_api_key,
+    'domain_api_secret' => $kandy_domain_secret_key,
+  );
 
-    // Change the number of rows with the limit() call.
-    $result = $query
-        ->limit(10)
-        ->orderBy('u.uid')
+  $fields_string = http_build_query($params);
+  $url = KANDY_API_BASE_URL . 'domains/accesstokens?' . $fields_string;
+
+  try {
+    $response = (new RestClient())->get($url)->getContent();
+  }
+  catch (Exception $ex) {
+    watchdog_exception('kandy ', $ex);
+    return array(
+      'success' => FALSE,
+      'message' => $ex->getMessage(),
+      'data' => '',
+    );
+  }
+
+  $response = json_decode($response);
+  if (isset($response->message) && $response->message == 'success') {
+    return array(
+      'success' => TRUE,
+      'message' => '',
+      'data' => $response->result->domain_access_token,
+    );
+  }
+  else {
+    if (isset($response->message)) {
+      $error_message = $response->message;
+    }
+    else {
+      $error_message = 'Invalid Request Url';
+    }
+    return array(
+      'success' => FALSE,
+      'message' => $error_message,
+      'data' => '',
+    );
+  }
+}
+
+/**
+ * List Kandy User from database.
+ */
+function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
+  $result = array();
+
+  // Get data from server.
+  if ($remote) {
+    $get_token_response = kandy_get_domain_access_token();
+    if ($get_token_response['success']) {
+      $domain_access_token = $get_token_response['data'];
+      $params = array(
+        'key' => $domain_access_token,
+      );
+
+      $fields_string = http_build_query($params);
+      $url = KANDY_API_BASE_URL . 'domains/users?' . $fields_string;
+      $headers = array(
+        'Content-Type: application/json',
+      );
+
+      try {
+        $response = (new RestClient())->get($url, $headers)
+          ->getContent();
+      }
+      catch (Exception $ex) {
+        watchdog_exception('kandy ', $ex);
+        return array(
+          'success' => FALSE,
+          'message' => $ex->getMessage(),
+        );
+      }
+      $response = json_decode($response);
+
+      if ($response) {
+        $data = $response->result;
+        $result = $data->users;
+      }
+    }
+  }
+  else {
+    $get_domain_name_response = kandy_get_domain();
+    if ($get_domain_name_response['success']) {
+      $domain_name = $get_domain_name_response['data'];
+      if ($type == KANDY_USER_ALL) {
+        $query = db_select('kandy_users')
+          ->fields('kandy_users')
+          ->condition('domain_name', $domain_name, '=');
+
+      }
+      else {
+        if ($type == KANDY_USER_ASSIGNED) {
+          $query = db_select('kandy_users')
+            ->fields('kandy_users')
+            ->isNotNull('main_user_id')
+            ->condition('domain_name', $domain_name, '=');
+        }
+        else {
+          if ($type == KANDY_USER_UNASSIGNED) {
+            $query = db_select('kandy_users')
+              ->fields('kandy_users')
+              ->isNull('main_user_id')
+              ->condition('domain_name', $domain_name, '=');
+          }
+        }
+      }
+      $query_data = $query->execute();
+      foreach ($query_data as $record) {
+        $result[] = $record;
+      }
+    }
+
+  }
+
+  return $result;
+}
+
+/**
+ * Get Assigned Kandy User By main_user_id.
+ *
+ * @param Int $main_user_id
+ *   Main User Id.
+ *
+ * @return null
+ *   Kandy User Object.
+ */
+function kandy_get_assign_user($main_user_id) {
+  $result = NULL;
+  $get_domain_name_response = kandy_get_domain();
+
+  if ($get_domain_name_response['success']) {
+    $domain_name = $get_domain_name_response['data'];
+    $query = db_select('kandy_users')
+      ->fields('kandy_users')
+      ->condition('main_user_id', $main_user_id, '=')
+      ->condition('domain_name', $domain_name, '=');
+    $query_data = $query->execute();
+    $result = $query_data->fetchObject();
+  }
+
+  return $result;
+}
+
+/**
+ * Get kandy user by kandy user_id.
+ */
+function kandy_get_user_by_user_id($kandy_user_id) {
+  $result = NULL;
+  $get_domain_name_response = kandy_get_domain();
+
+  if ($get_domain_name_response['success']) {
+    $domain_name = $get_domain_name_response['data'];
+    $query = db_select('kandy_users')
+      ->fields('kandy_users')
+      ->condition('user_id', $kandy_user_id, '=')
+      ->condition('domain_name', $domain_name, '=');
+    $query_data = $query->execute();
+    $result = $query_data->fetchObject();
+  }
+
+  return $result;
+}
+
+/**
+ * Get the domain from domain key in the configuration or remote server.
+ *
+ * @return array
+ *   A list of message the data
+ * @throws RestClientException
+ */
+function kandy_get_domain() {
+  $domain_name = variable_get('kandy_domain_name', KANDY_DOMAIN_NAME);
+  if (!empty($domain_name)) {
+    return array(
+      'success' => TRUE,
+      'data' => $domain_name,
+    );
+  }
+  $module_path = drupal_get_path('module', 'kandy');
+  include_once $module_path . '/includes/RestClient.php';
+
+  $kandy_domain_api_key = variable_get(
+    'kandy_api_key',
+    KANDY_API_KEY
+  );
+
+  $get_token_response = kandy_get_domain_access_token();
+  if ($get_token_response['success']) {
+    $domain_access_token = $get_token_response['data'];
+    $params = array(
+      'key' => $domain_access_token,
+      'domain_api_key' => $kandy_domain_api_key,
+    );
+    $fields_string = http_build_query($params);
+    $url = KANDY_API_BASE_URL . 'accounts/domains/details?' . $fields_string;
+
+    try {
+      $response = (new RestClient())->get($url)->getContent();
+    }
+    catch (Exception $ex) {
+      watchdog_exception('kandy ', $ex);
+      return array(
+        'success' => FALSE,
+        'data' => '',
+        'message' => $ex->getMessage(),
+      );
+    }
+
+    $response = json_decode($response);
+    if ($response->message == 'success') {
+      variable_set('kandy_domain_name', $response->result->domain->domain_name);
+      return array(
+        'success' => TRUE,
+        'data' => $response->result->domain->domain_name,
+        'message' => '',
+      );
+    }
+    else {
+      return array(
+        'success' => FALSE,
+        'data' => '',
+        'message' => $response->message,
+      );
+    }
+  } else {
+    return array(
+      'success' => FALSE,
+      'data' => '',
+      'message' => 'Invalid domain request',
+    );
+  }
+
+
+
+
+}
+
+/**
+ * Get all users from Kandy and import/update to kandy_user.
+ *
+ * @return array
+ *   A json status and message
+ */
+function kandy_sync_users() {
+  $kandy_users = kandy_list_users(KANDY_USER_ALL, TRUE);
+  $get_domain_name_response = kandy_get_domain();
+
+  if ($get_domain_name_response['success']) {
+    $domain_name = $get_domain_name_response['data'];
+
+    // The transaction opens here.
+    $transaction = db_transaction();
+    $received_users = array();
+    try {
+      foreach ($kandy_users as $kandy_user) {
+        $received_users[] = $kandy_user->user_id;
+        $fields = array(
+          'user_id',
+          'first_name',
+          'last_name',
+          'password',
+          'email',
+          'domain_name',
+          'api_key',
+          'api_secret',
+          'updated_at',
+        );
+
+        $data_values = array(
+          'user_id' => $kandy_user->user_id,
+          'first_name' => $kandy_user->user_first_name,
+          'last_name' => $kandy_user->user_last_name,
+          'password' => $kandy_user->user_password,
+          'email' => $kandy_user->user_email,
+          'domain_name' => $kandy_user->domain_name,
+          'api_key' => $kandy_user->user_api_key,
+          'api_secret' => $kandy_user->user_api_secret,
+          'updated_at' => date("Y-m-d H:i:s"),
+        );
+        $kandy_user_model = kandy_get_user_by_user_id($kandy_user->user_id);
+
+        if (!$kandy_user_model) {
+          // insert.
+          $fields[] = 'created_at';
+          $data_values['created_at'] = date("Y-m-d H:i:s");
+          $query = db_insert('kandy_users')
+            ->fields($fields)
+            ->values($data_values);
+        }
+        else {
+          // update.
+          $query = db_update('kandy_users')
+            ->fields($data_values)
+            ->condition('user_id', $kandy_user->user_id, '=')
+            ->condition('domain_name', $domain_name, '=');
+
+        }
+
+        $query->execute();
+      }
+      // End foreach.
+      db_delete("kandy_users")
+        ->condition('domain_name', $domain_name, '=')
+        ->condition('user_id', $received_users, 'NOT IN')
+        ->execute();
+      $result = array(
+        'success' => TRUE,
+        'message' => "Sync successfully",
+      );
+    }
+    catch (Exception $ex) {
+      $transaction->rollback();
+      watchdog_exception('kandy ', $ex);
+      $result = array(
+        'success' => FALSE,
+        'message' => "Error Data",
+      );
+    }
+
+  }
+  else {
+    $result = array(
+      'success' => FALSE,
+      'message' => "Cannot get domain name.",
+    );
+  }
+  return $result;
+}
+
+/**
+ * Assign Kandy User.
+ *
+ * @param Int $kandy_user_id
+ *   Kandy User Id
+ * @param Int $main_user_id
+ *   Main User Id
+ *
+ * @return bool
+ *   True or False
+ */
+function kandy_assign_user($kandy_user_id, $main_user_id) {
+  try {
+    $get_domain_name_response = kandy_get_domain();
+    if ($get_domain_name_response['success'] == TRUE) {
+      $domain_name = $get_domain_name_response['data'];
+
+      db_update('kandy_users')
+        ->fields(
+          array(
+            'main_user_id' => NULL,
+          )
+        )
+        ->condition('main_user_id', $main_user_id, '=')
+        ->condition('domain_name', $domain_name, '=')
         ->execute();
 
-    $rows = array();
-    foreach ($result as $row) {
-        if(empty($row->name)){
-            continue;
-        }
-        $url = url(
-            '/admin/config/content/kandy/assignment/edit',
-            array('query' => array('id' => $row->uid), 'absolute' => true)
-        );
-
-        $kandyUser = Kandy_getAssignUser($row->uid);
-
-        $tableCell = array(
-            'uid'  => $row->uid,
-            'name' => $row->name,
-            ($kandyUser) ? $kandyUser->user_id : null,
-            array(
-                'data' => array(
-                    '#type'  => 'link',
-                    '#title' => t('Edit'),
-                    '#href'  => $url
-                )
-            )
-        );
-        //$rows[] = array('data' => (array) $row);
-        $rows[] = $tableCell;
+      db_update('kandy_users')
+        ->fields(
+          array(
+            'main_user_id' => $main_user_id,
+          )
+        )
+        ->condition('user_id', $kandy_user_id, '=')
+        ->condition('domain_name', $domain_name, '=')
+        ->execute();
+      return TRUE;
     }
-    return $rows;
+    else {
+      return FALSE;
+    }
+
+  }
+  catch (Exception $ex) {
+    watchdog_exception('kandy ', $ex);
+    return FALSE;
+  }
+
 }
 
-
 /**
- * Get domain access token
- * @return array A list of message and data
- * @throws RestClientException
+ * Unassign kandy user.
+ *
+ * @param Int $main_user_id
+ *   Main User Id
+ *
+ * @return bool
+ *   True / False
  */
-function Kandy_getDomainAccessToken()
-{
-    $modulePath = drupal_get_path('module', 'kandy');
-    include_once($modulePath . '/includes/RestClient.php');
-    $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
-    $kandyDomainSecretKey = variable_get(
-        'kandy_domain_secret_key',
-        KANDY_DOMAIN_SECRET_KEY
-    );
-    $params = array(
-        'key'               => $kandyApiKey,
-        'domain_api_secret' => $kandyDomainSecretKey
-    );
-
-    $fieldsString = http_build_query($params);
-    $url = KANDY_API_BASE_URL . 'domains/accesstokens' . '?'
-        . $fieldsString;
-
-    try {
-        $response = (new RestClient())->get($url)->getContent();
-    } catch (Exception $ex) {
-        watchdog_exception('kandy ', $ex);
-        return array(
-            'success' => false,
-            'message' => $ex->getMessage(),
-            'data' => ''
-        );
+function kandy_unassign_user($main_user_id) {
+  try {
+    $get_domain_name_response = kandy_get_domain();
+    if ($get_domain_name_response['success'] == TRUE) {
+      $domain_name = $get_domain_name_response['data'];
+      db_update('kandy_users')
+        ->fields(
+          array(
+            'main_user_id' => NULL,
+          )
+        )
+        ->condition('main_user_id', $main_user_id, '=')
+        ->condition('domain_name', $domain_name, '=')
+        ->execute();
+      return TRUE;
     }
-
-    $response = json_decode($response);
-    if ($response->message == 'success') {
-        return array(
-            'success' => true,
-            'message' => '',
-            'data'    => $response->result->domain_access_token,
-        );
-    } else {
-        return array(
-            'success' => false,
-            'message' => $response->message,
-            'data' => ''
-        );
+    else {
+      return FALSE;
     }
+  }
+  catch (Exception $ex) {
+    watchdog_exception('kandy ', $ex);
+    return FALSE;
+  }
+
 }
 
 /**
- * List Kandy User from database
- * @param $type
- * @param bool $remote
+ * Kandy Logout.
+ *
  * @return array
+ *   Logout Result
  */
-function Kandy_listUsers($type = KANDY_USER_ALL, $remote = false)
-{
-    $result = array();
+function kandy_logout() {
+  $just_logout_user_id = FALSE;
+  if (isset($_COOKIE['Drupal_visitor_kandy_user_logout'])) {
+    $just_logout_user_id = $_COOKIE['Drupal_visitor_kandy_user_logout'];
+  }
 
-    // get data from server
-    if ($remote) {
-        $getTokenResponse = Kandy_getDomainAccesstoken();
-        if ($getTokenResponse['success']) {
-            $domainAccessToken = $getTokenResponse['data'];
-            $params = array(
-                'key' => $domainAccessToken
-            );
+  $module_path = drupal_get_path('module', 'kandy');
+  if (module_exists('kandy') && $just_logout_user_id) {
+    module_load_include('php', 'kandy', 'kandy.api');
+    $assign_user = kandy_get_assign_user($just_logout_user_id);
+    if ($assign_user) {
+      $user_name = $assign_user->user_id;
+      $password = $assign_user->password;
+      $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
+      if (variable_get('kandy_jquery_reload', 1)) {
+        drupal_add_js(KANDY_JQUERY);
+      }
+      drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL));
+      drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
 
-            $fieldsString = http_build_query($params);
-            $url = KANDY_API_BASE_URL . 'domains/users' . '?'
-                . $fieldsString;
-            $headers = array(
-                'Content-Type: application/json'
-            );
-
-            try {
-                $response = (new RestClient())->get($url, $headers)->getContent();
-            } catch (Exception $ex) {
-                watchdog_exception('kandy ', $ex);
-                return array(
-                    'success' => false,
-                    'message' => $ex->getMessage()
-                );
-            }
-            $response = json_decode($response);
-
-            if ($response) {
-                $data = $response->result;
-                $result = $data->users;
-            }
-        }
-    } else {
-        $getDomainNameResponse = Kandy_getDomain();
-        if($getDomainNameResponse['success']){
-            $domainName = $getDomainNameResponse['data'];
-            if ($type == KANDY_USER_ALL) {
-                $query = db_select('kandy_users')
-                    ->fields('kandy_users')
-                    ->condition('domain_name', $domainName, '=');
-
-            } else {
-                if ($type == KANDY_USER_ASSIGNED) {
-                    $query = db_select('kandy_users')
-                                    ->fields('kandy_users')
-                                    ->isNotNull('main_user_id')
-                                    ->condition('domain_name', $domainName, '=');
-                } else {
-                    if ($type == KANDY_USER_UNASSIGNED) {
-                        $query = db_select('kandy_users')
-                            ->fields('kandy_users')
-                            ->isNull('main_user_id')
-                            ->condition('domain_name', $domainName, '=');
-                    }
-                }
-            }
-            $queryData = $query->execute();
-            foreach ($queryData as $record) {
-                $result[] = $record;
-            }
-        }
-
-    }
-
-    return $result;
-}
-
-/**
- * get Assigned Kandy User By main_user_id
- * @param $mainUserId
- * @return mixed
- */
-function Kandy_getAssignUser($mainUserId)
-{
-    $result = null;
-    $getDomainNameResponse = Kandy_getDomain();
-
-    if ($getDomainNameResponse['success']) {
-        $domainName = $getDomainNameResponse['data'];
-        $query = db_select('kandy_users')
-            ->fields('kandy_users')
-            ->condition('main_user_id', $mainUserId, '=')
-            ->condition('domain_name', $domainName, '=');
-        $queryData = $query->execute();
-        $result = $queryData->fetchObject();
-    }
-
-    return $result;
-}
-
-/**
- * get kandy user by kandy user_id
- * @param $kandyUserId
- * @return mixed
- */
-function Kandy_getUserByUserId($kandyUserId){
-    $result = null;
-    $getDomainNameResponse = Kandy_getDomain();
-
-    if ($getDomainNameResponse['success']) {
-        $domainName = $getDomainNameResponse['data'];
-        $query = db_select('kandy_users')
-                ->fields('kandy_users')
-                ->condition('user_id', $kandyUserId, '=')
-                ->condition('domain_name', $domainName, '=');
-        $queryData = $query->execute();
-        $result = $queryData->fetchObject();
-    }
-
-    return $result;
-}
-/**
- * Get the domain from domain key in the configuration or remote server
- *
- * @return array A list of message the data
- * @throws RestClientException
- */
-function Kandy_getDomain()
-{
-    $domainName = variable_get('kandy_domain_name', KANDY_DOMAIN_NAME);
-    if(!empty($domainName)){
-        return array(
-            'success' => true,
-            'data'    => $domainName,
-        );
-    }
-    $modulePath = drupal_get_path('module', 'kandy');
-    include_once($modulePath . '/includes/RestClient.php');
-
-    $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
-    $kandyDomainSecretKey = variable_get(
-        'kandy_domain_secret_key',
-        KANDY_DOMAIN_SECRET_KEY
-    );
-    $params = array(
-        'key'               => $kandyApiKey,
-        'domain_api_secret' => $kandyDomainSecretKey
-    );
-
-    $fieldsString = http_build_query($params);
-    $url = KANDY_API_BASE_URL . 'domains/details' . '?'
-        . $fieldsString;
-
-    try {
-        $response = (new RestClient())->get($url)->getContent();
-    } catch (Exception $ex) {
-        watchdog_exception('kandy ', $ex);
-        return array(
-            'success' => false,
-            'data' => '',
-            'message' => $ex->getMessage()
-        );
-    }
-
-    $response = json_decode($response);
-    if ($response->message == 'success') {
-        return array(
-            'success' => true,
-            'data'    => $response->result->domain->domain_name,
-            'message' => ''
-        );
-    } else {
-        return array(
-            'success' => false,
-            'data' =>'',
-            'message' => $response->message
-        );
-    }
-}
-/**
- * Get all users from Kandy and import/update to kandy_user
- *
- * @return array A json status and message
- */
-function Kandy_syncUsers()
-{
-    $kandyUsers = Kandy_listUsers(KANDY_USER_ALL, true);
-    $getDomainNameResponse = Kandy_getDomain();
-
-    if ($getDomainNameResponse['success']) {
-        $domainName = $getDomainNameResponse['data'];
-
-        // The transaction opens here.
-        $transaction = db_transaction();
-        $receivedUsers = array();
-        try {
-            foreach($kandyUsers as $kandyUser){
-                $receivedUsers[] = $kandyUser->user_id;
-                $fields = array(
-                    'user_id',
-                    'first_name',
-                    'last_name',
-                    'password',
-                    'email',
-                    'domain_name',
-                    'api_key',
-                    'api_secret',
-                    'updated_at'
-                );
-
-                $dataValues = array(
-                    'user_id' => $kandyUser->user_id,
-                    'first_name' => $kandyUser->user_first_name,
-                    'last_name' => $kandyUser->user_last_name,
-                    'password' => $kandyUser->user_password,
-                    'email' => $kandyUser->user_email,
-                    'domain_name' => $kandyUser->domain_name,
-                    'api_key' => $kandyUser->user_api_key,
-                    'api_secret' => $kandyUser->user_api_secret,
-                    'updated_at' => date("Y-m-d H:i:s"),
-                );
-                $kandyUserModel = Kandy_getUserByUserId($kandyUser->user_id);
-
-                if(!$kandyUserModel){
-                    // insert
-                    $fields[] = 'created_at';
-                    $dataValues['created_at'] = date("Y-m-d H:i:s");
-                    $query = db_insert('kandy_users')
-                        ->fields($fields)
-                        ->values($dataValues);
-
-                } else {
-                    //update
-                    $query = db_update('kandy_users')
-                        ->fields($dataValues)
-                        ->condition('user_id', $kandyUser->user_id, '=')
-                        ->condition('domain_name', $domainName, '=');
-
-                }
-
-                $rowEffect = $query->execute();
-            }//end foreach
-
-            db_delete("kandy_users")
-                    ->condition('domain_name', $domainName, '=')
-                    ->condition('user_id', $receivedUsers,'NOT IN')
-                    ->execute();
-            $result = array(
-                'success' => true,
-                'message' => "Sync successfully"
-            );
-        }
-        catch (Exception $ex) {
-            $transaction->rollback();
-            watchdog_exception('kandy ', $ex);
-            $result = array(
-                'success' => false,
-                'message' => "Error Data"
-            );
-        }
-
-    } else {
-        $result = array(
-            'success' => false,
-            'message' => "Cannot get domain name."
-        );
-    }
-    return $result;
-}
-
-/**
- * Assign Kandy User
- * @param $userId
- * @param $mainUserId
- * @return bool
- */
-function Kandy_assignUser($kandyUserId, $mainUserId){
-    try{
-        $getDomainNameResponse = Kandy_getDomain();
-        if ($getDomainNameResponse['success'] == true) {
-            $domainName = $getDomainNameResponse['data'];
-
-            $num_updated = db_update('kandy_users')
-                ->fields(
-                    array(
-                        'main_user_id' => NULL,
-                    )
-                )
-                ->condition('main_user_id', $mainUserId, '=')
-                ->condition('domain_name', $domainName, '=')
-                ->execute();
-
-            $num_updated = db_update('kandy_users')
-                ->fields(
-                    array(
-                        'main_user_id' => $mainUserId,
-                    )
-                )
-                ->condition('user_id', $kandyUserId, '=')
-                ->condition('domain_name', $domainName, '=')
-                ->execute();
-            return true;
-        } else {
-            return false;
-        }
-
-    } catch(Exception $ex){
-        watchdog_exception('kandy ', $ex);
-        return false;
-    }
-
-}
-
-/**
- * Unassign kandy user
- * @param $mainUserId
- * @return bool
- */
-function Kandy_unassignUser($mainUserId){
-    try{
-        $getDomainNameResponse = Kandy_getDomain();
-        if ($getDomainNameResponse['success'] == true) {
-            $domainName = $getDomainNameResponse['data'];
-            $num_updated = db_update('kandy_users')
-                ->fields(
-                    array(
-                        'main_user_id' => NULL,
-                    )
-                )
-            ->condition('main_user_id', $mainUserId, '=')
-            ->condition('domain_name', $domainName, '=')
-            ->execute();
-        return true;
-        } else {
-            return false;
-        }
-    } catch(Exception $ex){
-        watchdog_exception('kandy ', $ex);
-        return false;
-    }
-
-}
-
-function kandy_logout(){
-    $justLogouUserId = false;
-    if(isset($_COOKIE['Drupal_visitor_kandy_user_logout'])){
-        $justLogouUserId = $_COOKIE['Drupal_visitor_kandy_user_logout'];
-    }
-
-    $modulePath = drupal_get_path('module', 'kandy');
-    if (module_exists('kandy') && $justLogouUserId) {
-        module_load_include('php', 'kandy', 'kandy.api');
-        $assignUser = Kandy_getAssignUser($justLogouUserId);
-        if($assignUser){
-            $userName = $assignUser->user_id;
-            $password = $assignUser->password;
-            $kandyApiKey = variable_get('kandy_api_key', KANDY_API_KEY);
-            if(variable_get('kandy_jquery_reload', 1)){
-                drupal_add_js(KANDY_JQUERY);
-            }
-            drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL));
-            drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
-
-            drupal_add_js(
-                "if (window.login == undefined){
-                window.login = function() {
-                                        KandyAPI.Phone.login('" . $kandyApiKey . "', '" . $userName . "', '" . $password . "');
+      drupal_add_js(
+        "if (window.login == undefined){
+        window.login = function() {
+                                KandyAPI.Phone.login('" . $kandy_api_key . "', '" . $user_name . "', '" . $password . "');
                     };
                 }
 
@@ -479,23 +526,31 @@ function kandy_logout(){
                                         KandyAPI.Phone.logout();
                     };
                 ",
-                'inline'
-            );
+        'inline'
+      );
 
-            drupal_add_js($modulePath . '/js/kandyDrupal.js');
-            drupal_add_css($modulePath . '/css/kandyDrupal.css',  array('group' => 'kandy', 'weight' => 1));
-            $result = array("success" => true, "message" => '');
-        } else {
-            $result = array("success" => false, "message" => 'Can not found kandy user');
-        }
-
-    } else {
-        $result = array("success" => false, "message" => 'Can not found kandy module');
+      drupal_add_js($module_path . '/js/kandyDrupal.js');
+      drupal_add_css($module_path . '/css/kandyDrupal.css', array(
+          'group' => 'kandy',
+          'weight' => 1,
+        ));
+      $result = array("success" => TRUE, "message" => '');
+    }
+    else {
+      $result = array(
+        "success" => FALSE,
+        "message" => 'Can not found kandy user',
+      );
     }
 
-    user_cookie_delete('kandy_user_logout');
-    return $result;
+  }
+  else {
+    $result = array(
+      "success" => FALSE,
+      "message" => 'Can not found kandy module',
+    );
+  }
 
+  user_cookie_delete('kandy_user_logout');
+  return $result;
 }
-
-

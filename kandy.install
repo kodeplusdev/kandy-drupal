@@ -1,71 +1,85 @@
 <?php
+/**
+ * @file
+ * Kandy Installation
+ *
+ * The database schema is heavily commented; review for details.
+ *
+ * NOTE: For the registries which are essentially the makeup of the Kandy
+ *  Configuration Object, no indexes are specified because they are usually
+ *  referenced only to retrieve all the data.  In fact, there should never be a
+ *  situation in which a module is querying directly against those tables.
+ *
+ * @ingroup Kandy
+ */
+
+/**
+ * Implements hook_schema().
+ */
 function kandy_schema()
 {
-
     $schema['kandy_users'] = array(
-        'description' => t('The base table for kandy users.'),
+        'description' => 'The base table for kandy users.',
         'fields'      => array(
             'id'           => array(
-                'description' => t('The primary identifier for a kandy user.'),
+                'description' => 'The primary identifier for a kandy user.',
                 'type'        => 'serial',
-                'unsigned'    => true,
-                'not null'    => true
+                'unsigned'    => TRUE,
+                'not null'    => TRUE
             ),
             'user_id'      => array(
-                'description' => t(
-                    'The kandy user id'
-                ),
+                'description' =>'The kandy user id',
                 'type'        => 'varchar',
                 'length'      => 255,
-                'not null'    => true,
+                'not null'    => TRUE,
                 'default'     => ''
             ),
             'first_name'   => array(
-                'description' => t('The first name of kandy user'),
+                'description' => 'The first name of kandy user',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'last_name'    => array(
-                'description' => t('The last name of kandy user'),
+                'description' => 'The last name of kandy user',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'password'     => array(
-                'description' => t('The password of kandy user'),
+                'description' => 'The password of kandy user',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'email'        => array(
-                'description' => t('The email of kandy user'),
+                'description' => 'The email of kandy user',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'domain_name'  => array(
-                'description' => t('The domain name of kandy application'),
+                'description' => 'The domain name of kandy application',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'api_key'      => array(
-                'description' => t('The api key of kandy application'),
+                'description' => 'The api key of kandy application',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'api_secret'   => array(
-                'description' => t('The api secret key of kandy application'),
+                'description' => 'The api secret key of kandy application',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'main_user_id' => array(
-                'description' => t('The user id of system user'),
+                'description' => 'The user id of system user',
                 'type'        => 'varchar',
                 'length'      => 255,
             ),
             'created_at'   => array(
-                'description' => t('The created time of kandy user'),
+                'description' => 'The created time of kandy user',
                 'mysql_type' => 'DATETIME',
             ),
             'updated_at'   => array(
-                'description' => t('The updated time of kandy user'),
+                'description' => 'The updated time of kandy user',
                 'mysql_type' => 'DATETIME',
             ),
         ),
@@ -74,22 +88,33 @@ function kandy_schema()
     return $schema;
 }
 
+/**
+ * Implements hook_install().
+ *
+ * Installs the schema and then ensure that the hooks implemented by Kandy Core
+ *  will fire before those implemented by any Kandy (a direct
+ *  modification of the {system} table is the only way to accomplish this).
+ */
 function kandy_install()
 {
     // Create my tables.
     if(!db_table_exists('kandy_users')){
     drupal_install_schema('kandy');
     }
-
 }
 
+/**
+ * Implements hook_uninstall().
+ *
+ * Removes the database tables and persistant variables managed through Drupal.
+ *  Anything set in the Kandy Admin Interface will be forgotten.
+ *
+ * Uninstall the DB schema and clean up as much as is feasible.
+ */
 function kandy_uninstall()
 {
     // Drop my tables.
     if(db_table_exists('kandy_users')){
         drupal_uninstall_schema('kandy');
     }
-
 }
-
-?>

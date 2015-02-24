@@ -1,25 +1,27 @@
 /**
- * you login successfully
+ * You login successfully.
+ *
  */
 window.loginsuccess_callback = function () {
-    //do something here
+    // Do something here.
 }
 
 /**
- * You login fail
+ * You login fail.
+ *
  */
 window.loginfailed_callback = function () {
-    //do something here
+    // Do something here.
 }
+
 /**
- * Status Notification Callback
+ * Status Notification Callback.
+ *
  * @param userId
  * @param state
  * @param description
  * @param activity
  */
-window.presencenotification_callack = function(userId, state, description, activity){
-    //do something here
+window.presencenotification_callack = function (userId, state, description, activity) {
+    // Do something here.
 }
-
-

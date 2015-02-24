@@ -1,165 +1,256 @@
 <?php
-class RestClientException extends Exception
-{
+/**
+ * @file
+ * Class RestClientException
+ *   RestClient Exception Class
+ */
+
+class RestClientException extends Exception {
 }
 
-class RestClient
-{
+/**
+ * Class RestClient
+ */
+class RestClient {
 
-    protected $_submitted = false;
-    protected $_headers = array();
-    protected $_body = '';
+  protected $submitted = FALSE;
+  protected $headers = array();
+  protected $body = '';
 
-    public function get($uri, $headers = array(), $timeout = 30)
-    {
-        $ch = curl_init($uri);
+  /**
+   * Get Url Request.
+   *
+   * @param String $uri
+   *   Url
+   * @param array $headers
+   *   Header
+   * @param int $timeout
+   *   Timeout
+   *
+   * @return this
+   *   Class Instance
+   * @throws RestClientException
+   */
+  public function get($uri, $headers = array(), $timeout = 30) {
+    $ch = curl_init($uri);
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_SSL_VERIFYPEER,
-            KANDY_SSL_VERIFY
-        );
-        if (is_array($headers) && count($headers) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        }
-
-        if (curl_errno($ch)) {
-            throw new RestClientException(curl_errno($ch));
-        }
-        $this->_submitted = true;
-        $this->_body = curl_exec($ch);
-        $this->_headers = curl_getinfo($ch);
-
-        curl_close($ch);
-        return $this;
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt(
+      $ch,
+      CURLOPT_SSL_VERIFYPEER,
+      KANDY_SSL_VERIFY
+    );
+    if (is_array($headers) && count($headers) > 0) {
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
 
-    public function post($uri, $payload, $headers = array(), $timeout = 30)
-    {
-        $ch = curl_init($uri);
+    if (curl_errno($ch)) {
+      throw new RestClientException(curl_errno($ch));
+    }
+    $this->submitted = TRUE;
+    $this->body = curl_exec($ch);
+    $this->headers = curl_getinfo($ch);
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_SSL_VERIFYPEER,
-            KANDY_SSL_VERIFY
-        );
-        if (is_array($headers) && count($headers) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        }
+    curl_close($ch);
+    return $this;
+  }
 
-        if (curl_errno($ch)) {
-            throw new RestClientException(curl_errno($ch));
-        }
+  /**
+   * Post to url.
+   *
+   * @param string $uri
+   *   Url
+   * @param string $payload
+   *   Pay load
+   * @param array $headers
+   *   Header
+   * @param int $timeout
+   *   Timeout
+   *
+   * @return this
+   *   Class Instance
+   * @throws RestClientException
+   */
+  public function post($uri, $payload, $headers = array(), $timeout = 30) {
+    $ch = curl_init($uri);
 
-        $this->_submitted = true;
-        $this->_body = curl_exec($ch);
-        $this->_headers = curl_getinfo($ch);
-        curl_close($ch);
-        return $this;
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt(
+      $ch,
+      CURLOPT_SSL_VERIFYPEER,
+      KANDY_SSL_VERIFY
+    );
+    if (is_array($headers) && count($headers) > 0) {
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
 
-    public function put($uri, $payload, $headers = array(), $timeout = 30)
-    {
-        $ch = curl_init($uri);
-
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_SSL_VERIFYPEER,
-            KANDY_SSL_VERIFY
-        );
-        if (is_array($headers) && count($headers) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        }
-
-        if (curl_errno($ch)) {
-            throw new RestClientException(curl_errno($ch));
-        }
-
-        $this->_submitted = true;
-        $this->_body = curl_exec($ch);
-        $this->_headers = curl_getinfo($ch);
-
-        curl_close($ch);
-        return $this;
+    if (curl_errno($ch)) {
+      throw new RestClientException(curl_errno($ch));
     }
 
-    public function delete($uri, $headers = array(), $timeout = 30)
-    {
-        $ch = curl_init($uri);
+    $this->submitted = TRUE;
+    $this->body = curl_exec($ch);
+    $this->headers = curl_getinfo($ch);
+    curl_close($ch);
+    return $this;
+  }
 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_SSL_VERIFYPEER,
-            KANDY_SSL_VERIFY
-        );
-        if (is_array($headers) && count($headers) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        }
-        if (curl_errno($ch)) {
-            throw new RestClientException(curl_errno($ch));
-        }
-        $this->_submitted = true;
-        $this->_body = curl_exec($ch);
-        $this->_headers = curl_getinfo($ch);
+  /**
+   * Put Url Request.
+   *
+   * @param string $uri
+   *   Url
+   * @param int $payload
+   *   Pay load
+   * @param array $headers
+   *   Header
+   * @param int $timeout
+   *   Timeout
+   *
+   * @return this
+   *   Class Instance
+   * @throws RestClientException
+   */
+  public function put($uri, $payload, $headers = array(), $timeout = 30) {
+    $ch = curl_init($uri);
 
-        curl_close($ch);
-        return $this;
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt(
+      $ch,
+      CURLOPT_SSL_VERIFYPEER,
+      KANDY_SSL_VERIFY
+    );
+    if (is_array($headers) && count($headers) > 0) {
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
 
-    /*
-    *	After the request - functions to return data
-     */
-
-    public function getStatusText()
-    {
-        if ($this->_submitted) {
-            return $this->getStatusCode();
-        }
-        return 'UNKNOWN';
+    if (curl_errno($ch)) {
+      throw new RestClientException(curl_errno($ch));
     }
 
-    public function getStatusCode()
-    {
-        if ($this->_submitted) {
-            return $this->getHeader('http_code');
-        }
-        return 0;
-    }
+    $this->submitted = TRUE;
+    $this->body = curl_exec($ch);
+    $this->headers = curl_getinfo($ch);
 
-    public function getHeader($index)
-    {
-        if (isset($this->_headers[$index])) {
-            return $this->_headers[$index];
-        }
-        return 'N/A';
-    }
+    curl_close($ch);
+    return $this;
+  }
 
-    public function getContent()
-    {
-        return $this->_body;
-    }
+  /**
+   * Delete Url Request.
+   *
+   * @param string $uri
+   *   Url
+   * @param array $headers
+   *   Header
+   * @param int $timeout
+   *   Time out
+   *
+   * @return this
+   *   Class Instance
+   * @throws RestClientException
+   */
+  public function delete($uri, $headers = array(), $timeout = 30) {
+    $ch = curl_init($uri);
 
-    public function getHeaders()
-    {
-        return $this->_headers;
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt(
+      $ch,
+      CURLOPT_SSL_VERIFYPEER,
+      KANDY_SSL_VERIFY
+    );
+    if (is_array($headers) && count($headers) > 0) {
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
+    if (curl_errno($ch)) {
+      throw new RestClientException(curl_errno($ch));
+    }
+    $this->submitted = TRUE;
+    $this->body = curl_exec($ch);
+    $this->headers = curl_getinfo($ch);
 
-    public function getTime()
-    {
-        return $this->getHeader('total_time');
+    curl_close($ch);
+    return $this;
+  }
+
+  /**
+   * After the request - functions to return data.
+   *
+   * @return int|string
+   *   Status
+   */
+  public function getStatusText() {
+    if ($this->submitted) {
+      return $this->getStatusCode();
     }
+    return 'UNKNOWN';
+  }
+
+  /**
+   * After the request - functions to return data.
+   *
+   * @return int|string
+   *   Status Code
+   */
+  public function getStatusCode() {
+    if ($this->submitted) {
+      return $this->getHeader('http_code');
+    }
+    return 0;
+  }
+
+  /**
+   * After the request - functions to return data.
+   *
+   * @param int $index
+   *   index
+   *
+   * @return string
+   *   Header
+   */
+  public function getHeader($index) {
+    if (isset($this->headers[$index])) {
+      return $this->headers[$index];
+    }
+    return 'N/A';
+  }
+
+  /**
+   * Get Content.
+   * @return string
+   *   Content
+   */
+  public function getContent() {
+    return $this->body;
+  }
+
+  /**
+   * Get Header.
+   *
+   * @return array
+   *   Header
+   */
+  public function getHeaders() {
+    return $this->headers;
+  }
+
+  /**
+   * Get Time.
+   *
+   * @return string
+   *   Time
+   */
+  public function getTime() {
+    return $this->getHeader('total_time');
+  }
 }

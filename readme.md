@@ -62,7 +62,7 @@ Home page: http://www.kandy.io/
         title = "My Status"]
 [/kandyStatus]
   ```
-**Kandy Adress Book**: make an address book component which list all friend in your contact.
+**Kandy Address Book**: make an address book component which list all friend in your contact.
 ```sh
 [kandyAddressBook
         class = "myAddressBookStyle"
@@ -188,13 +188,13 @@ After load kandy module succucessfully you can use all support api:
 
 **1. Get kandy user data for assignment table**
 ```sh
-Kandy_getUserData();
+kandy_get_user_data();
 ```
 Return:  kandy user object **array**
 
 **2. Get kandy domain access token**
 ```sh
-Kandy_getDomainAccessToken();
+kandy_get_domain_access_token();
 ```
 Return: **array**
 
@@ -210,7 +210,7 @@ $result = array("success" => false,
 
 **3. Get the kandy domain**
 ```sh
-Kandy_getDomain();
+kandy_get_domain();
 ```
 Get kandy domain from kandy settings or remote server
 
@@ -228,7 +228,7 @@ $result = array("success" => false,
 
 **4. List Kandy User from database/remote**
 ```sh
-Kandy_listUsers($type = KANDY_USER_ALL, $remote = false)
+kandy_list_users($type = KANDY_USER_ALL, $remote = false)
 ```
 Parameters:
 ```sh
@@ -243,7 +243,7 @@ Return: Kandy user object **array**
 
 **5. Get assigned kandy user by current user id(main_user_id)**
 ```sh
-Kandy_getAssignUser($mainUserId)
+kandy_get_assign_user($mainUserId)
 ```
 Parameters:
 ```sh
@@ -253,7 +253,7 @@ Return kandy user object or null
 
 **6 Get kandy user by kandy user id(kandyUserId)**
 ```sh
-Kandy_getUserByUserId($kandyUserId)
+kandy_get_user_by_user_id($kandyUserId)
 ```
 Parameters:
 ```sh
@@ -263,7 +263,7 @@ Return kandy user object or null
 
 **7. Assign a normal user to kandy user**
 ```sh
-Kandy_assignUser($kandyUserId, $mainUserId)
+kandy_assign_user($kandyUserId, $mainUserId)
 ```
 Parameters:
 ```sh
@@ -274,7 +274,7 @@ Return: true/false
 
 **8. Unassign a kandy user**
 ```sh
-Kandy_unassignUser($mainUserId)
+kandy_unassign_user($mainUserId)
 ```
 Parameters:
 ```sh
@@ -286,7 +286,7 @@ Return: true/false
 
 Synchronize kandy user from remote server to local
 ```sh
-Kandy_syncUsers()
+kandy_sync_users()
 ```
 
 Return: array
