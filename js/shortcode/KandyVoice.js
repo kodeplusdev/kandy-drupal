@@ -2,23 +2,24 @@
  * You login success.
  */
 window.loginsuccess_callback = function () {
-    //do something here.
+    // Do something here.
 }
 
 /**
- * you login fail.
+ * You login fail.
  */
 window.loginfailed_callback = function () {
-    //do something here.
+    // Do something here.
 }
 
 /**
  * Someone are calling you.
+ *
  * @param call
  * @param isAnonymous
  */
 window.callincoming_callback = function (call, isAnonymous) {
-    //do something here.
+    // Do something here.
 }
 
 /**
@@ -26,7 +27,7 @@ window.callincoming_callback = function (call, isAnonymous) {
  * @param call
  */
 window.oncall_callback = function (call) {
-    //do something here.
+    // Do something here.
 }
 /**
  * Some one answer your call.
@@ -34,41 +35,41 @@ window.oncall_callback = function (call) {
  * @param isAnonymous
  */
 window.callanswered_callback = function (call, isAnonymous) {
-    //do something here.
+    // Do something here.
 }
 
 /**
  * end call callback.
  */
 window.callended_callback = function () {
-    //do something here.
+    // Do something here.
 }
 /*
 *   Callback when click AnswerVideo Button.
  */
 window.answerVideoCall_callback = function (stage) {
-    //do something here.
+    // Do something here.
 }
 
 /*
  *   Callback when click AnswerVideo Button.
  */
 window.answerVoiceCall_callback = function (stage) {
-    //do something here.
+    // Do something here.
 }
 
 /*
  *   Callback when click Call Button.
  */
 window.makeCall_callback = function (stage) {
-    //do something here.
+    // Do something here.
 }
 
 /*
  *   Callback when click End call Button.
  */
 window.endCall_callback = function (stage) {
-    //do something here.
+    // Do something here.
 }
 
 

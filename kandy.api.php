@@ -5,6 +5,7 @@
  * KANDY USER FILTERING STATUS.
  *
  * @package : kandy
+ *
  * @subpackage : kandy
  */
 
@@ -193,7 +194,7 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
 /**
  * Get Assigned Kandy User By main_user_id.
  *
- * @param Int $main_user_id
+ * @param int $main_user_id
  *   Main User Id.
  *
  * @return null
@@ -241,6 +242,7 @@ function kandy_get_user_by_user_id($kandy_user_id) {
  *
  * @return array
  *   A list of message the data
+ *
  * @throws RestClientException
  */
 function kandy_get_domain() {
@@ -297,16 +299,14 @@ function kandy_get_domain() {
         'message' => $response->message,
       );
     }
-  } else {
+  }
+  else {
     return array(
       'success' => FALSE,
       'data' => '',
       'message' => 'Invalid domain request',
     );
   }
-
-
-
 
 }
 
@@ -405,9 +405,9 @@ function kandy_sync_users() {
 /**
  * Assign Kandy User.
  *
- * @param Int $kandy_user_id
+ * @param int $kandy_user_id
  *   Kandy User Id
- * @param Int $main_user_id
+ * @param int $main_user_id
  *   Main User Id
  *
  * @return bool
@@ -455,8 +455,8 @@ function kandy_assign_user($kandy_user_id, $main_user_id) {
 /**
  * Unassign kandy user.
  *
- * @param Int $main_user_id
- *   Main User Id
+ * @param int $main_user_id
+ *   Main User Id.
  *
  * @return bool
  *   True / False

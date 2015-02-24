@@ -1,15 +1,18 @@
 <?php
 /**
  * @file
- * Class RestClientException
- *   RestClient Exception Class
+ * Class RestClientException.
  */
 
+/**
+ * Class Client Exception
+ * Class RestClientException
+ */
 class RestClientException extends Exception {
 }
 
 /**
- * Class RestClient
+ * Class RestClient.
  */
 class RestClient {
 
@@ -20,15 +23,16 @@ class RestClient {
   /**
    * Get Url Request.
    *
-   * @param String $uri
-   *   Url
+   * @param string $uri
+   *   Url.
    * @param array $headers
-   *   Header
+   *   Header.
    * @param int $timeout
-   *   Timeout
+   *   Timeout.
    *
    * @return this
-   *   Class Instance
+   *   Class Instance.
+   *
    * @throws RestClientException
    */
   public function get($uri, $headers = array(), $timeout = 30) {
@@ -61,16 +65,17 @@ class RestClient {
    * Post to url.
    *
    * @param string $uri
-   *   Url
+   *   Url.
    * @param string $payload
-   *   Pay load
+   *   Pay load.
    * @param array $headers
-   *   Header
+   *   Header.
    * @param int $timeout
-   *   Timeout
+   *   Timeout.
    *
    * @return this
-   *   Class Instance
+   *   Class Instance.
+   *
    * @throws RestClientException
    */
   public function post($uri, $payload, $headers = array(), $timeout = 30) {
@@ -104,16 +109,17 @@ class RestClient {
    * Put Url Request.
    *
    * @param string $uri
-   *   Url
+   *   Url.
    * @param int $payload
-   *   Pay load
+   *   Pay load.
    * @param array $headers
-   *   Header
+   *   Header.
    * @param int $timeout
-   *   Timeout
+   *   Timeout.
    *
    * @return this
-   *   Class Instance
+   *   Class Instance.
+   *
    * @throws RestClientException
    */
   public function put($uri, $payload, $headers = array(), $timeout = 30) {
@@ -148,14 +154,15 @@ class RestClient {
    * Delete Url Request.
    *
    * @param string $uri
-   *   Url
+   *   Url.
    * @param array $headers
-   *   Header
+   *   Header.
    * @param int $timeout
-   *   Time out
+   *   Time out.
    *
    * @return this
-   *   Class Instance
+   *   Class Instance.
+   *
    * @throws RestClientException
    */
   public function delete($uri, $headers = array(), $timeout = 30) {
@@ -187,7 +194,7 @@ class RestClient {
    * After the request - functions to return data.
    *
    * @return int|string
-   *   Status
+   *   Status.
    */
   public function getStatusText() {
     if ($this->submitted) {
@@ -200,7 +207,7 @@ class RestClient {
    * After the request - functions to return data.
    *
    * @return int|string
-   *   Status Code
+   *   Status Code.
    */
   public function getStatusCode() {
     if ($this->submitted) {
@@ -213,7 +220,7 @@ class RestClient {
    * After the request - functions to return data.
    *
    * @param int $index
-   *   index
+   *   index.
    *
    * @return string
    *   Header
@@ -228,7 +235,7 @@ class RestClient {
   /**
    * Get Content.
    * @return string
-   *   Content
+   *   Content.
    */
   public function getContent() {
     return $this->body;
@@ -238,7 +245,7 @@ class RestClient {
    * Get Header.
    *
    * @return array
-   *   Header
+   *   Header.
    */
   public function getHeaders() {
     return $this->headers;
@@ -248,7 +255,7 @@ class RestClient {
    * Get Time.
    *
    * @return string
-   *   Time
+   *   Time.
    */
   public function getTime() {
     return $this->getHeader('total_time');
