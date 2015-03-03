@@ -1,24 +1,26 @@
 /**
  * KANDY SETUP AND LISTENER CALLBACK.
- *
  */
 setup = function () {
-  // initialize KandyAPI.Phone, passing a config JSON object that contains listeners (event callbacks).
+  // Initialize KandyAPI.Phone, passing a config JSON object that contains listeners (event callbacks).
   KandyAPI.Phone.setup({
     allowAutoLogin: true,
-    // respond to Kandy events.
+    // Respond to Kandy events.
     listeners: {
       media: function (event) {
         switch (event.type) {
           case KandyAPI.Phone.MediaErrors.WRONG_VERSION:
             alert("Media Plugin Version Not Supported");
             break;
+
           case KandyAPI.Phone.MediaErrors.NEW_VERSION_WARNING:
             promptPluginDownload(event.urlWin32bit, event.urlWin64bit, event.urlMacUnix);
             break;
+
           case KandyAPI.Phone.MediaErrors.NOT_INITIALIZED:
             alert("Media couldn't be initialized");
             break;
+
           case KandyAPI.Phone.MediaErrors.NOT_FOUND:
             // YOUR CODE GOES HERE.
             break;
@@ -72,7 +74,6 @@ kandy_login_success_callback = function () {
 
 /**
  * Login Fail Callback.
- *
  */
 kandy_login_failed_callback = function () {
   if (typeof login_failed_callback == 'function') {
@@ -82,6 +83,7 @@ kandy_login_failed_callback = function () {
 
 /**
  * Local Video Initialized callback.
+ *
  * @param videoTag
  */
 kandy_local_video_initialized_callback = function (videoTag) {
@@ -99,6 +101,7 @@ kandy_local_video_initialized_callback = function (videoTag) {
 
 /**
  * Remote Video Initialized Callback.
+ *
  * @param videoTag
  */
 kandy_remote_video_initialized_callack = function (videoTag) {
@@ -145,6 +148,7 @@ kandy_presence_notification_callack = function (userId, state, description, acti
 
 /**
  * OnCall Callback.
+ *
  * @param call
  */
 kandy_on_call_callback = function (call) {
@@ -184,7 +188,7 @@ kandy_call_answered_callback = function (call, isAnonymous) {
  * Kandy call ended callback.
  */
 kandy_call_ended_callback = function () {
-  // Have video widget
+  // Have video widget.
   if ($(".kandyVideo").length) {
     $('#theirVideo').empty();
     $('#myVideo').empty();
@@ -197,6 +201,7 @@ kandy_call_ended_callback = function () {
 
 /**
  * Change AnswerButtonState with KandyButton Widget.
+ *
  * @param state
  */
 change_answer_button_state = function (state) {
@@ -208,18 +213,21 @@ change_answer_button_state = function (state) {
       $('.kandyButton .kandyVideoButtonCalling').hide();
       $('.kandyButton .kandyVideoButtonOnCall').hide();
       break;
+
     case 'BEING_CALLED':
       $('.kandyButton .kandyVideoButtonSomeonesCalling').show();
       $('.kandyButton .kandyVideoButtonCallOut').hide();
       $('.kandyButton .kandyVideoButtonCalling').hide();
       $('.kandyButton .kandyVideoButtonOnCall').hide();
       break;
+
     case 'CALLING':
       $('.kandyButton .kandyVideoButtonSomeonesCalling').hide();
       $('.kandyButton .kandyVideoButtonCallOut').hide();
       $('.kandyButton .kandyVideoButtonCalling').show();
       $('.kandyButton .kandyVideoButtonOnCall').hide();
       break;
+
     case 'ON_CALL':
       $('.kandyButton .kandyVideoButtonSomeonesCalling').hide();
       $('.kandyButton .kandyVideoButtonCallOut').hide();
@@ -293,7 +301,6 @@ kandy_end_call = function (target) {
 
 /**
  * Add AddressBook widget.
- *
  */
 kandy_loadContacts_addressBook = function () {
   var contactListForPresence = [];
@@ -303,7 +310,7 @@ kandy_loadContacts_addressBook = function () {
       var get_name_for_contact_url = $(".kandyAddressBook #get_name_for_contact_url").val();
       results = get_display_name_for_contact(results, get_name_for_contact_url);
 
-      // clear out the current address book list
+      // Clear out the current address book list.
       $(".kandyAddressBook .kandyAddressContactList div:not(:first)").remove();
       var div = null;
       if (results.length == 0) {
@@ -337,7 +344,7 @@ kandy_loadContacts_addressBook = function () {
 };
 
 /**
- * Get display name for contacts
+ * Get display name for contacts.
  *
  * @param data
  * @returns {*}
@@ -358,7 +365,7 @@ var get_display_name_for_contact = function (data, url) {
 };
 
 /**
- * Get display name for chat content
+ * Get display name for chat content.
  *
  * @param data
  * @returns {*}
@@ -379,8 +386,7 @@ var get_display_name_for_chat_content = function (data) {
 
 };
 /**
- * Add contact
- *
+ * Add contact.
  */
 var addContacts = function() {
   var contactId = $(".kandyAddressBook #kandySearchUserName").val();
@@ -408,17 +414,17 @@ var userIdToAddToContacts = null;  // need access to this in anonymous function 
 kandy_addToContacts = function (userId) {
   userIdToAddToContacts = userId;
   var contact;
-  // HTML id can't contain @ and jquery doesn't like periods (in id)
+  // HTML id can't contain @ and jquery doesn't like periods (in id).
   if ($('#uid_' + userId.replace(/[.@]/g, '_')).length > 0) {
     alert("This person is already in your contact list.")
   } else {
-    // get and AddressBook.Entry object for this contact
+    // Get and AddressBook.Entry object for this contact.
     KandyAPI.Phone.searchDirectoryByUserName(
       userId,
       function (results) {
         for (var i = 0; i < results.length; ++i) {
           if (results[i].primaryContact === userIdToAddToContacts) {
-            // user name and nickname are required
+            // User name and nickname are required.
             contact = {
               contact_user_name: results[i].primaryContact,
               contact_nickname: results[i].primaryContact
@@ -479,7 +485,6 @@ kandy_removeFromContacts = function (nickname) {
 
 /**
  * Search contact list by username with kandyAddressBook.
- *
  */
 kandy_searchDirectoryByUserName = function () {
   var userName = $('.kandyAddressBook .kandyDirectorySearch #kandySearchUserName').val();
@@ -514,7 +519,6 @@ kandy_searchDirectoryByUserName = function () {
 
 /**
  * KANDY CHAT WIDGET FUNCTION.
- *
  */
 
 var wrapDivClass = "kandyChat";
@@ -528,7 +532,6 @@ var activeClass = "selected";
 
 /**
  * Add an example chat box.
- *
  */
 var addExampleBox = function () {
   var tabId = "example";
@@ -629,6 +632,7 @@ kandy_load_contacts_chat = function () {
 /**
  * Send a message with kandyChat.
  *
+ * @param username
  */
 kandy_send_message = function (username) {
   var displayName = $('.kandyChat .kandy_current_username').val();
@@ -652,7 +656,6 @@ kandy_send_message = function (username) {
 
 /**
  * Get messages with kandyChat.
- *
  */
 kandy_getIms = function () {
   KandyAPI.Phone.getIm(
@@ -702,7 +705,6 @@ kandy_getIms = function () {
 
 /**
  * Empty all contacts.
- *
  */
 var emptyContact = function () {
   $(liTabWrapSelector).html("");
@@ -761,9 +763,9 @@ var move_contact_to_top = function (user) {
   var contact = $(liTabWrapSelector + " li a[" + userHoldingAttribute + "='" + username + "']").parent();
   var active = contact.hasClass(activeClass);
 
-  // Add to top
+  // Add to top.
   prependContact(user, active);
-  // Remove
+  // Remove.
   contact.remove();
 };
 
@@ -777,8 +779,6 @@ var move_contact_to_top_and_set_active = function (user) {
   setFocusContact(user);
   $(liTabWrapSelector).scrollTop(0);
 };
-
-// ======================JQUERY READY =======================
 
 jQuery(document).ready(function ($) {
   // Register kandy widget event.
