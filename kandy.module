@@ -27,8 +27,7 @@ function kandy_help($path, $arg) {
     case "admin/help#kandy":
       $module_path = drupal_get_path('module', 'kandy');
       $output = file_get_contents($module_path . '/includes/help.php');
-    return $output;
-    break;
+      return $output;
   }
 }
 
@@ -45,7 +44,6 @@ function kandy_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
   );
-
 
   $items['admin/config/content/kandy/script'] = array(
     'title' => 'Kandy Script Customization',
@@ -94,28 +92,28 @@ function kandy_menu() {
   $items['kandy/get_user_for_search'] = array(
     'title' => 'Get User Name by kandy user id',
     'page callback' => 'kandy_get_user_for_search',
-    'access arguments' => array ('access content'),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
   $items['kandy/get_name_for_contact'] = array(
     'title' => 'Get user name for chat',
     'page callback' => 'kandy_get_name_for_contact_callback',
-    'access arguments' => array ('access content'),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
   $items['kandy/get_name_for_chat_content'] = array(
     'title' => 'Get user name for chat',
     'page callback' => 'kandy_get_name_for_chat_content_callback',
-    'access arguments' => array ('access content'),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
   $items['kandy/get_un_assign_user'] = array(
     'title' => 'Get Un_assign user',
     'page callback' => 'get_un_assign_user_callback',
-    'access arguments' => array ('access content'),
+    'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
   return $items;
@@ -260,9 +258,7 @@ function kandy_assignment_edit_form() {
         '#title' => t('Kandy User'),
         '#options' => $select_data,
         '#default_value' => $active_select_kandy_user,
-        '#description' => t(
-          'Set this to <em>None</em> if you would like to unassign this user.'
-        ),
+        '#description' => t('Set this to <em>None</em> if you would like to unassign this user.'),
         '#attributes' => array(
           'id' => 'kandy-user-select2',
           'style' => 'width: 400px',
@@ -312,10 +308,10 @@ function kandy_assignment_edit_form() {
 /**
  * Kandy User Form Submit Action.
  *
- * @param object $form
- *   form
+ * @param Object $form
+ *   Form.
  * @param string $form_state
- *   form state
+ *   Form state.
  */
 function kandy_assignment_edit_form_submit($form, $form_state) {
   module_load_include('php', 'kandy', 'kandy.api');
@@ -429,33 +425,36 @@ function kandy_form($form, &$form_state) {
   return system_settings_form($form);
 }
 
-function kandy_get_user_for_search(){
+/**
+ * Get user for search.
+ */
+function kandy_get_user_for_search() {
   module_load_include('php', 'kandy', 'kandy.api');
   $result = array();
   $query = db_select('users', 'u');
   $query->fields('u', array('uid', 'name'));
 
   // Change the number of rows with the limit() call.
-  $userResults = $query->execute();
+  $user_results = $query->execute();
 
-  foreach ($userResults as $row) {
+  foreach ($user_results as $row) {
 
-    $kandyUser = kandy_get_assign_user($row->uid);
-    if($kandyUser) {
-      $kandyFullName = $kandyUser->user_id . "@" . $kandyUser->domain_name;
-      $userToAdd = array(
-        'id' => $kandyFullName,
-        'text' => $row->name
+    $kandy_user = kandy_get_assign_user($row->uid);
+    if ($kandy_user) {
+      $kandy_full_name = $kandy_user->user_id . "@" . $kandy_user->domain_name;
+      $user_to_add = array(
+        'id' => $kandy_full_name,
+        'text' => $row->name,
       );
-      if(isset($_GET['term'])){
-        $searchString = $_GET['term'];
-        if (!empty($searchString) && stripos($userToAdd['text'], $searchString) !== FALSE) {
-          array_push($result, $userToAdd);
+      if (isset($_GET['term'])) {
+        $search_string = $_GET['term'];
+        if (!empty($search_string) && stripos($user_to_add['text'], $search_string) !== FALSE) {
+          array_push($result, $user_to_add);
         }
-      } else {
-        array_push($result, $userToAdd);
       }
-
+      else {
+        array_push($result, $user_to_add);
+      }
     }
   }
   echo json_encode($result);
@@ -463,18 +462,19 @@ function kandy_get_user_for_search(){
 }
 
 /**
- * Kandy get name for contact
+ * Kandy get name for contact.
  */
 function kandy_get_name_for_contact_callback() {
   module_load_include('php', 'kandy', 'kandy.api');
   $contacts = array();
-  if(isset($_GET['data'])) {
+  if (isset($_GET['data'])) {
     $contacts = $_GET['data'];
     foreach ($contacts as &$contact) {
       $user = kandy_get_user_by_user_mail($contact['contact_email']);
-      if($user) {
+      if ($user) {
         $displayName = $user->name;
-      } else {
+      }
+      else {
         $displayName = "";
       }
       $contact['display_name'] = $displayName;
@@ -487,13 +487,12 @@ function kandy_get_name_for_contact_callback() {
 }
 
 /**
- * Kandy Get Name for chat content ajax
+ * Kandy Get Name for chat content ajax.
  */
-function kandy_get_name_for_chat_content_callback()
-{
+function kandy_get_name_for_chat_content_callback() {
   module_load_include('php', 'kandy', 'kandy.api');
   $messages = array();
-  if(isset($_GET['data'])) {
+  if (isset($_GET['data'])) {
     $messages = $_GET['data'];
     foreach ($messages as &$message) {
       if (!isset($message['sender'])) {
@@ -501,14 +500,14 @@ function kandy_get_name_for_chat_content_callback()
       }
       $sender = $message['sender'];
       $user = kandy_get_user_by_user_id($sender['user_id']);
-      $displayName = "";
-      if($user) {
+      $display_name = "";
+      if ($user) {
         $result = user_load($user->main_user_id);
-        if($result) {
-          $displayName = $result->name;
+        if ($result) {
+          $display_name = $result->name;
         }
       }
-      $sender['display_name'] = $displayName;
+      $sender['display_name'] = $display_name;
       $sender['contact_user_name'] = $sender['full_user_id'];
       $message['sender'] = $sender;
     }
@@ -519,20 +518,19 @@ function kandy_get_name_for_chat_content_callback()
 }
 
 /**
- * Kandy Get Name for chat content ajax
+ * Kandy Get Name for chat content ajax.
  */
-function get_un_assign_user_callback()
-{
+function get_un_assign_user_callback() {
   $result = array();
 
   module_load_include('php', 'kandy', 'kandy.api');
-  if(isset($_GET['current_user']) && isset($_GET["term"])) {
+  if (isset($_GET['current_user']) && isset($_GET["term"])) {
     $kandy_users_unassigned = kandy_list_users(KANDY_USER_UNASSIGNED);
     $result['empty'] = t('None');
 
     foreach ($kandy_users_unassigned as $kandy_user_item) {
       $user_id = $kandy_user_item->user_id;
-      if($user_id != $_GET['current_user'] && stripos($user_id, $_GET["term"]) !== false) {
+      if ($user_id != $_GET['current_user'] && stripos($user_id, $_GET["term"]) !== FALSE) {
         $result[$kandy_user_item->user_id] = $kandy_user_item->user_id;
       }
     }
@@ -683,7 +681,6 @@ function kandy_file_edit_form() {
     }
 
     return $form;
-
 
   }
   else {

@@ -210,17 +210,17 @@ function kandy_setup() {
       drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
 
       if (variable_get('kandy_jquery_reload', 1)) {
-        drupal_add_js(KANDY_JQUERY,array(
+        drupal_add_js(KANDY_JQUERY, array(
           'group' => 'kandy',
           'weight' => 1,
         ));
       }
 
-      drupal_add_css($module_path . '/plugins/select2-3.5.2/select2.css',array(
+      drupal_add_css($module_path . '/plugins/select2-3.5.2/select2.css', array(
           'group' => 'kandy',
           'weight' => 2,
         ));
-      drupal_add_js($module_path . '/plugins/select2-3.5.2/select2.js',array(
+      drupal_add_js($module_path . '/plugins/select2-3.5.2/select2.js', array(
           'group' => 'kandy',
           'weight' => 2,
         ));
@@ -386,8 +386,7 @@ function kandy_shortcode_shortcode_kandy_video_button(array $attr) {
         '</div>' .
 
         '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">' .
-        '<label>User to call</label>' .
-        '<input id="callOutUserId" data-ajax-url="'. $ajax_user_search_url .'" type="text" value="" class="select2"/>' .
+        '<label>User to call</label><input id="callOutUserId" data-ajax-url="'. $ajax_user_search_url .'" type="text" value="" class="select2"/>' .
         '<input class="btnCall" id="callBtn" type="button" value="Call" onclick="kandy_make_video_call(this)"/>' .
         '</div>' .
 
@@ -403,7 +402,6 @@ function kandy_shortcode_shortcode_kandy_video_button(array $attr) {
     else {
       $output = '<p>' . t('Can not setup kandy video button...') . '<p>';
     }
-    
   }
   return $output;
 }
@@ -655,11 +653,8 @@ function kandy_shortcode_shortcode_kandy_address_book(array $attr) {
         'kandy/get_name_for_contact',
         array('absolute' => TRUE)
       );
-      $output = '<div class="' . $class . '" id="' . $id . '" ' . $html_options_attributes . '>' .
-        '<div class="kandyAddressContactList"><div class="myContactsTitle"><p>' . $title . '</p>
-        <input id="get_user_for_search_url" type="hidden" value="'.$get_user_for_search_url.'" />
-        <input id="get_name_for_contact_url" type="hidden" value="'.$get_name_for_contact_url.'" />
-        </div></div><div class="kandyDirectorySearch">'.
+      $output = '<div class="' . $class . '" id="' . $id . '" ' . $html_options_attributes . '>
+      <div class="kandyAddressContactList"><div class="myContactsTitle"><p>' . $title . '</p><input id="get_user_for_search_url" type="hidden" value="'.$get_user_for_search_url.'" /><input id="get_name_for_contact_url" type="hidden" value="'.$get_name_for_contact_url.'" /></div></div><div class="kandyDirectorySearch">'.
         $user_label . ' : <input id="kandySearchUserName" type="text" value="" class="select2" data-ajax-url="'.
         $get_user_for_search_url .'"/><input type="button" value="Add Contact" onclick="addContacts();"/></div>';
     }

@@ -264,7 +264,7 @@ function kandy_get_user_by_user_mail($kandy_user_mail) {
  * Get the domain from domain key in the configuration or remote server.
  *
  * @return array
- *   A list of message the data
+ *   A list of message the data.
  *
  * @throws Kandy_RestClientException
  */
@@ -429,9 +429,9 @@ function kandy_sync_users() {
  * Assign Kandy User.
  *
  * @param int $kandy_user_id
- *   Kandy User Id
+ *   Kandy User Id.
  * @param int $main_user_id
- *   Main User Id
+ *   Main User Id.
  *
  * @return bool
  *   True or False

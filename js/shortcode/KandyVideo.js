@@ -1,16 +1,15 @@
 /**
  * You login success.
- *
  */
 window.login_success_callback = function () {
-    // Do something here.
+  // Do something here.
 };
 
 /**
  * You login fail.
  */
 window.login_failed_callback = function () {
-    // Do something here.
+  // Do something here.
 };
 
 /**
@@ -20,7 +19,7 @@ window.login_failed_callback = function () {
  * @param isAnonymous
  */
 window.call_incoming_callback = function (call, isAnonymous) {
-    // Do something here.
+  // Do something here.
 };
 
 /**
@@ -29,7 +28,7 @@ window.call_incoming_callback = function (call, isAnonymous) {
  * @param call
  */
 window.on_call_callback = function (call) {
-    // Do something here.
+  // Do something here.
 };
 /**
  * Some one answer your call.
@@ -38,15 +37,14 @@ window.on_call_callback = function (call) {
  * @param isAnonymous
  */
 window.call_answered_callback = function (call, isAnonymous) {
-    // Do something here.
+  // Do something here.
 };
 
 /**
- * end call callback.
- *
+ * End call callback.
  */
 window.call_ended_callback = function () {
-    // Do something here.
+  // Do something here.
 };
 
 /**
@@ -55,7 +53,7 @@ window.call_ended_callback = function () {
  * @param stage
  */
 window.answer_video_call_callback = function (stage) {
-    changeUIState(stage);
+  changeUIState(stage);
 };
 
 /**
@@ -64,7 +62,7 @@ window.answer_video_call_callback = function (stage) {
  * @param stage
  */
 window.answer_voice_call_callback = function (stage) {
-    changeUIState(stage);
+  changeUIState(stage);
 };
 
 /**
@@ -73,7 +71,7 @@ window.answer_voice_call_callback = function (stage) {
  * @param stage
  */
 window.make_call_callback = function (stage) {
-    changeUIState(stage);
+  changeUIState(stage);
 };
 
 /**
@@ -82,7 +80,7 @@ window.make_call_callback = function (stage) {
  * @param stage
  */
 window.end_all_callback = function (stage) {
-    // Do something here.
+  // Do something here.
 };
 
 /**
@@ -90,14 +88,15 @@ window.end_all_callback = function (stage) {
  *
  * @param state
  */
-window.remote_video_initialized_callack = function(videoTag){
-    // Do something here.
+window.remote_video_initialized_callack = function (videoTag) {
+  // Do something here.
 };
+
 /**
  * Your local video callback.
  *
  * @param videoTag
  */
-window.local_video_initialized_callback = function(videoTag){
-    // Do something here.
+window.local_video_initialized_callback = function (videoTag) {
+  // Do something here.
 };
