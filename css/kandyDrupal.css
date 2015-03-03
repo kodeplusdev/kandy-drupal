@@ -8,7 +8,7 @@
 }
 
 .kandyVideo .title {
-  margin: 5px 0px;
+  margin: 5px 0;
 }
 
 .kandyButton {
@@ -16,7 +16,7 @@
 }
 
 .kandyButton .kandyButtonComponent {
-  margin: 15px 0px;
+  margin: 15px 0;
 }
 
 .kandyButton .kandyButtonComponent input {
@@ -57,6 +57,9 @@
 .kandyButton .videoVoiceCallHolder {
   display: none;
 }
+.kandyButton .select2 {
+  width: 250px;
+}
 
 /*KANDY ADDRESS BOOK */
 .kandyAddressBook .kandyAddressContactList {
@@ -86,9 +89,14 @@
   padding: 5px 10px;
 }
 
-.kandyAddressBook .userid {
+.kandyAddressBook .userId {
   display: inline-block;
-  width: 190px;
+  width: 200px;
+}
+
+.kandyAddressBook .displayname {
+  display: inline-block;
+  width: 100px;
 }
 
 .kandyAddressBook .presence {
@@ -102,6 +110,12 @@
 
 .kandyAddressBook .kandySearchItem {
   padding: 5px;
+}
+
+.kandyAddressBook .select2-container {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 .kandyStatus {
@@ -126,17 +140,16 @@
 }
 
 .kandyChat .kandyMessages {
-  height: 425px;
+  height: 440px;
   overflow: auto;
-  padding: 3px 5px;
   width: 100%;
 }
 
-.my-message {
+.kandyChat .my-message {
   color: #0995ff;
 }
 
-.their-message {
+.kandyChat .their-message {
   color: #f47063;
 }
 
@@ -150,7 +163,7 @@
 
 .kandyChat .chat-heading .contact-heading select {
   display: inline-block;
-  padding: 2px 0px;
+  padding: 2px 0;
   width: 110px;
 }
 
@@ -187,39 +200,37 @@
 }
 
 /* CSS for tab */
-
-.cd-tabs {
-  height: 480px !important;
+.kandyChat.cd-tabs {
+  height: 500px !important;
   margin: 2em 0;
   max-width: 960px;
   position: relative;
 }
 
-.cd-tabs nav {
-  box-shadow: inset 0px 0px 2px #aaaaaa;
+.kandyChat.cd-tabs nav {
+  box-shadow: inset 0 0 2px #aaaaaa;
   float: left;
   height: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0px;
-  -webkit-box-shadow: inset 0px 0px 2px #aaaaaa;
-  -moz-box-shadow: inset 0px 0px 2px #aaaaaa;
+  padding: 0;
+  -webkit-box-shadow: inset 0 0 2px #aaaaaa;
+  -moz-box-shadow: inset 0 0 2px #aaaaaa;
   width: 32%;
 }
 
-.cd-tabs-navigation {
+.kandyChat .cd-tabs-navigation {
   list-style: none;
   margin: 0;
-  padding: 0px 3px !important;
-  width: 100%;
+  padding: 3px !important;
 }
 
-.cd-tabs-navigation li {
+.kandyChat .cd-tabs-navigation li {
   float: left;
   width: 98%;
 }
 
-.cd-tabs-navigation a {
+.kandyChat .cd-tabs-navigation a {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   background-color: #ffffff !important;
@@ -230,17 +241,24 @@
   position: relative;
 }
 
-.no-touch .cd-tabs-navigation a:hover {
+.kandyChat .no-touch .cd-tabs-navigation a:hover {
   background-color: rgba(233, 230, 202, 0.3);
   font-weight: 700;
 }
 
-.cd-tabs-navigation a.selected {
+.kandyChat .cd-tabs-navigation a,
+.kandyChat .cd-tabs-navigation a:hover,
+.kandyChat .cd-tabs-navigation a:active {
+  border: none;
+}
+
+.kandyChat .cd-tabs-navigation a.selected {
   background-color: #ffffff !important;
+  border: none;
   font-weight: 700;
 }
 
-.cd-tabs-navigation a::before {
+.kandyChat .cd-tabs-navigation a::before {
   background-repeat: no-repeat;
   display: inline-block;
   height: 20px;
@@ -251,83 +269,82 @@
   width: 20px;
 }
 
-.cd-tabs-navigation a[data-content='inbox']::before {
+.kandyChat .cd-tabs-navigation a[data-content='inbox']::before {
   background-position: 0 0;
 }
 
-.cd-tabs-navigation a[data-content='new']::before {
+.kandyChat .cd-tabs-navigation a[data-content='new']::before {
   background-position: -20px 0;
 }
 
-.cd-tabs-navigation a[data-content='gallery']::before {
+.kandyChat .cd-tabs-navigation a[data-content='gallery']::before {
   background-position: -40px 0;
 }
 
-.cd-tabs-navigation a[data-content='store']::before {
+.kandyChat .cd-tabs-navigation a[data-content='store']::before {
   background-position: -60px 0;
 }
 
-.cd-tabs-navigation a[data-content='settings']::before {
+.kandyChat .cd-tabs-navigation a[data-content='settings']::before {
   background-position: -80px 0;
 }
 
-.cd-tabs-navigation a[data-content='trash']::before {
+.kandyChat .cd-tabs-navigation a[data-content='trash']::before {
   background-position: -100px 0;
 }
 
-.cd-tabs-navigation a[data-content='inbox'].selected::before {
+.kandyChat .cd-tabs-navigation a[data-content='inbox'].selected::before {
   background-position: 0 -20px;
 }
 
-.cd-tabs-navigation a[data-content='new'].selected::before {
+.kandyChat .cd-tabs-navigation a[data-content='new'].selected::before {
   background-position: -20px -20px;
 }
 
-.cd-tabs-navigation a[data-content='gallery'].selected::before {
+.kandyChat .cd-tabs-navigation a[data-content='gallery'].selected::before {
   background-position: -40px -20px;
 }
 
-.cd-tabs-navigation a[data-content='store'].selected::before {
+.kandyChat .cd-tabs-navigation a[data-content='store'].selected::before {
   background-position: -60px -20px;
 }
 
-.cd-tabs-navigation a[data-content='settings'].selected::before {
+.kandyChat .cd-tabs-navigation a[data-content='settings'].selected::before {
   background-position: -80px -20px;
 }
 
-.cd-tabs-navigation a[data-content='trash'].selected::before {
+.kandyChat .cd-tabs-navigation a[data-content='trash'].selected::before {
   background-position: -100px -20px;
 }
 
-.cd-tabs-content {
-  background: #ffffff;
+.kandyChat .cd-tabs-content {
+  background: #f1f5f9;
   float: left;
   height: 100%;
-  margin: 0px !important;
-  padding: 0px !important;
+  margin: 0 0 0 10px !important;
+  padding: 0 !important;
   width: 64%;
 }
 
-.cd-tabs-content li {
+.kandyChat .cd-tabs-content li {
   display: none;
-  padding: 0px 0px 0px 10px;
+  padding: 0 0 0 10px;
 }
 
-.cd-tabs-content li.selected {
+.kandyChat .cd-tabs-content li.selected {
   -moz-animation: cd-fade-in 0.5s;
   -webkit-animation: cd-fade-in 0.5s;
   animation: cd-fade-in 0.5s;
   display: block;
 }
 
-.cd-tabs-content li p {
+.kandyChat .cd-tabs-content li p {
   color: #8493bf;
   font-size: 0.875rem;
   font-size: 14px;
   line-height: 1.6;
   margin-bottom: 2em;
 }
-
 
 @-webkit-keyframes cd-fade-in {
   0% {

@@ -65,7 +65,7 @@ function kandy_get_user_data() {
  */
 function kandy_get_domain_access_token() {
   $module_path = drupal_get_path('module', 'kandy');
-  include_once $module_path . '/includes/RestClient.php';
+  include_once $module_path . '/includes/Kandy_RestClient.php';
   $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
   $kandy_domain_secret_key = variable_get(
     'kandy_domain_secret_key',
@@ -80,7 +80,7 @@ function kandy_get_domain_access_token() {
   $url = KANDY_API_BASE_URL . 'domains/accesstokens?' . $fields_string;
 
   try {
-    $response = (new RestClient())->get($url)->getContent();
+    $response = (new Kandy_RestClient())->get($url)->getContent();
   }
   catch (Exception $ex) {
     watchdog_exception('kandy ', $ex);
@@ -136,7 +136,7 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
       );
 
       try {
-        $response = (new RestClient())->get($url, $headers)
+        $response = (new Kandy_RestClient())->get($url, $headers)
           ->getContent();
       }
       catch (Exception $ex) {
@@ -238,12 +238,35 @@ function kandy_get_user_by_user_id($kandy_user_id) {
 }
 
 /**
+ * Get kandy user by kandy user_id.
+ */
+function kandy_get_user_by_user_mail($kandy_user_mail) {
+  $result = NULL;
+  $get_domain_name_response = kandy_get_domain();
+
+  if ($get_domain_name_response['success']) {
+    $domain_name = $get_domain_name_response['data'];
+    $query = db_select('kandy_users')
+      ->fields('kandy_users')
+      ->condition('email', $kandy_user_mail, '=')
+      ->condition('domain_name', $domain_name, '=');
+    $query_data = $query->execute();
+    $query_result = $query_data->fetchObject();
+    if ($query_result) {
+      $result = user_load($query_result->id);
+    }
+  }
+
+  return $result;
+}
+
+/**
  * Get the domain from domain key in the configuration or remote server.
  *
  * @return array
  *   A list of message the data
  *
- * @throws RestClientException
+ * @throws Kandy_RestClientException
  */
 function kandy_get_domain() {
   $domain_name = variable_get('kandy_domain_name', KANDY_DOMAIN_NAME);
@@ -254,7 +277,7 @@ function kandy_get_domain() {
     );
   }
   $module_path = drupal_get_path('module', 'kandy');
-  include_once $module_path . '/includes/RestClient.php';
+  include_once $module_path . '/includes/Kandy_RestClient.php';
 
   $kandy_domain_api_key = variable_get(
     'kandy_api_key',
@@ -272,7 +295,7 @@ function kandy_get_domain() {
     $url = KANDY_API_BASE_URL . 'accounts/domains/details?' . $fields_string;
 
     try {
-      $response = (new RestClient())->get($url)->getContent();
+      $response = (new Kandy_RestClient())->get($url)->getContent();
     }
     catch (Exception $ex) {
       watchdog_exception('kandy ', $ex);

@@ -21,14 +21,6 @@ define('KANDY_VIDEO_THEIR_TITLE_DEFAULT', 'their');
 
 /**
  * Implements hook_help().
- *
- * @param string $path
- *   Which path of the site we're using to display help.
- * @param string $arg
- *   Array that holds the current path as returned from arg() function.
- *
- * @return string
- *   render help page.
  */
 function kandy_help($path, $arg) {
   switch ($path) {
@@ -57,21 +49,21 @@ function kandy_menu() {
 
   $items['admin/config/content/kandy/script'] = array(
     'title' => 'Kandy Script Customization',
-    'page callback' => 'script_customization_page',
+    'page callback' => 'kandy_script_customization_page',
     'access callback' => TRUE,
     'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/kandy/style'] = array(
     'title' => 'Kandy Style Customization',
-    'page callback' => 'style_customization_page',
+    'page callback' => 'kandy_style_customization_page',
     'access callback' => TRUE,
     'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/kandy/assignment'] = array(
     'title' => 'Kandy User Assignment',
-    'page callback' => 'assignment_page',
+    'page callback' => 'kandy_assignment_page',
     'access callback' => TRUE,
     'type' => MENU_LOCAL_TASK,
   );
@@ -79,13 +71,13 @@ function kandy_menu() {
   $items['admin/config/content/kandy/assignment/edit'] = array(
     'title' => 'Kandy User Assignment',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('assignment_edit_form'),
+    'page arguments' => array('kandy_assignment_edit_form'),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
   $items['admin/config/content/kandy/assignment/sync'] = array(
     'title' => 'Kandy User synchronization',
-    'page callback' => 'assignment_sync_page',
+    'page callback' => 'kandy_assignment_sync_page',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
 
@@ -94,8 +86,36 @@ function kandy_menu() {
   $items['admin/config/content/kandy/file/edit'] = array(
     'title' => 'Kandy File Edit',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('file_edit_form'),
+    'page arguments' => array('kandy_file_edit_form'),
     'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['kandy/get_user_for_search'] = array(
+    'title' => 'Get User Name by kandy user id',
+    'page callback' => 'kandy_get_user_for_search',
+    'access arguments' => array ('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['kandy/get_name_for_contact'] = array(
+    'title' => 'Get user name for chat',
+    'page callback' => 'kandy_get_name_for_contact_callback',
+    'access arguments' => array ('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['kandy/get_name_for_chat_content'] = array(
+    'title' => 'Get user name for chat',
+    'page callback' => 'kandy_get_name_for_chat_content_callback',
+    'access arguments' => array ('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['kandy/get_un_assign_user'] = array(
+    'title' => 'Get Un_assign user',
+    'page callback' => 'get_un_assign_user_callback',
+    'access arguments' => array ('access content'),
     'type' => MENU_CALLBACK,
   );
   return $items;
@@ -107,7 +127,7 @@ function kandy_menu() {
  * @return mixed
  *   Render Assign Page.
  */
-function assignment_page() {
+function kandy_assignment_page() {
   module_load_include('php', 'kandy', 'kandy.api');
   // We are going to output the results in a table with a nice header.
   $header = array(
@@ -152,7 +172,7 @@ function assignment_page() {
  * @return string
  *   Render Sync user page.
  */
-function assignment_sync_page() {
+function kandy_assignment_sync_page() {
   module_load_include('php', 'kandy', 'kandy.api');
   $return_path = url('admin/config/content/kandy/assignment', array('absolute' => TRUE));
   if (isset($_GET['returnPath']) && isset($_GET['id'])) {
@@ -175,7 +195,6 @@ function assignment_sync_page() {
     drupal_set_message(l(t('See log'), url('admin/reports/dblog', array('absolute' => TRUE))));
     return l(t('Try Again'), url('admin/config/content/kandy/assignment/sync', array('absolute' => TRUE)));
   }
-
 }
 
 /**
@@ -184,7 +203,7 @@ function assignment_sync_page() {
  * @return array
  *   Render edit user form.
  */
-function assignment_edit_form() {
+function kandy_assignment_edit_form() {
   module_load_include('php', 'kandy', 'kandy.api');
   $form = array();
   if (isset($_GET['id'])) {
@@ -247,7 +266,6 @@ function assignment_edit_form() {
         '#attributes' => array(
           'id' => 'kandy-user-select2',
           'style' => 'width: 400px',
-
         ),
       );
 
@@ -299,7 +317,7 @@ function assignment_edit_form() {
  * @param string $form_state
  *   form state
  */
-function assignment_edit_form_submit($form, $form_state) {
+function kandy_assignment_edit_form_submit($form, $form_state) {
   module_load_include('php', 'kandy', 'kandy.api');
   if (isset($form_state['values']['main_user_id'])) {
     $main_user_id = $form_state['values']['main_user_id'];
@@ -411,6 +429,118 @@ function kandy_form($form, &$form_state) {
   return system_settings_form($form);
 }
 
+function kandy_get_user_for_search(){
+  module_load_include('php', 'kandy', 'kandy.api');
+  $result = array();
+  $query = db_select('users', 'u');
+  $query->fields('u', array('uid', 'name'));
+
+  // Change the number of rows with the limit() call.
+  $userResults = $query->execute();
+
+  foreach ($userResults as $row) {
+
+    $kandyUser = kandy_get_assign_user($row->uid);
+    if($kandyUser) {
+      $kandyFullName = $kandyUser->user_id . "@" . $kandyUser->domain_name;
+      $userToAdd = array(
+        'id' => $kandyFullName,
+        'text' => $row->name
+      );
+      if(isset($_GET['term'])){
+        $searchString = $_GET['term'];
+        if (!empty($searchString) && stripos($userToAdd['text'], $searchString) !== FALSE) {
+          array_push($result, $userToAdd);
+        }
+      } else {
+        array_push($result, $userToAdd);
+      }
+
+    }
+  }
+  echo json_encode($result);
+  exit(0);
+}
+
+/**
+ * Kandy get name for contact
+ */
+function kandy_get_name_for_contact_callback() {
+  module_load_include('php', 'kandy', 'kandy.api');
+  $contacts = array();
+  if(isset($_GET['data'])) {
+    $contacts = $_GET['data'];
+    foreach ($contacts as &$contact) {
+      $user = kandy_get_user_by_user_mail($contact['contact_email']);
+      if($user) {
+        $displayName = $user->name;
+      } else {
+        $displayName = "";
+      }
+      $contact['display_name'] = $displayName;
+    }
+
+  }
+
+  echo json_encode($contacts);
+  exit(0);
+}
+
+/**
+ * Kandy Get Name for chat content ajax
+ */
+function kandy_get_name_for_chat_content_callback()
+{
+  module_load_include('php', 'kandy', 'kandy.api');
+  $messages = array();
+  if(isset($_GET['data'])) {
+    $messages = $_GET['data'];
+    foreach ($messages as &$message) {
+      if (!isset($message['sender'])) {
+        continue;
+      }
+      $sender = $message['sender'];
+      $user = kandy_get_user_by_user_id($sender['user_id']);
+      $displayName = "";
+      if($user) {
+        $result = user_load($user->main_user_id);
+        if($result) {
+          $displayName = $result->name;
+        }
+      }
+      $sender['display_name'] = $displayName;
+      $sender['contact_user_name'] = $sender['full_user_id'];
+      $message['sender'] = $sender;
+    }
+  }
+
+  echo json_encode($messages);
+  exit(0);
+}
+
+/**
+ * Kandy Get Name for chat content ajax
+ */
+function get_un_assign_user_callback()
+{
+  $result = array();
+
+  module_load_include('php', 'kandy', 'kandy.api');
+  if(isset($_GET['current_user']) && isset($_GET["term"])) {
+    $kandy_users_unassigned = kandy_list_users(KANDY_USER_UNASSIGNED);
+    $result['empty'] = t('None');
+
+    foreach ($kandy_users_unassigned as $kandy_user_item) {
+      $user_id = $kandy_user_item->user_id;
+      if($user_id != $_GET['current_user'] && stripos($user_id, $_GET["term"]) !== false) {
+        $result[$kandy_user_item->user_id] = $kandy_user_item->user_id;
+      }
+    }
+  }
+
+  echo json_encode($result);
+  exit(0);
+}
 
 /**
  * Implements hook_permission().
@@ -429,7 +559,7 @@ function kandy_permission() {
  * @return mixed
  *   render style customization page
  */
-function style_customization_page() {
+function kandy_style_customization_page() {
   $module_path = drupal_get_path('module', 'kandy');
   $dir = $module_path . "/css/shortcode";
   $style = 'css';
@@ -464,7 +594,7 @@ function style_customization_page() {
  * @return mixed
  *   Render script customization page.
  */
-function script_customization_page() {
+function kandy_script_customization_page() {
   $module_path = drupal_get_path('module', 'kandy');
   $dir = $module_path . "/js/shortcode";
   $style = 'js';
@@ -500,7 +630,7 @@ function script_customization_page() {
  * @return array
  *   Render edit form.
  */
-function file_edit_form() {
+function kandy_file_edit_form() {
   $form = array();
   if (isset($_GET['fileStyle']) && $_GET['fileName']) {
     $file_style = $_GET['fileStyle'];
@@ -576,7 +706,7 @@ function file_edit_form() {
  * @param string $form_state
  *   Form State.
  */
-function file_edit_form_submit($form, $form_state) {
+function kandy_file_edit_form_submit($form, $form_state) {
   if (isset($_GET['fileStyle']) && isset($_GET['fileName']) && isset($_POST['content'])) {
     $file_style = $_GET['fileStyle'];
     $file_name = $_GET['fileName'];

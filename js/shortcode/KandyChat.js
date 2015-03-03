@@ -2,17 +2,17 @@
  * You login successfully.
  *
  */
-window.loginsuccess_callback = function () {
+window.login_success_callback = function () {
     // Do something here.
-}
+};
 
 /**
  * You login fail.
  *
  */
-window.loginfailed_callback = function () {
+window.login_failed_callback = function () {
     // Do something here.
-}
+};
 
 /**
  * Status Notification Callback.
@@ -22,6 +22,6 @@ window.loginfailed_callback = function () {
  * @param description
  * @param activity
  */
-window.presencenotification_callack = function (userId, state, description, activity) {
+window.presence_notification_callack = function (userId, state, description, activity) {
     // Do something here.
-}
+};

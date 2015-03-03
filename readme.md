@@ -68,9 +68,7 @@ Home page: http://www.kandy.io/
         class = "myAddressBookStyle"
         id = "myContact"
         title = "My Contact"
-        userLabel = "User"
-        searchLabel = "Search"
-        searchResultLabel = "Directory Search Results"]
+        userLabel = "User"]
 [/kandyAddressBook]
   ```
   
@@ -124,55 +122,55 @@ Home page: http://www.kandy.io/
 
 ***All support script callback:***
 ```sh
-window.loginsuccess_callback = function () {
+window.login_success_callback = function () {
    //do something when you login successfully
 }
 
-window.loginfailed_callback = function () {
+window.login_failed_callback = function () {
     //do something when you login fail
 }
 
-window.callincoming_callback = function (call, isAnonymous) {
+window.call_incoming_callback = function (call, isAnonymous) {
     //do something when your are calling
 }
 
-window.oncall_callback = function (call) {
+window.on_call_callback = function (call) {
     //do something when you are oncall
 }
 
-window.callanswered_callback = function (call, isAnonymous) {
+window.call_answered_callback = function (call, isAnonymous) {
     //do something when someone answer your call
 }
 
-window.callended_callback = function () {
+window.call_ended_callback = function () {
    //do something when someone end  your call
 }
 
-window.answerVoiceCall_callback = function (stage) {
+window.answer_voice_call_callback = function (stage) {
     //do something when you answer voice call
 }
 
-window.answerVideoCall_callback = function (stage) {
+window.answer_video_call_callback = function (stage) {
     //do something when you answer video call
 }
 
-window.makeCall_callback = function (stage) {
+window.make_call_callback = function (stage) {
    //do something when you make call
 }
 
-window.endCall_callback = function (stage) {
+window.end_all_callback = function (stage) {
    //do something when you click end call button
 }
 
-window.remotevideoinitialized_callack(videoTag){
+window.remote_video_initialized_callack(videoTag){
    //do something with your remote video
 }
 
-window.localvideoinitialized_callback = function(videoTag){
+window.local_video_initialized_callback = function(videoTag){
     //do some thing with your local video
 }
 
-window.presencenotification_callack = function(userId, state, description, activity) {
+window.presence_notification_callack = function(userId, state, description, activity) {
     //do something with status notification
 }
 ```
