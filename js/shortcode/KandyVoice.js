@@ -1,6 +1,7 @@
 /**
  * You login success.
  */
+
 window.login_success_callback = function () {
   // Do something here.
 };
@@ -24,6 +25,7 @@ window.call_incoming_callback = function (call, isAnonymous) {
 
 /**
  * You are on call.
+ *
  * @param call
  */
 window.on_call_callback = function (call) {
@@ -31,6 +33,7 @@ window.on_call_callback = function (call) {
 };
 /**
  * Some one answer your call.
+ *
  * @param call
  * @param isAnonymous
  */

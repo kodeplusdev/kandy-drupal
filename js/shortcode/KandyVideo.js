@@ -1,6 +1,7 @@
 /**
  * You login success.
  */
+
 window.login_success_callback = function () {
   // Do something here.
 };

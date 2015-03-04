@@ -5,16 +5,15 @@
  */
 
 /**
- * Class Client Exception
- * Class Kandy_RestClientException
+ * Class Client Exception.
  */
-class Kandy_RestClientException extends Exception {
+class RestClientException extends Exception {
 }
 
 /**
  * Class RestClient.
  */
-class Kandy_RestClient {
+class RestClient {
 
   protected $submitted = FALSE;
   protected $headers = array();
@@ -33,7 +32,8 @@ class Kandy_RestClient {
    * @return Object
    *   Class Instance.
    *
-   * @throws Kandy_RestClientException
+   * @throws RestClientException
+   *   Throw exception.
    */
   public function get($uri, $headers = array(), $timeout = 30) {
     $ch = curl_init($uri);
@@ -51,7 +51,7 @@ class Kandy_RestClient {
     }
 
     if (curl_errno($ch)) {
-      throw new Kandy_RestClientException(curl_errno($ch));
+      throw new RestClientException(curl_errno($ch));
     }
     $this->submitted = TRUE;
     $this->body = curl_exec($ch);
@@ -76,7 +76,8 @@ class Kandy_RestClient {
    * @return Object
    *   Class Instance.
    *
-   * @throws Kandy_RestClientException
+   * @throws RestClientException
+   *   Throw exception.
    */
   public function post($uri, $payload, $headers = array(), $timeout = 30) {
     $ch = curl_init($uri);
@@ -95,7 +96,7 @@ class Kandy_RestClient {
     }
 
     if (curl_errno($ch)) {
-      throw new Kandy_RestClientException(curl_errno($ch));
+      throw new RestClientException(curl_errno($ch));
     }
 
     $this->submitted = TRUE;
@@ -120,7 +121,8 @@ class Kandy_RestClient {
    * @return Object
    *   Class Instance.
    *
-   * @throws Kandy_RestClientException
+   * @throws RestClientException
+   *   Throw exception.
    */
   public function put($uri, $payload, $headers = array(), $timeout = 30) {
     $ch = curl_init($uri);
@@ -139,7 +141,7 @@ class Kandy_RestClient {
     }
 
     if (curl_errno($ch)) {
-      throw new Kandy_RestClientException(curl_errno($ch));
+      throw new RestClientException(curl_errno($ch));
     }
 
     $this->submitted = TRUE;
@@ -163,7 +165,8 @@ class Kandy_RestClient {
    * @return Object
    *   Class Instance.
    *
-   * @throws Kandy_RestClientException
+   * @throws RestClientException
+   *   Throw exception.
    */
   public function delete($uri, $headers = array(), $timeout = 30) {
     $ch = curl_init($uri);
@@ -180,7 +183,7 @@ class Kandy_RestClient {
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     }
     if (curl_errno($ch)) {
-      throw new Kandy_RestClientException(curl_errno($ch));
+      throw new RestClientException(curl_errno($ch));
     }
     $this->submitted = TRUE;
     $this->body = curl_exec($ch);
@@ -220,7 +223,7 @@ class Kandy_RestClient {
    * After the request - functions to return data.
    *
    * @param int $index
-   *   index.
+   *   Index.
    *
    * @return string
    *   Header
@@ -234,6 +237,7 @@ class Kandy_RestClient {
 
   /**
    * Get Content.
+   *
    * @return string
    *   Content.
    */
@@ -260,4 +264,5 @@ class Kandy_RestClient {
   public function getTime() {
     return $this->getHeader('total_time');
   }
+
 }

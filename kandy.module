@@ -8,6 +8,7 @@ define('KANDY_API_BASE_URL', 'https://api.kandy.io/v1.1/');
 define('KANDY_JS_URL', "https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/1.1.4/kandy.js");
 define('KANDY_FCS_URL', "https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.0/fcs.js");
 define('KANDY_JQUERY', "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
+define('KANDY_SELECT2_PATH', "https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/");
 define('KANDY_JQUERY_RELOAD', FALSE);
 define('KANDY_SSL_VERIFY', FALSE);
 define('KANDY_USER_TABLE', 'kandy_users');
@@ -112,7 +113,7 @@ function kandy_menu() {
 
   $items['kandy/get_un_assign_user'] = array(
     'title' => 'Get Un_assign user',
-    'page callback' => 'get_un_assign_user_callback',
+    'page callback' => 'kandy_get_un_assign_user_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -220,12 +221,19 @@ function kandy_assignment_edit_form() {
         $select_data[$kandy_user_item->user_id] = $kandy_user_item->user_id;
       }
 
-      $module_path = drupal_get_path('module', 'kandy');
       if (variable_get('kandy_jquery_reload', 1)) {
         drupal_add_js(KANDY_JQUERY);
       }
-      drupal_add_css($module_path . '/plugins/select2-3.5.2/select2.css');
-      drupal_add_js($module_path . '/plugins/select2-3.5.2/select2.js');
+
+      drupal_add_css(KANDY_SELECT2_PATH . 'select2.min.css', array(
+          'group' => 'kandy',
+          'weight' => 2,
+          'type' => 'external',
+        ));
+      drupal_add_js(KANDY_SELECT2_PATH . 'select2.min.js', array(
+          'group' => 'kandy',
+          'weight' => 2,
+        ));
 
       drupal_add_js(
         "jQuery(document).ready(function ($) {
@@ -250,7 +258,7 @@ function kandy_assignment_edit_form() {
       );
 
       $form['username'] = array(
-        '#markup' => '<p>' . t('Username: ') . $user->name . '</p>',
+        '#markup' => '<p>' . t('Username:') . ' ' . $user->name . '</p>',
       );
 
       $form['user_id'] = array(
@@ -308,7 +316,7 @@ function kandy_assignment_edit_form() {
 /**
  * Kandy User Form Submit Action.
  *
- * @param Object $form
+ * @param object $form
  *   Form.
  * @param string $form_state
  *   Form state.
@@ -472,14 +480,13 @@ function kandy_get_name_for_contact_callback() {
     foreach ($contacts as &$contact) {
       $user = kandy_get_user_by_user_mail($contact['contact_email']);
       if ($user) {
-        $displayName = $user->name;
+        $display_name = $user->name;
       }
       else {
-        $displayName = "";
+        $display_name = "";
       }
-      $contact['display_name'] = $displayName;
+      $contact['display_name'] = $display_name;
     }
-
   }
 
   echo json_encode($contacts);
@@ -520,7 +527,7 @@ function kandy_get_name_for_chat_content_callback() {
 /**
  * Kandy Get Name for chat content ajax.
  */
-function get_un_assign_user_callback() {
+function kandy_get_un_assign_user_callback() {
   $result = array();
 
   module_load_include('php', 'kandy', 'kandy.api');
@@ -564,7 +571,7 @@ function kandy_style_customization_page() {
   $files = file_scan_directory($dir, '/.*\.css$/');
   $form = array();
   $form['label'] = array(
-    '#markup' => '<h4>' . t('Select file to edit: ') . '</h4>',
+    '#markup' => '<h4>' . t('Select file to edit') . ': </h4>',
   );
   foreach ($files as $file) {
     $file_name = $file->filename;
@@ -599,7 +606,7 @@ function kandy_script_customization_page() {
   $files = file_scan_directory($dir, '/.*\.' . $style . '$/');
   $form = array();
   $form['label'] = array(
-    '#markup' => '<h4>' . t('Select file to edit: ') . '</h4>',
+    '#markup' => '<h4>' . t('Select file to edit') . ': </h4>',
   );
   foreach ($files as $file) {
     $file_name = $file->filename;
@@ -639,7 +646,7 @@ function kandy_file_edit_form() {
     if (file_exists($file_path)) {
 
       $form['label'] = array(
-        '#markup' => '<p>' . t('File : ') . $file_name . '.' . $file_style . '</p>',
+        '#markup' => '<p>' . t('File') . ': ' . $file_name . '.' . $file_style . '</p>',
       );
       $form['content'] = array(
         '#title' => t('Contents'),
@@ -666,7 +673,7 @@ function kandy_file_edit_form() {
     }
     else {
       $form['label'] = array(
-        '#markup' => '<p>' . t('Not found: ') . $file_name . '.' . $file_style . '</p>',
+        '#markup' => '<p>' . t('Not found') . ': ' . $file_name . '.' . $file_style . '</p>',
       );
       $link_style = ($file_style == 'css') ? 'style' : 'script';
       $form['back'] = array(
