@@ -1,9 +1,16 @@
 # Kandy Drupal Module
-This Drupal package encapsulates Kandy’s JS SDK and Restful APIs. Kandy is a product by GENBAND (www.genband.com) that utilizes WebRTC to enable peer to peer audio and video calls and chat. SMS and PSTN calling support will be added to this package in the near future.
+This Drupal package encapsulates Kandy’s JS SDK and Restful APIs.
+Kandy is a product by GENBAND (www.genband.com)
+that utilizes WebRTC to enable peer to peer audio and video calls and chat.
+SMS and PSTN calling support will be added to this package in the near future.
 
-With this package, you can enable video and audio calling between two users that are logged into your Drupal application.
+With this package, you can enable video and audio calling
+between two users that are logged into your Drupal application.
 
-Think of pages where you anticipate users collaborating with each other, possibly to discuss content on those pages. Your users could start a video call with other online users and enhance the collaboration experience.
+Think of pages where you anticipate users collaborating with each other,
+possibly to discuss content on those pages.
+Your users could start a video call with other online users and
+ enhance the collaboration experience.
 
 Home page: http://www.kandy.io/
 ## User guide
@@ -14,7 +21,7 @@ by following steps:
 + At **Configuration > Content Authoring > Text Formats**, 
 select one of them or add new text format then enable *shortcode filter*
 + Uncheck auto **Convert line breaks into HTML**
-+ Configure all required options at **Configuration > Content Authoring > kandy**
++ Configure all required options at **Configuration>Content Authoring>kandy**
 + Synchronize and assign kandy user at 
 **Configuration > Content Authoring > kandy > Kandy User Assignment**
 + Create new content(basic page, article, or a new content types) 
