@@ -1,0 +1,399 @@
+.kandyVideo {
+  float: left;
+  margin-right: 10px;
+}
+
+.kandyVideo .video {
+  display: block;
+}
+
+.kandyVideo .title {
+  margin: 5px 0;
+}
+
+.kandyButton {
+  overflow: auto;
+}
+
+.kandyButton .kandyButtonComponent {
+  margin: 15px 0;
+}
+
+.kandyButton .kandyButtonComponent input {
+  margin-right: 5px;
+  width: 90px;
+}
+
+.kandyButton .kandyButtonComponent input[type='text'] {
+  width: 250px;
+}
+
+.kandyButton .kandyButtonComponent input[type='button'] {
+  cursor: pointer;
+  width: 90px;
+}
+
+.kandyButton .kandyButtonComponent .someonesCalling {
+  display: none;
+}
+
+.kandyButton .kandyButtonComponent .someonesCalling {
+  display: none;
+}
+
+.kandyButton .kandyVideoButtonOnCall {
+  display: none;
+}
+
+.kandyButton .kandyVideoButtonCalling {
+  display: none;
+}
+
+.kandyButton .kandyVideoButtonSomeonesCalling {
+  display: none;
+}
+
+.kandyButton .videoVoiceCallHolder {
+  display: none;
+}
+.kandyButton .select2 {
+  width: 250px;
+  margin-right: 10px;
+}
+
+/*KANDY ADDRESS BOOK */
+.kandyAddressBook .kandyAddressContactList {
+  background-color: lightslategray;
+  border: 1px solid black;
+  color: white;
+  padding: 5px 10px;
+}
+
+.kandyAddressBook .kandyAddressContactList .myContacts Title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.kandyAddressBook .kandyDirectorySearch {
+  margin-top: 20px;
+}
+
+.kandyAddressBook .kandyDirSearchTitle {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.kandyAddressBook .kandyDirSearchResults {
+  background-color: lightgray;
+  border: 1px solid black;
+  padding: 5px 10px;
+}
+
+.kandyAddressBook .userId {
+  display: inline-block;
+  width: 200px;
+}
+
+.kandyAddressBook .displayname {
+  display: inline-block;
+  width: 100px;
+}
+
+.kandyAddressBook .presence {
+  display: inline-block;
+  width: 130px;
+}
+
+.kandyAddressBook .kandyContactItem {
+  padding: 5px;
+}
+
+.kandyAddressBook .kandySearchItem {
+  padding: 5px;
+}
+
+.kandyAddressBook .select2-container {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.kandyStatus {
+  margin-bottom: 10px;
+}
+
+/* KANDY CHAT STYLE */
+.kandyChat .imUsername {
+  display: inline-block;
+}
+
+.kandyChat .imMessageToSend {
+  width: 96%;
+}
+
+.kandyChat .messages {
+  border: solid black 1px;
+}
+
+.kandyChat .imMessage {
+  display: inline-block;
+}
+
+.kandyChat .kandyMessages {
+  height: 440px;
+  overflow: auto;
+  width: 100%;
+}
+
+.kandyChat .my-message {
+  color: #0995ff;
+}
+
+.kandyChat .their-message {
+  color: #f47063;
+}
+
+.kandyChat .chat-heading .contact-heading {
+  margin-bottom: 10px;
+}
+
+.kandyChat .chat-heading .contact-heading label {
+  display: inline-block;
+}
+
+.kandyChat .chat-heading .contact-heading select {
+  display: inline-block;
+  padding: 2px 0;
+  width: 110px;
+}
+
+.kandyChat .btnSendMessage {
+  width: 100%;
+}
+
+.kandyChat .cd-tabs-navigation li a {
+  text-indent: 16px;
+}
+
+.kandyChat .cd-tabs-navigation li i.status {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1em;
+  text-indent: 16px;
+}
+
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-available a {
+  background: url("../img/available.png") left center no-repeat;
+}
+
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-offline a {
+  background: url("../img/offline.png") left center no-repeat;
+}
+
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-unavailable a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-away a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-busy a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-out-to-lunch a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-on-vacation a,
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-be-right-back a {
+  background: url("../img/busy.png") left center no-repeat;
+}
+
+/* CSS for tab */
+.kandyChat.cd-tabs {
+  height: 500px !important;
+  margin: 2em 0;
+  max-width: 960px;
+  position: relative;
+}
+
+.kandyChat.cd-tabs nav {
+  box-shadow: inset 0 0 2px #aaaaaa;
+  float: left;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  -webkit-box-shadow: inset 0 0 2px #aaaaaa;
+  -moz-box-shadow: inset 0 0 2px #aaaaaa;
+  width: 32%;
+}
+
+.kandyChat .cd-tabs-navigation {
+  list-style: none;
+  margin: 0;
+  padding: 3px !important;
+}
+
+.kandyChat .cd-tabs-navigation li {
+  float: left;
+  width: 98%;
+}
+
+.kandyChat .cd-tabs-navigation a {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-color: #ffffff !important;
+  color: #000000;
+  display: block;
+  font-size: 0.75rem;
+  padding: 5px;
+  position: relative;
+}
+
+.kandyChat .no-touch .cd-tabs-navigation a:hover {
+  background-color: rgba(233, 230, 202, 0.3);
+  font-weight: 700;
+}
+
+.kandyChat .cd-tabs-navigation a,
+.kandyChat .cd-tabs-navigation a:hover,
+.kandyChat .cd-tabs-navigation a:active {
+  border: none;
+}
+
+.kandyChat .cd-tabs-navigation a.selected {
+  background-color: #ffffff !important;
+  border: none;
+  font-weight: 700;
+}
+
+.kandyChat .cd-tabs-navigation a::before {
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 20px;
+  left: 50%;
+  margin-left: -10px;
+  position: absolute; /* icons */
+  top: 12px;
+  width: 20px;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='inbox']::before {
+  background-position: 0 0;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='new']::before {
+  background-position: -20px 0;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='gallery']::before {
+  background-position: -40px 0;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='store']::before {
+  background-position: -60px 0;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='settings']::before {
+  background-position: -80px 0;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='trash']::before {
+  background-position: -100px 0;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='inbox'].selected::before {
+  background-position: 0 -20px;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='new'].selected::before {
+  background-position: -20px -20px;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='gallery'].selected::before {
+  background-position: -40px -20px;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='store'].selected::before {
+  background-position: -60px -20px;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='settings'].selected::before {
+  background-position: -80px -20px;
+}
+
+.kandyChat .cd-tabs-navigation a[data-content='trash'].selected::before {
+  background-position: -100px -20px;
+}
+
+.kandyChat .cd-tabs-content {
+  background: #f1f5f9;
+  float: left;
+  height: 100%;
+  margin: 0 0 0 10px !important;
+  padding: 0 !important;
+  width: 64%;
+}
+
+.kandyChat .cd-tabs-content li {
+  display: none;
+  padding: 0 0 0 10px;
+}
+
+.kandyChat .cd-tabs-content li.selected {
+  -moz-animation: cd-fade-in 0.5s;
+  -webkit-animation: cd-fade-in 0.5s;
+  animation: cd-fade-in 0.5s;
+  display: block;
+}
+
+.kandyChat .cd-tabs-content li p {
+  color: #8493bf;
+  font-size: 0.875rem;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 2em;
+}
+
+@-webkit-keyframes cd-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes cd-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cd-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.input-message {
+  float: left;
+  width: 87%;
+}
+
+.button-send {
+  float: right;
+  width: 12%;
+}
+
+.clear-fix {
+  clear: both;
+}
+
+.contact-heading {
+  float: left;
+  width: 32%;
+}
+
+.chat-with-message {
+  display: none;
+  float: left;
+  padding-left: 10px;
+}

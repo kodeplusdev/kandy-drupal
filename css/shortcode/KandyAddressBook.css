@@ -1,0 +1,52 @@
+.myAddressBookStyle .kandyAddressContactList {
+  background-color: #ffffff;
+  border: 1px solid black;
+  color: #000000;
+  max-width: 100%;
+  padding: 5px 10px;
+}
+
+.myAddressBookStyle .kandyAddressContactList .myContacts Title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.myAddressBookStyle .kandyDirectorySearch {
+  margin-top: 20px;
+}
+
+.myAddressBookStyle .kandyDirSearchTitle {
+  text-align: left;
+  text-decoration: underline;
+}
+
+.myAddressBookStyle .kandyDirSearchResults {
+  background-color: #e9f0f2;
+  border: 1px solid black;
+  max-width: 100%;
+  padding: 5px 10px;
+}
+
+.myAddressBookStyle .userid {
+  display: inline-block;
+  width: 190px;
+}
+
+.myAddressBookStyle .presence {
+  display: inline-block;
+  width: 130px;
+}
+
+.myAddressBookStyle .kandyContactItem {
+  padding: 2px;
+}
+
+.myAddressBookStyle .kandySearchItem {
+  padding: 10px 5px 0px 5px;
+}
+
+.myAddressBookStyle .kandySearchItem .userId {
+  display: block;
+  float: left;
+  min-width: 200px;
+}

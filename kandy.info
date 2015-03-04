@@ -1,0 +1,5 @@
+name = Kandy
+description = Allow user use kandy API
+package = Kandy
+core = 7.x
+configure = admin/config/content/kandy
