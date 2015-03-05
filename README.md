@@ -1,10 +1,10 @@
 # Kandy Drupal Module
-This Drupal package encapsulates Kandy’s JS SDK and Restful APIs.
+This Drupal module encapsulates Kandy’s JS SDK and Restful APIs.
 Kandy is a product by GENBAND (www.genband.com)
 that utilizes WebRTC to enable peer to peer audio and video calls and chat.
-SMS and PSTN calling support will be added to this package in the near future.
+SMS and PSTN calling support will be added to this module in the near future.
 
-With this package, you can enable video and audio calling
+With this module, you can enable video and audio calling
 between two users that are logged into your Drupal application.
 
 Think of pages where you anticipate users collaborating with each other,
@@ -110,7 +110,7 @@ which help you send instant message to your friend in contact.
    ```sh
 [kandyVideoButton class="myButtonStyle"][/kandyVideoButton]
 [kandyVideo title="Me" id="myVideo"][/kandyVideo]
-[kandyVideo title="Their"  id="theirVideo"][/kandyVideo]
+[kandyVideo title="Their" id="theirVideo"][/kandyVideo]
 ```
 **Kandy Presence**: use a kandystatus and kandy addressbook compobent
 ```sh
