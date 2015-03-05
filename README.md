@@ -103,7 +103,7 @@ which help you send instant message to your friend in contact.
    ```sh
 [kandyVideoButton class="myButtonStyle"][/kandyVideoButton]
 [kandyVideo title="Me" id="myVideo"][/kandyVideo]
-[kandyVideo title="Their"  id="theirVideo"][/kandyVideo]
+[kandyVideo title="Their" id="theirVideo"][/kandyVideo]
 ```
 **Kandy Presence**: use a kandystatus and kandy addressbook compobent
 ```sh
