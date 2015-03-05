@@ -10,7 +10,7 @@ Home page: http://www.kandy.io/
 **Kandy Drupal Module** help you use kandy in your website easily 
 by following steps:
 + Install **shortcode** module https://www.drupal.org/project/shortcode
-+ Install **Kandy** module https://github.com/kodeplusdev/kandydrupal
++ Install **Kandy** module https://github.com/kandy-io/kandy-drupal
 + At **Configuration > Content Authoring > Text Formats**, 
 select one of them or add new text format then enable *shortcode filter*
 + Uncheck auto **Convert line breaks into HTML**
