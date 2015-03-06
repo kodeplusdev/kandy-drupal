@@ -480,9 +480,10 @@ function kandy_get_name_for_contact_callback() {
     foreach ($contacts as &$contact) {
       $user = kandy_get_user_by_user_mail($contact['contact_email']);
       if (!empty($user)) {
-        if($user == KANDY_UN_ASSIGN_USER) {
+        if ($user == KANDY_UN_ASSIGN_USER) {
           $display_name = $user;
-        } else {
+        }
+        else {
           $display_name = $user->name;
         }
       }
