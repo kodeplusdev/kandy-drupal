@@ -304,7 +304,7 @@
     </p>
 
     <p style="margin-left: 80px;">
-        <span style="color:#696969;">window.remote_video_initialized_callack(videoTag){</span>
+        <span style="color:#696969;">window.remote_video_initialized_callback(videoTag){</span>
     </p>
 
     <p style="margin-left: 80px;">
@@ -322,7 +322,7 @@
     </p>
 
     <p style="margin-left: 80px;">
-		<span style="color:#696969;">window.presence_notification_callack = function() {<br />
+		<span style="color:#696969;">window.presence_notification_callback = function() {<br />
 		&nbsp; &nbsp; //do something with status notification</span>
     </p>
 

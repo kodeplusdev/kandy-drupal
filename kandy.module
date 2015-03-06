@@ -19,7 +19,7 @@ define('KANDY_VIDEO_WRAPPER_CLASS_DEFAULT', 'kandyVideoWrapper');
 define('KANDY_VIDEO_STYLE_DEFAULT', 'width: 340px; height: 250px;background-color: darkslategray;');
 define('KANDY_VIDEO_MY_TITLE_DEFAULT', 'me');
 define('KANDY_VIDEO_THEIR_TITLE_DEFAULT', 'their');
-
+define('KANDY_UN_ASSIGN_USER', 'kandy-un-assign-user');
 /**
  * Implements hook_help().
  */
@@ -479,8 +479,12 @@ function kandy_get_name_for_contact_callback() {
     $contacts = $_GET['data'];
     foreach ($contacts as &$contact) {
       $user = kandy_get_user_by_user_mail($contact['contact_email']);
-      if ($user) {
-        $display_name = $user->name;
+      if (!empty($user)) {
+        if($user == KANDY_UN_ASSIGN_USER) {
+          $display_name = $user;
+        } else {
+          $display_name = $user->name;
+        }
       }
       else {
         $display_name = "";

@@ -1,27 +1,20 @@
 # Kandy Drupal Module
-This Drupal module encapsulates Kandy’s JS SDK and Restful APIs.
-Kandy is a product by GENBAND (www.genband.com)
-that utilizes WebRTC to enable peer to peer audio and video calls and chat.
-SMS and PSTN calling support will be added to this module in the near future.
+This Drupal module encapsulates Kandy’s JS SDK and Restful APIs. Kandy is a product by GENBAND (www.genband.com) that utilizes WebRTC to enable peer to peer audio and video calls and chat. SMS and PSTN calling support will be added to this module in the near future.
 
-With this module, you can enable video and audio calling
-between two users that are logged into your Drupal application.
+With this module, you can enable video and audio calling between two users that are logged into your Drupal application.
 
-Think of pages where you anticipate users collaborating with each other,
-possibly to discuss content on those pages.
-Your users could start a video call with other online users and
- enhance the collaboration experience.
+Think of pages where you anticipate users collaborating with each other, possibly to discuss content on those pages. Your users could start a video call with other online users and enhance the collaboration experience.
 
 Home page: http://www.kandy.io/
 ## User guide
 **Kandy Drupal Module** help you use kandy in your website easily 
 by following steps:
 + Install **shortcode** module https://www.drupal.org/project/shortcode
-+ Install **Kandy** module https://github.com/kodeplusdev/kandydrupal
++ Install **Kandy** module https://github.com/kandy-io/kandy-drupal
 + At **Configuration > Content Authoring > Text Formats**, 
 select one of them or add new text format then enable *shortcode filter*
 + Uncheck auto **Convert line breaks into HTML**
-+ Configure all required options at **Configuration>Content Authoring>kandy**
++ Configure all required options at **Configuration > Content Authoring > kandy**
 + Synchronize and assign kandy user at 
 **Configuration > Content Authoring > kandy > Kandy User Assignment**
 + Create new content(basic page, article, or a new content types) 
@@ -120,7 +113,7 @@ which help you send instant message to your friend in contact.
 
 **Kandy Chat**:
 ```sh
-[kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]
+[kandyChat class="myChatStyle" id="my-chat"][/kandyChat]
 ```
 
 ####Kandy Administration:
@@ -161,7 +154,7 @@ window.call_incoming_callback = function (call, isAnonymous) {
 }
 
 window.on_call_callback = function (call) {
-    //do something when you are oncall
+    //do something when you are on call
 }
 
 window.call_answered_callback = function (call, isAnonymous) {
@@ -188,7 +181,7 @@ window.end_all_callback = function (stage) {
    //do something when you click end call button
 }
 
-window.remote_video_initialized_callack(videoTag){
+window.remote_video_initialized_callback(videoTag){
    //do something with your remote video
 }
 
@@ -196,7 +189,7 @@ window.local_video_initialized_callback = function(videoTag){
     //do some thing with your local video
 }
 
-window.presence_notification_callack = 
+window.presence_notification_callback =
 function(userId, state, description, activity) {
     //do something with status notification
 }

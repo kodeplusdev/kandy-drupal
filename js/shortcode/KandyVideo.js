@@ -89,7 +89,7 @@ window.end_all_callback = function (stage) {
  *
  * @param state
  */
-window.remote_video_initialized_callack = function (videoTag) {
+window.remote_video_initialized_callback = function (videoTag) {
   // Do something here.
 };
 
