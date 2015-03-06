@@ -113,7 +113,7 @@ which help you send instant message to your friend in contact.
 
 **Kandy Chat**:
 ```sh
-[kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]
+[kandyChat class="myChatStyle" id="my-chat"][/kandyChat]
 ```
 
 ####Kandy Administration:
@@ -154,7 +154,7 @@ window.call_incoming_callback = function (call, isAnonymous) {
 }
 
 window.on_call_callback = function (call) {
-    //do something when you are oncall
+    //do something when you are on call
 }
 
 window.call_answered_callback = function (call, isAnonymous) {
@@ -181,7 +181,7 @@ window.end_all_callback = function (stage) {
    //do something when you click end call button
 }
 
-window.remote_video_initialized_callack(videoTag){
+window.remote_video_initialized_callback(videoTag){
    //do something with your remote video
 }
 
@@ -189,7 +189,7 @@ window.local_video_initialized_callback = function(videoTag){
     //do some thing with your local video
 }
 
-window.presence_notification_callack = 
+window.presence_notification_callback =
 function(userId, state, description, activity) {
     //do something with status notification
 }

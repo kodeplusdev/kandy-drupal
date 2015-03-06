@@ -40,8 +40,8 @@ setup = function () {
       localvideoinitialized: kandy_local_video_initialized_callback,
       // A video tag is being provided (required for both audio and video calls).
       // You must insert it into the DOM for communication to happen (although for audio calls, it can remain hidden).
-      remotevideoinitialized: kandy_remote_video_initialized_callack,
-      presencenotification: kandy_presence_notification_callack
+      remotevideoinitialized: kandy_remote_video_initialized_callback,
+      presencenotification: kandy_presence_notification_callback
     }
   });
 };
@@ -105,7 +105,7 @@ kandy_local_video_initialized_callback = function (videoTag) {
  *
  * @param videoTag
  */
-kandy_remote_video_initialized_callack = function (videoTag) {
+kandy_remote_video_initialized_callback = function (videoTag) {
 
   // Have video widget.
   if ($(".kandyVideo").length) {
@@ -115,8 +115,8 @@ kandy_remote_video_initialized_callack = function (videoTag) {
   if ($(".kandyButton .videoVoiceCallHolder").length) {
     $('.kandyButton .videoVoiceCallHolder .video').append(videoTag);
   }
-  if (typeof remote_video_initialized_callack == 'function') {
-    remote_video_initialized_callack(videoTag);
+  if (typeof remote_video_initialized_callback == 'function') {
+    remote_video_initialized_callback(videoTag);
   }
 };
 
@@ -128,12 +128,12 @@ kandy_remote_video_initialized_callack = function (videoTag) {
  * @param description
  * @param activity
  */
-kandy_presence_notification_callack = function (userId, state, description, activity) {
+kandy_presence_notification_callback = function (userId, state, description, activity) {
   // HTML id can't contain @ and jquery doesn't like periods (in id).
   var id_attrib = '.kandyAddressBook .kandyAddressContactList #presence_' + userId.replace(/[.@]/g, '_');
   $(id_attrib).text(description);
-  if (typeof presence_notification_callack == 'function') {
-    presence_notification_callack(userId, state, description, activity);
+  if (typeof presence_notification_callback == 'function') {
+    presence_notification_callback(userId, state, description, activity);
   }
 
   // Update chat status.

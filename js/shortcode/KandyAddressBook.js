@@ -21,6 +21,6 @@ window.login_failed_callback = function () {
  * @param description
  * @param activity
  */
-window.presence_notification_callack = function (userId, state, description, activity) {
+window.presence_notification_callback = function (userId, state, description, activity) {
   // Do something here.
 };
