@@ -306,6 +306,7 @@ kandy_end_call = function (target) {
 kandy_loadContacts_addressBook = function () {
   var contactListForPresence = [];
   var i = 0;
+  var deleteContact = [];
   KandyAPI.Phone.retrievePersonalAddressBook(
     function (results) {
       var get_name_for_contact_url = $(".kandyAddressBook #get_name_for_contact_url").val();
@@ -320,28 +321,37 @@ kandy_loadContacts_addressBook = function () {
       } else {
         $('.kandyAddressBook .kandyAddressContactList').append("<div class='kandy-contact-heading'><span class='displayname'><b>Username</b></span><span class='userId'><b>Contact</b></span><span class='presence'><b>Status</b></span></div>");
         for (i = 0; i < results.length; i++) {
-          contactListForPresence.push({full_user_id: results[i].contact_user_name});
+          if(results[i].display_name != "kandy-un-assign-user") {
+            contactListForPresence.push({full_user_id: results[i].contact_user_name});
 
-          var id_attr = results[i].contact_user_name.replace(/[.@]/g, '_');
-          $('.kandyAddressBook .kandyAddressContactList').append(
-            // HTML id can't contain @ and jquery doesn't like periods (in id).
-            "<div class='kandyContactItem' id='uid_" + results[i].contact_user_name.replace(/[.@]/g, '_') + "'>" +
-              "<span class='displayname'>" + results[i].display_name + "</span>" +
-              "<span class='userId'>" + results[i].contact_user_name + "</span>" +
-              "<span id='presence_" + id_attr + "' class='presence'></span>" +
-              "<input class='removeBtn' type='button' value='Remove' " +
-              " onclick='kandy_removeFromContacts(\"" + results[i].contact_id + "\")'>" +
-              "</div>"
-          );
+            var id_attr = results[i].contact_user_name.replace(/[.@]/g, '_');
+            $('.kandyAddressBook .kandyAddressContactList').append(
+              // HTML id can't contain @ and jquery doesn't like periods (in id).
+              "<div class='kandyContactItem' id='uid_" + id_attr + "'>" +
+                "<span class='displayname'>" + results[i].display_name + "</span>" +
+                "<span class='userId'>" + results[i].contact_email + "</span>" +
+                "<span id='presence_" + id_attr + "' class='presence'></span>" +
+                "<input class='removeBtn' type='button' value='Remove' " +
+                " onclick='kandy_removeFromContacts(\"" + results[i].contact_id + "\")'>" +
+                "</div>"
+            );
+          } else {
+            deleteContact.push({id_attr: id_attr, contact_id : results[i].contact_id});
+          }
         }
         KandyAPI.Phone.watchPresence(contactListForPresence);
+
+        // Delete empty contact id.
+        for (i = 0; i < deleteContact.length; i++) {
+          var contact_id = deleteContact[i].contact_id;
+          kandy_removeFromContacts(contact_id);
+        }
       }
     },
     function () {
       console.log("Error kandy_loadContacts_addressBook");
     }
   );
-
 };
 
 /**

@@ -1,5 +1,5 @@
 name = Kandy
-description = Allow users to make video call, voice call and chat through Kanky JS SDK and Rest APIs
+description = Allow user use kandy API
 package = Kandy
 core = 7.x
 configure = admin/config/content/kandy

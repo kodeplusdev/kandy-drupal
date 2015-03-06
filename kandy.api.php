@@ -251,9 +251,15 @@ function kandy_get_user_by_user_mail($kandy_user_mail) {
       ->condition('email', $kandy_user_mail, '=')
       ->condition('domain_name', $domain_name, '=');
     $query_data = $query->execute();
+
     $query_result = $query_data->fetchObject();
     if ($query_result) {
-      $result = user_load($query_result->main_user_id);
+      if (!empty($query_result->main_user_id)) {
+        $result = user_load($query_result->main_user_id);
+      }
+      else {
+        $result = KANDY_UN_ASSIGN_USER;
+      }
     }
   }
 
