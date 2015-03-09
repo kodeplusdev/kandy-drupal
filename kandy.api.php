@@ -129,9 +129,6 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
 
       $fields_string = http_build_query($params);
       $url = KANDY_API_BASE_URL . 'domains/users?' . $fields_string;
-      $headers = array(
-        'Content-Type: application/json',
-      );
 
       try {
         $response = drupal_http_request($url);
@@ -268,6 +265,7 @@ function kandy_get_user_by_user_mail($kandy_user_mail) {
  * Get the domain from domain key in the configuration or remote server.
  *
  * @return array
+ *   Kandy domain data.
  */
 function kandy_get_domain() {
   $domain_name = variable_get('kandy_domain_name', KANDY_DOMAIN_NAME);
