@@ -175,18 +175,19 @@ function kandy_assignment_sync_page() {
   module_load_include('php', 'kandy', 'kandy.api');
   $return_path = url('admin/config/content/kandy/assignment', array('absolute' => TRUE));
   if (isset($_GET['returnPath']) && isset($_GET['id'])) {
-    $return_path = url($_GET['returnPath'], array(
-      'query' => array('id' => $_GET['id']),
+    $return_path = url(filter_xss($_GET['returnPath']), array(
+      'query' => array('id' => filter_xss($_GET['id'])),
       'absolute' => TRUE,
     ));
   }
   else {
     if (isset($_GET['returnPath'])) {
-      $return_path = url($_GET['returnPath'], array('absolute' => TRUE));
+      $return_path = url(filter_xss($_GET['returnPath']), array('absolute' => TRUE));
     }
   }
   $result = kandy_sync_users();
   if ($result["success"]) {
+    drupal_set_message(t('Save successfully'));
     drupal_goto($return_path);
   }
   else {
@@ -206,7 +207,7 @@ function kandy_assignment_edit_form() {
   module_load_include('php', 'kandy', 'kandy.api');
   $form = array();
   if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = filter_xss($_GET['id']);
     $user = user_load($id);
     if ($user) {
       $kandy_user = kandy_get_assign_user($id);
@@ -455,7 +456,7 @@ function kandy_get_user_for_search() {
         'text' => $row->name,
       );
       if (isset($_GET['term'])) {
-        $search_string = $_GET['term'];
+        $search_string = filter_xss($_GET['term']);
         if (!empty($search_string) && stripos($user_to_add['text'], $search_string) !== FALSE) {
           array_push($result, $user_to_add);
         }
@@ -478,7 +479,7 @@ function kandy_get_name_for_contact_callback() {
   if (isset($_GET['data'])) {
     $contacts = $_GET['data'];
     foreach ($contacts as &$contact) {
-      $user = kandy_get_user_by_user_mail($contact['contact_email']);
+      $user = kandy_get_user_by_user_mail(filter_xss($contact['contact_email']));
       if (!empty($user)) {
         if ($user == KANDY_UN_ASSIGN_USER) {
           $display_name = $user;
@@ -511,7 +512,7 @@ function kandy_get_name_for_chat_content_callback() {
         continue;
       }
       $sender = $message['sender'];
-      $user = kandy_get_user_by_user_id($sender['user_id']);
+      $user = kandy_get_user_by_user_id(filter_xss($sender['user_id']));
       $display_name = "";
       if ($user) {
         $result = user_load($user->main_user_id);
@@ -542,7 +543,7 @@ function kandy_get_un_assign_user_callback() {
 
     foreach ($kandy_users_unassigned as $kandy_user_item) {
       $user_id = $kandy_user_item->user_id;
-      if ($user_id != $_GET['current_user'] && stripos($user_id, $_GET["term"]) !== FALSE) {
+      if ($user_id != filter_xss($_GET['current_user']) && stripos($user_id, filter_xss($_GET["term"])) !== FALSE) {
         $result[$kandy_user_item->user_id] = $kandy_user_item->user_id;
       }
     }
@@ -643,8 +644,8 @@ function kandy_script_customization_page() {
 function kandy_file_edit_form() {
   $form = array();
   if (isset($_GET['fileStyle']) && $_GET['fileName']) {
-    $file_style = $_GET['fileStyle'];
-    $file_name = $_GET['fileName'];
+    $file_style = filter_xss($_GET['fileStyle']);
+    $file_name = filter_xss($_GET['fileName']);
     $module_path = drupal_get_path('module', 'kandy');
     $file_path = $module_path . "/" . $file_style . "/shortcode/" . $file_name . '.' . $file_style;
 
@@ -717,8 +718,8 @@ function kandy_file_edit_form() {
  */
 function kandy_file_edit_form_submit($form, $form_state) {
   if (isset($_GET['fileStyle']) && isset($_GET['fileName']) && isset($_POST['content'])) {
-    $file_style = $_GET['fileStyle'];
-    $file_name = $_GET['fileName'];
+    $file_style = filter_xss($_GET['fileStyle']);
+    $file_name = filter_xss($_GET['fileName']);
     $content = $_POST['content'];
     $module_path = drupal_get_path('module', 'kandy');
     $file_path = $module_path . "/" . $file_style . "/shortcode/" . $file_name . '.' . $file_style;
