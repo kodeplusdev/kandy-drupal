@@ -206,7 +206,7 @@ You can use kandy module anywhere in your code by following code:
 
 **Load Kandy Module**
 ```sh
-module_load_include('php', 'kandy', 'kandy.api');
+module_load_include('php', 'kandy', 'kandy_api');
 ```
 After load kandy module succucessfully you can use all support api:
 
