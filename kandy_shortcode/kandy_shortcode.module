@@ -199,7 +199,7 @@ function kandy_setup() {
 
   $module_path = drupal_get_path('module', 'kandy');
   if (module_exists('kandy') && $user) {
-    module_load_include('php', 'kandy', 'kandy.api');
+    module_load_include('php', 'kandy', 'kandy_api');
     $assign_user = kandy_get_assign_user($user->uid);
     if ($assign_user) {
       $user_name = $assign_user->user_id;

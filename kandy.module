@@ -127,7 +127,7 @@ function kandy_menu() {
  *   Render Assign Page.
  */
 function kandy_assignment_page() {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   // We are going to output the results in a table with a nice header.
   $header = array(
     array('data' => t('UID')),
@@ -172,7 +172,7 @@ function kandy_assignment_page() {
  *   Render Sync user page.
  */
 function kandy_assignment_sync_page() {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   $return_path = url('admin/config/content/kandy/assignment', array('absolute' => TRUE));
   if (isset($_GET['returnPath']) && isset($_GET['id'])) {
     $return_path = url(filter_xss($_GET['returnPath']), array(
@@ -204,7 +204,7 @@ function kandy_assignment_sync_page() {
  *   Render edit user form.
  */
 function kandy_assignment_edit_form() {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   $form = array();
   if (isset($_GET['id'])) {
     $id = filter_xss($_GET['id']);
@@ -323,7 +323,7 @@ function kandy_assignment_edit_form() {
  *   Form state.
  */
 function kandy_assignment_edit_form_submit($form, $form_state) {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   if (isset($form_state['values']['main_user_id'])) {
     $main_user_id = $form_state['values']['main_user_id'];
     $user_id = $form_state['values']['user_id'];
@@ -438,7 +438,7 @@ function kandy_form($form, &$form_state) {
  * Get user for search.
  */
 function kandy_get_user_for_search() {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   $result = array();
   $query = db_select('users', 'u');
   $query->fields('u', array('uid', 'name'));
@@ -474,7 +474,7 @@ function kandy_get_user_for_search() {
  * Kandy get name for contact.
  */
 function kandy_get_name_for_contact_callback() {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   $contacts = array();
   if (isset($_GET['data'])) {
     $contacts = $_GET['data'];
@@ -503,7 +503,7 @@ function kandy_get_name_for_contact_callback() {
  * Kandy Get Name for chat content ajax.
  */
 function kandy_get_name_for_chat_content_callback() {
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   $messages = array();
   if (isset($_GET['data'])) {
     $messages = $_GET['data'];
@@ -536,7 +536,7 @@ function kandy_get_name_for_chat_content_callback() {
 function kandy_get_un_assign_user_callback() {
   $result = array();
 
-  module_load_include('php', 'kandy', 'kandy.api');
+  module_load_include('php', 'kandy', 'kandy_api');
   if (isset($_GET['current_user']) && isset($_GET["term"])) {
     $kandy_users_unassigned = kandy_list_users(KANDY_USER_UNASSIGNED);
     $result['empty'] = t('None');
@@ -752,7 +752,7 @@ function kandy_init() {
   }
   if ($just_logout) {
     if (module_exists('kandy')) {
-      module_load_include('php', 'kandy', 'kandy.api');
+      module_load_include('php', 'kandy', 'kandy_api');
       kandy_logout();
     }
   }

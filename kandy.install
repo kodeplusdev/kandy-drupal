@@ -86,32 +86,3 @@ function kandy_schema() {
   );
   return $schema;
 }
-
-/**
- * Implements hook_install().
- *
- * Installs the schema and then ensure that the hooks implemented by Kandy Core
- *  will fire before those implemented by any Kandy (a direct
- *  modification of the {system} table is the only way to accomplish this).
- */
-function kandy_install() {
-  // Create my tables.
-  if (!db_table_exists('kandy_users')) {
-    drupal_install_schema('kandy');
-  }
-}
-
-/**
- * Implements hook_uninstall().
- *
- * Removes the database tables and persistent variables managed through Drupal.
- *  Anything set in the Kandy Admin Interface will be forgotten.
- *
- * Uninstall the DB schema and clean up as much as is feasible.
- */
-function kandy_uninstall() {
-  // Drop my tables.
-  if (db_table_exists('kandy_users')) {
-    drupal_uninstall_schema('kandy');
-  }
-}
