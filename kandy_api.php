@@ -523,7 +523,6 @@ function kandy_logout() {
 
   $module_path = drupal_get_path('module', 'kandy');
   if (module_exists('kandy') && $just_logout_user_id) {
-    module_load_include('php', 'kandy', 'kandy_api');
     $assign_user = kandy_get_assign_user($just_logout_user_id);
     if ($assign_user) {
       $user_name = $assign_user->user_id;
