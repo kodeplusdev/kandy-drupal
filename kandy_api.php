@@ -574,3 +574,45 @@ function kandy_logout() {
   user_cookie_delete('kandy_user_logout');
   return $result;
 }
+
+/**
+ * Kandy publish assets.
+ */
+function kandy_publish_assets() {
+  $public_path = "public://kandy";
+
+  if (!file_exists($public_path)) {
+    mkdir($public_path);
+  }
+  $asset_types = array("css", "js");
+  $module_path = drupal_get_path('module', 'kandy');
+  foreach ($asset_types as $asset_type) {
+    $module_assets_path = $module_path . DIRECTORY_SEPARATOR .
+      $asset_type . DIRECTORY_SEPARATOR ."shortcode";
+
+    $module_css_asset_files = scandir ($module_assets_path);
+
+    foreach ($module_css_asset_files as $file_name) {
+      if($file_name == "." || $file_name == "..") {
+        continue;
+      }
+      $kandy_public_folder_path = $public_path .
+        DIRECTORY_SEPARATOR . $asset_type;
+
+      if(!file_exists($kandy_public_folder_path)) {
+        mkdir($kandy_public_folder_path);
+      }
+
+      $kandy_public_file_path = $kandy_public_folder_path .
+        DIRECTORY_SEPARATOR . $file_name;
+
+      $kandy_module_file_path = $module_assets_path .
+        DIRECTORY_SEPARATOR . $file_name;
+
+      if (!file_exists($kandy_public_file_path)) {
+        copy($kandy_module_file_path, $kandy_public_file_path);
+      }
+    }
+  }
+
+}
