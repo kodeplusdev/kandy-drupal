@@ -86,3 +86,11 @@ function kandy_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_install().
+ */
+function kandy_install() {
+  module_load_include('php', 'kandy', 'kandy_api');
+  kandy_publish_assets();
+}

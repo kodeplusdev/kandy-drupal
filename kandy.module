@@ -175,14 +175,14 @@ function kandy_assignment_sync_page() {
   module_load_include('php', 'kandy', 'kandy_api');
   $return_path = url('admin/config/content/kandy/assignment', array('absolute' => TRUE));
   if (isset($_GET['returnPath']) && isset($_GET['id'])) {
-    $return_path = url(filter_xss($_GET['returnPath']), array(
-      'query' => array('id' => filter_xss($_GET['id'])),
+    $return_path = url($_GET['returnPath'], array(
+      'query' => array('id' => $_GET['id']),
       'absolute' => TRUE,
     ));
   }
   else {
     if (isset($_GET['returnPath'])) {
-      $return_path = url(filter_xss($_GET['returnPath']), array('absolute' => TRUE));
+      $return_path = url($_GET['returnPath'], array('absolute' => TRUE));
     }
   }
   $result = kandy_sync_users();
@@ -207,7 +207,7 @@ function kandy_assignment_edit_form() {
   module_load_include('php', 'kandy', 'kandy_api');
   $form = array();
   if (isset($_GET['id'])) {
-    $id = filter_xss($_GET['id']);
+    $id = $_GET['id'];
     $user = user_load($id);
     if ($user) {
       $kandy_user = kandy_get_assign_user($id);
@@ -280,15 +280,15 @@ function kandy_assignment_edit_form() {
         '#type' => 'submit',
         '#value' => t('Save'),
       );
+
+      $return_url = url(
+        'admin/config/content/kandy/assignment',
+        array('absolute' => TRUE));
       $form['back'] = array(
-        '#type' => 'button',
-        '#value' => t('Cancel'),
-        '#attributes' => array(
-          'onclick' => 'window.location = "' . url(
-              'admin/config/content/kandy/assignment',
-              array('absolute' => TRUE)) . '"; return FALSE; ',
-        ),
+        '#markup' => '<a   href="' . $return_url . '">
+        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
+
       return $form;
     }
     else {
@@ -368,10 +368,7 @@ function kandy_form($form, &$form_state) {
   $form['kandy_domain_secret_key'] = array(
     '#type' => 'textfield',
     '#title' => t('Domain secret key'),
-    '#default_value' => variable_get(
-      'kandy_domain_secret_key',
-      ''
-    ),
+    '#default_value' => variable_get('kandy_domain_secret_key', ''),
     '#size' => 100,
     '#maxlength' => 255,
     '#description' => t('The domain secret key to get data from server.'),
@@ -381,23 +378,17 @@ function kandy_form($form, &$form_state) {
   $form['kandy_domain_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Domain name'),
-    '#default_value' => variable_get(
-      'kandy_domain_name',
-      KANDY_DOMAIN_NAME
-    ),
+    '#default_value' => variable_get('kandy_domain_name', KANDY_DOMAIN_NAME),
     '#size' => 100,
     '#maxlength' => 255,
-    '#description' => t('The domain name of kandy user to get data from server.'),
+    '#description' => t('The domain name of kandy user to get data.'),
     '#required' => FALSE,
   );
 
   $form['kandy_js_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Kandy Javascript Url'),
-    '#default_value' => variable_get(
-      'kandy_js_url',
-      KANDY_JS_URL
-    ),
+    '#default_value' => variable_get('kandy_js_url', KANDY_JS_URL),
     '#size' => 100,
     '#maxlength' => 255,
     '#description' => t('The javascript api url'),
@@ -407,10 +398,7 @@ function kandy_form($form, &$form_state) {
   $form['kandy_fcs_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Kandy FCS Javascript Url'),
-    '#default_value' => variable_get(
-      'kandy_fcs_url',
-      KANDY_FCS_URL
-    ),
+    '#default_value' => variable_get('kandy_fcs_url', KANDY_FCS_URL),
     '#size' => 100,
     '#maxlength' => 255,
     '#description' => t('The javascript fcs api url'),
@@ -420,15 +408,11 @@ function kandy_form($form, &$form_state) {
   $form['kandy_jquery_reload'] = array(
     '#type' => 'select',
     '#title' => t('Jquery Reload'),
-    '#options' => array(0 => 'No', 1 => 'Yes'),
-    '#default_value' => variable_get(
-      'kandy_jquery_reload',
-      1
-    ),
+    '#options' => array(0 => t('No'), 1 => t('Yes')),
+    '#default_value' => variable_get('kandy_jquery_reload', 1),
     '#description' => t(
       'Set this to <em>No</em> if you have loaded jquery.'
     ),
-
   );
 
   return system_settings_form($form);
@@ -456,7 +440,7 @@ function kandy_get_user_for_search() {
         'text' => $row->name,
       );
       if (isset($_GET['term'])) {
-        $search_string = filter_xss($_GET['term']);
+        $search_string = $_GET['term'];
         if (!empty($search_string) && stripos($user_to_add['text'], $search_string) !== FALSE) {
           array_push($result, $user_to_add);
         }
@@ -479,7 +463,7 @@ function kandy_get_name_for_contact_callback() {
   if (isset($_GET['data'])) {
     $contacts = $_GET['data'];
     foreach ($contacts as &$contact) {
-      $user = kandy_get_user_by_user_mail(filter_xss($contact['contact_email']));
+      $user = kandy_get_user_by_user_mail($contact['contact_email']);
       if (!empty($user)) {
         if ($user == KANDY_UN_ASSIGN_USER) {
           $display_name = $user;
@@ -512,7 +496,7 @@ function kandy_get_name_for_chat_content_callback() {
         continue;
       }
       $sender = $message['sender'];
-      $user = kandy_get_user_by_user_id(filter_xss($sender['user_id']));
+      $user = kandy_get_user_by_user_id($sender['user_id']);
       $display_name = "";
       if ($user) {
         $result = user_load($user->main_user_id);
@@ -543,7 +527,7 @@ function kandy_get_un_assign_user_callback() {
 
     foreach ($kandy_users_unassigned as $kandy_user_item) {
       $user_id = $kandy_user_item->user_id;
-      if ($user_id != filter_xss($_GET['current_user']) && stripos($user_id, filter_xss($_GET["term"])) !== FALSE) {
+      if ($user_id != $_GET['current_user'] && stripos($user_id, $_GET["term"]) !== FALSE) {
         $result[$kandy_user_item->user_id] = $kandy_user_item->user_id;
       }
     }
@@ -644,10 +628,18 @@ function kandy_script_customization_page() {
 function kandy_file_edit_form() {
   $form = array();
   if (isset($_GET['fileStyle']) && $_GET['fileName']) {
-    $file_style = filter_xss($_GET['fileStyle']);
-    $file_name = filter_xss($_GET['fileName']);
-    $module_path = drupal_get_path('module', 'kandy');
-    $file_path = $module_path . "/" . $file_style . "/shortcode/" . $file_name . '.' . $file_style;
+
+    $public_path = "public://kandy";
+    $file_style = preg_replace('/[^A-Za-z]+/', '-', $_GET['fileStyle']);
+    $file_name = preg_replace('/[^A-Za-z]+/', '-', $_GET['fileName']);
+
+    $file_path = $public_path . DIRECTORY_SEPARATOR . $file_style .
+      DIRECTORY_SEPARATOR . $file_name . '.' . $file_style;
+
+    if (!file_exists($file_path)) {
+      module_load_include('php', 'kandy', 'kandy_api');
+      kandy_publish_assets();
+    }
 
     if (file_exists($file_path)) {
 
@@ -667,29 +659,28 @@ function kandy_file_edit_form() {
       );
 
       $link_style = ($file_style == 'css') ? 'style' : 'script';
+      $return_url = url(
+        'admin/config/content/kandy/' . $link_style,
+        array('absolute' => TRUE));
+
       $form['back'] = array(
-        '#type' => 'button',
-        '#value' => t('Cancel'),
-        '#attributes' => array(
-          'onclick' => 'window.location = "' . url(
-              'admin/config/content/kandy/' . $link_style,
-              array('absolute' => TRUE)) . '"; return FALSE; ',
-        ),
+        '#markup' => '<a   href="' . $return_url . '">
+        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
     }
     else {
       $form['label'] = array(
-        '#markup' => '<p>' . t('Not found') . ': ' . $file_name . '.' . $file_style . '</p>',
+        '#markup' => '<p>' . t('Not found') . ': ' .
+        $file_name . '.' . $file_style . '</p>',
       );
       $link_style = ($file_style == 'css') ? 'style' : 'script';
+      $return_url = url(
+        'admin/config/content/kandy/' . $link_style,
+        array('absolute' => TRUE));
+
       $form['back'] = array(
-        '#type' => 'button',
-        '#value' => t('Back'),
-        '#attributes' => array(
-          'onclick' => 'window.location = "' . url(
-              'admin/config/content/kandy/' . $link_style,
-              array('absolute' => TRUE)) . '"; return FALSE; ',
-        ),
+        '#markup' => '<a   href="' . $return_url . '">
+        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
     }
 
@@ -717,12 +708,17 @@ function kandy_file_edit_form() {
  *   Form State.
  */
 function kandy_file_edit_form_submit($form, $form_state) {
-  if (isset($_GET['fileStyle']) && isset($_GET['fileName']) && isset($_POST['content'])) {
-    $file_style = filter_xss($_GET['fileStyle']);
-    $file_name = filter_xss($_GET['fileName']);
-    $content = $_POST['content'];
-    $module_path = drupal_get_path('module', 'kandy');
-    $file_path = $module_path . "/" . $file_style . "/shortcode/" . $file_name . '.' . $file_style;
+  if (isset($_GET['fileStyle']) && isset($_GET['fileName']) &&
+    isset($form_state['values']['content'])) {
+    $public_path = "public://kandy";
+
+    $file_style = preg_replace('/[^A-Za-z]+/', '-', $_GET['fileStyle']);
+    $file_name = preg_replace('/[^A-Za-z]+/', '-', $_GET['fileName']);
+    $content = $form_state['values']['content'];
+
+    $file_path = $public_path . DIRECTORY_SEPARATOR . $file_style .
+      DIRECTORY_SEPARATOR . $file_name . '.' . $file_style;
+
     if (file_exists($file_path)) {
       file_put_contents($file_path, $content);
       drupal_set_message(t('Save successfully'));
