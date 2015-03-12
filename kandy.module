@@ -671,7 +671,7 @@ function kandy_file_edit_form() {
     else {
       $form['label'] = array(
         '#markup' => '<p>' . t('Not found') . ': ' .
-          $file_name . '.' . $file_style . '</p>',
+        $file_name . '.' . $file_style . '</p>',
       );
       $link_style = ($file_style == 'css') ? 'style' : 'script';
       $return_url = url(
