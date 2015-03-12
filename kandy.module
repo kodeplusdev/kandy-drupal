@@ -378,7 +378,7 @@ function kandy_form($form, &$form_state) {
   $form['kandy_domain_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Domain name'),
-    '#default_value' => variable_get('kandy_domain_name',KANDY_DOMAIN_NAME),
+    '#default_value' => variable_get('kandy_domain_name', KANDY_DOMAIN_NAME),
     '#size' => 100,
     '#maxlength' => 255,
     '#description' => t('The domain name of kandy user to get data.'),
@@ -636,7 +636,7 @@ function kandy_file_edit_form() {
     $file_path = $public_path . DIRECTORY_SEPARATOR . $file_style .
       DIRECTORY_SEPARATOR . $file_name . '.' . $file_style;
 
-    if(!file_exists($file_path)) {
+    if (!file_exists($file_path)) {
       module_load_include('php', 'kandy', 'kandy_api');
       kandy_publish_assets();
     }

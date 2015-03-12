@@ -223,7 +223,7 @@ function kandy_setup() {
 
       $kandy_public_path = "public://kandy";
 
-      if(!file_exists($kandy_public_path)) {
+      if (!file_exists($kandy_public_path)) {
         kandy_publish_assets();
       }
 

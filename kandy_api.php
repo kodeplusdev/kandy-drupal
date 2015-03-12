@@ -588,18 +588,18 @@ function kandy_publish_assets() {
   $module_path = drupal_get_path('module', 'kandy');
   foreach ($asset_types as $asset_type) {
     $module_assets_path = $module_path . DIRECTORY_SEPARATOR .
-      $asset_type . DIRECTORY_SEPARATOR ."shortcode";
+      $asset_type . DIRECTORY_SEPARATOR . "shortcode";
 
-    $module_css_asset_files = scandir ($module_assets_path);
+    $module_css_asset_files = scandir($module_assets_path);
 
     foreach ($module_css_asset_files as $file_name) {
-      if($file_name == "." || $file_name == "..") {
+      if ($file_name == "." || $file_name == "..") {
         continue;
       }
       $kandy_public_folder_path = $public_path .
         DIRECTORY_SEPARATOR . $asset_type;
 
-      if(!file_exists($kandy_public_folder_path)) {
+      if (!file_exists($kandy_public_folder_path)) {
         mkdir($kandy_public_folder_path);
       }
 
