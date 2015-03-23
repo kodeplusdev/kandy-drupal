@@ -285,8 +285,7 @@ function kandy_assignment_edit_form() {
         'admin/config/content/kandy/assignment',
         array('absolute' => TRUE));
       $form['back'] = array(
-        '#markup' => '<a   href="' . $return_url . '">
-        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
+        '#markup' => '<a href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
 
       return $form;
@@ -450,7 +449,7 @@ function kandy_get_user_for_search() {
       }
     }
   }
-  echo json_encode($result);
+  echo drupal_json_encode($result);
   exit(0);
 }
 
@@ -479,7 +478,7 @@ function kandy_get_name_for_contact_callback() {
     }
   }
 
-  echo json_encode($contacts);
+  echo drupal_json_encode($contacts);
   exit(0);
 }
 
@@ -510,7 +509,7 @@ function kandy_get_name_for_chat_content_callback() {
     }
   }
 
-  echo json_encode($messages);
+  echo drupal_json_encode($messages);
   exit(0);
 }
 
@@ -533,7 +532,7 @@ function kandy_get_un_assign_user_callback() {
     }
   }
 
-  echo json_encode($result);
+  echo drupal_json_encode($result);
   exit(0);
 }
 
@@ -664,8 +663,7 @@ function kandy_file_edit_form() {
         array('absolute' => TRUE));
 
       $form['back'] = array(
-        '#markup' => '<a   href="' . $return_url . '">
-        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
+        '#markup' => '<a href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
     }
     else {
@@ -679,8 +677,7 @@ function kandy_file_edit_form() {
         array('absolute' => TRUE));
 
       $form['back'] = array(
-        '#markup' => '<a   href="' . $return_url . '">
-        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
+        '#markup' => '<a   href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
     }
 
