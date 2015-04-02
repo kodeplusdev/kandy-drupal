@@ -30,32 +30,16 @@
 
 .kandyButton .kandyButtonComponent input[type='button'] {
   cursor: pointer;
-  width: 90px;
 }
 
-.kandyButton .kandyButtonComponent .someonesCalling {
-  display: none;
-}
-
-.kandyButton .kandyButtonComponent .someonesCalling {
-  display: none;
-}
-
-.kandyButton .kandyVideoButtonOnCall {
-  display: none;
-}
-
-.kandyButton .kandyVideoButtonCalling {
-  display: none;
-}
-
-.kandyButton .kandyVideoButtonSomeonesCalling {
-  display: none;
-}
-
+.kandyButton .kandyButtonComponent .someonesCalling,
+.kandyButton .kandyVideoButtonOnCall,
+.kandyButton .kandyVideoButtonCalling,
+.kandyButton .kandyVideoButtonSomeonesCalling,
 .kandyButton .videoVoiceCallHolder {
   display: none;
 }
+
 .kandyButton .select2 {
   width: 250px;
   margin-right: 10px;

@@ -27,7 +27,7 @@ function kandy_help($path, $arg) {
   switch ($path) {
     case "admin/help#kandy":
       $module_path = drupal_get_path('module', 'kandy');
-      $output = file_get_contents($module_path . '/includes/help.php');
+      $output = file_get_contents($module_path . '/includes/help.html');
       return $output;
   }
 }
@@ -49,21 +49,21 @@ function kandy_menu() {
   $items['admin/config/content/kandy/script'] = array(
     'title' => 'Kandy Script Customization',
     'page callback' => 'kandy_script_customization_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/kandy/style'] = array(
     'title' => 'Kandy Style Customization',
     'page callback' => 'kandy_style_customization_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/kandy/assignment'] = array(
     'title' => 'Kandy User Assignment',
     'page callback' => 'kandy_assignment_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -71,13 +71,13 @@ function kandy_menu() {
     'title' => 'Kandy User Assignment',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('kandy_assignment_edit_form'),
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
   $items['admin/config/content/kandy/assignment/sync'] = array(
     'title' => 'Kandy User synchronization',
     'page callback' => 'kandy_assignment_sync_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
 
   );
@@ -86,7 +86,7 @@ function kandy_menu() {
     'title' => 'Kandy File Edit',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('kandy_file_edit_form'),
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
 
@@ -156,7 +156,7 @@ function kandy_assignment_page() {
     '#theme' => 'table',
     '#header' => $header,
     '#rows' => $rows,
-    '#empty' => t('There are no date formats found in the db'),
+    '#empty' => t('There are no user found in the db'),
   );
 
   // Attach the pager theme.
@@ -285,8 +285,7 @@ function kandy_assignment_edit_form() {
         'admin/config/content/kandy/assignment',
         array('absolute' => TRUE));
       $form['back'] = array(
-        '#markup' => '<a   href="' . $return_url . '">
-        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
+        '#markup' => '<a href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
 
       return $form;
@@ -450,7 +449,7 @@ function kandy_get_user_for_search() {
       }
     }
   }
-  echo json_encode($result);
+  echo drupal_json_encode($result);
   exit(0);
 }
 
@@ -479,7 +478,7 @@ function kandy_get_name_for_contact_callback() {
     }
   }
 
-  echo json_encode($contacts);
+  echo drupal_json_encode($contacts);
   exit(0);
 }
 
@@ -510,7 +509,7 @@ function kandy_get_name_for_chat_content_callback() {
     }
   }
 
-  echo json_encode($messages);
+  echo drupal_json_encode($messages);
   exit(0);
 }
 
@@ -533,7 +532,7 @@ function kandy_get_un_assign_user_callback() {
     }
   }
 
-  echo json_encode($result);
+  echo drupal_json_encode($result);
   exit(0);
 }
 
@@ -664,8 +663,7 @@ function kandy_file_edit_form() {
         array('absolute' => TRUE));
 
       $form['back'] = array(
-        '#markup' => '<a   href="' . $return_url . '">
-        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
+        '#markup' => '<a href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
     }
     else {
@@ -679,8 +677,7 @@ function kandy_file_edit_form() {
         array('absolute' => TRUE));
 
       $form['back'] = array(
-        '#markup' => '<a   href="' . $return_url . '">
-        <input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
+        '#markup' => '<a   href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
     }
 

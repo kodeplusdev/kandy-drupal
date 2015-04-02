@@ -44,7 +44,7 @@ function kandy_schema() {
         'length' => 255,
       ),
       'password' => array(
-        'description' => 'The password of kandy user',
+        'description' => 'The password of kandy user(plain text)',
         'type' => 'varchar',
         'length' => 255,
       ),

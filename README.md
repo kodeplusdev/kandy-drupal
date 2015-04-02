@@ -329,13 +329,15 @@ $result = array(
 ```
 
 ### Troubleshooting
+- **Supported browser: Chrome
 - **Kandy Shortcode not working:** 
 check your kandy api key, domain secret key for your application 
 at **admin > config > content > kandy**
 - **Jquery conflict**: Set Jquery reload to true 
 at **admin > config > content > kandy**
 - **Note:**
-    * When you uninstall kandy module, make sure to delete the public folder: **sites/default/files/kandy**
+    * When you uninstall kandy module, make sure to delete the public folder:
+    **sites/default/files/kandy**
     * Select proper text format which enable shortcode filter.
     * Check provide menu link to make your content as a menu.
     * Uncheck promoted to front end
