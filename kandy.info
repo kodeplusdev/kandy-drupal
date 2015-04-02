@@ -1,5 +1,5 @@
 name = Kandy
-description = "Allow users to make video call, voice call and chat through Kanky
+description = "Allow users to make video call, voice call and chat through Kandy
 JS SDK and Rest APIs"
 package = Kandy
 core = 7.x

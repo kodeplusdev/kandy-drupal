@@ -1,4 +1,5 @@
 /**
+ * @file
  * KANDY SETUP AND LISTENER CALLBACK.
  */
 
@@ -318,10 +319,11 @@ kandy_loadContacts_addressBook = function () {
       if (results.length == 0) {
         div = "<div class='kandyAddressBookNoResult'>-- No Contacts --</div>";
         $('.kandyAddressBook .kandyAddressContactList').append(div);
-      } else {
+      }
+      else {
         $('.kandyAddressBook .kandyAddressContactList').append("<div class='kandy-contact-heading'><span class='displayname'><b>Username</b></span><span class='userId'><b>Contact</b></span><span class='presence'><b>Status</b></span></div>");
         for (i = 0; i < results.length; i++) {
-          if(results[i].display_name != "kandy-un-assign-user") {
+          if (results[i].display_name != "kandy-un-assign-user") {
             contactListForPresence.push({full_user_id: results[i].contact_user_name});
 
             var id_attr = results[i].contact_user_name.replace(/[.@]/g, '_');
@@ -335,8 +337,9 @@ kandy_loadContacts_addressBook = function () {
                 " onclick='kandy_removeFromContacts(\"" + results[i].contact_id + "\")'>" +
                 "</div>"
             );
-          } else {
-            deleteContact.push({id_attr: id_attr, contact_id : results[i].contact_id});
+          }
+          else {
+            deleteContact.push({id_attr: id_attr, contact_id: results[i].contact_id});
           }
         }
         KandyAPI.Phone.watchPresence(contactListForPresence);
@@ -432,7 +435,8 @@ kandy_addToContacts = function (userId) {
   // HTML id can't contain @ and jquery doesn't like periods (in id).
   if ($('#uid_' + userId.replace(/[.@]/g, '_')).length > 0) {
     alert("This person is already in your contact list.")
-  } else {
+  }
+  else {
     // Get and AddressBook.Entry object for this contact.
     KandyAPI.Phone.searchDirectoryByUserName(
       userId,
@@ -514,7 +518,8 @@ kandy_searchDirectoryByUserName = function () {
       if (results.length == 0) {
         div = "<div class='kandyAddressBookNoResult'>-- No Matches Found --</div>";
         $('.kandyAddressBook .kandyDirSearchResults').append(div);
-      } else {
+      }
+      else {
         for (var i = 0; i < results.length; i++) {
           $('.kandyDirSearchResults').append(
             "<div class='kandySearchItem'><span class='userId'>" + results[i].main_username + "</span><input type='button' value='Add Contact' onclick='kandy_addToContacts(\"" +
@@ -612,9 +617,11 @@ var kandy_contactFilterChanged = function (val) {
     var currentClass = "kandy-chat-status-" + val;
     if (val == "all") {
       $(target).show();
-    } else if (liClass == currentClass) {
+    }
+    else if (liClass == currentClass) {
       $(target).show();
-    } else {
+    }
+    else {
       $(target).hide();
     }
   });
@@ -695,7 +702,8 @@ kandy_getIms = function () {
           }
           if (!$('input.imMessageToSend').is(':focus')) {
             move_contact_to_top_and_set_active(data.messages[i].sender);
-          } else {
+          }
+          else {
             move_contact_to_top(data.messages[i].sender);
           }
 
@@ -709,7 +717,8 @@ kandy_getIms = function () {
           var messageDiv = $('.kandyChat .kandyMessages[data-user="' + username + '"]');
           messageDiv.append(newMessage);
           messageDiv.scrollTop(messageDiv[0].scrollHeight);
-        } else {
+        }
+        else {
           // Alert("received " + msg.messageType + ": ");
         }
       }
@@ -738,9 +747,10 @@ var prependContact = function (user) {
 
   var liParent = $(liTabWrapSelector + " li a[" + userHoldingAttribute + "='" + username + "']").parent();
   var liContact = "";
-  if(liParent.length){
+  if (liParent.length) {
     liContact = liParent[0].outerHTML;
-  } else {
+  }
+  else {
     liContact = getLiContact(user);
   }
 
@@ -807,7 +817,7 @@ jQuery(document).ready(function ($) {
   }
 
   // Active Select2.
-  if($('.kandyButton').length){
+  if ($('.kandyButton').length) {
     var ajaxUrl = $(".kandyButton .select2").attr('data-ajax-url');
     $(".kandyButton .select2").select2({
       ajax: {
@@ -826,7 +836,7 @@ jQuery(document).ready(function ($) {
     });
   }
 
-  if($('.kandyAddressBook').length){
+  if ($('.kandyAddressBook').length) {
     var ajaxUrl = $(".kandyButton .select2").attr('data-ajax-url');
     $(".kandyAddressBook .select2").select2({
       ajax: {
@@ -896,7 +906,8 @@ jQuery(document).ready(function ($) {
         tabsViewport = parseInt(tabs.width());
       if (tabs.scrollLeft() >= totalTabWidth - tabsViewport) {
         tabs.parent('.cd-tabs').addClass('is-ended');
-      } else {
+      }
+      else {
         tabs.parent('.cd-tabs').removeClass('is-ended');
       }
     }

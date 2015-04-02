@@ -27,7 +27,7 @@ function kandy_help($path, $arg) {
   switch ($path) {
     case "admin/help#kandy":
       $module_path = drupal_get_path('module', 'kandy');
-      $output = file_get_contents($module_path . '/includes/help.php');
+      $output = file_get_contents($module_path . '/includes/help.html');
       return $output;
   }
 }
@@ -49,21 +49,21 @@ function kandy_menu() {
   $items['admin/config/content/kandy/script'] = array(
     'title' => 'Kandy Script Customization',
     'page callback' => 'kandy_script_customization_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/kandy/style'] = array(
     'title' => 'Kandy Style Customization',
     'page callback' => 'kandy_style_customization_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
   );
 
   $items['admin/config/content/kandy/assignment'] = array(
     'title' => 'Kandy User Assignment',
     'page callback' => 'kandy_assignment_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -71,13 +71,13 @@ function kandy_menu() {
     'title' => 'Kandy User Assignment',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('kandy_assignment_edit_form'),
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
   $items['admin/config/content/kandy/assignment/sync'] = array(
     'title' => 'Kandy User synchronization',
     'page callback' => 'kandy_assignment_sync_page',
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
 
   );
@@ -86,7 +86,7 @@ function kandy_menu() {
     'title' => 'Kandy File Edit',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('kandy_file_edit_form'),
-    'access callback' => TRUE,
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_CALLBACK,
   );
 
@@ -156,7 +156,7 @@ function kandy_assignment_page() {
     '#theme' => 'table',
     '#header' => $header,
     '#rows' => $rows,
-    '#empty' => t('There are no date formats found in the db'),
+    '#empty' => t('There are no user found in the db'),
   );
 
   // Attach the pager theme.

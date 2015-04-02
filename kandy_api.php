@@ -43,7 +43,7 @@ function kandy_get_user_data() {
 
     $table_cell = array(
       'uid' => $row->uid,
-      'name' => $row->name,
+      'name' => filter_xss($row->name),
       'kandyUser' => ($kandy_user) ? $kandy_user->user_id : NULL,
       'link' => array(
         'data' => array(
