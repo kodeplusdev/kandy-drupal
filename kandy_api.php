@@ -241,9 +241,16 @@ function kandy_get_user_by_user_mail($kandy_user_mail) {
 
   if ($get_domain_name_response['success']) {
     $domain_name = $get_domain_name_response['data'];
+
+    $parse_result = explode('@', $kandy_user_mail);
+    $user_id = '';
+    if (!empty($parse_result[0])) {
+      $user_id = $parse_result[0];
+    }
+
     $query = db_select('kandy_users')
       ->fields('kandy_users')
-      ->condition('email', $kandy_user_mail, '=')
+      ->condition('user_id', $user_id, '=')
       ->condition('domain_name', $domain_name, '=');
     $query_data = $query->execute();
 
