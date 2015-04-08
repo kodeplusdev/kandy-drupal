@@ -323,7 +323,7 @@ function kandy_shortcode_kandy_video(array $attr) {
       $output .= '</div>';
     }
     else {
-      $output = '<p>' . t("Can not setup kandy video...") . '</p>';
+      $output = '<p>' . t("Can not setup kandy video. Please contact administrator") . '</p>';
     }
   }
   return $output;
@@ -394,7 +394,7 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         '</div></div>';
     }
     else {
-      $output = '<p>' . t('Can not setup kandy video button...') . '<p>';
+      $output = '<p>' . t('Can not setup kandy video button. Please contact administrator') . '<p>';
     }
   }
   return $output;
@@ -513,7 +513,7 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
         '</div><div class="videoVoiceCallHolder"><span class="video"></span></div></div>';
     }
     else {
-      $output = '<p>' . t('Can not setup kandy voice button...') . '<p>';
+      $output = '<p>' . t('Can not setup kandy voice button. Please contact administrator') . '<p>';
     }
     return $output;
   }
@@ -575,7 +575,7 @@ function kandy_shortcode_kandy_status(array $attr) {
         '</div>';
     }
     else {
-      $output = '<p>' . t('Can not setup kandy status...') . '<p>';
+      $output = '<p>' . t('Can not setup kandy status. Please contact administrator') . '<p>';
     }
     return $output;
   }
@@ -654,7 +654,7 @@ function kandy_shortcode_kandy_address_book(array $attr) {
         $user_label . ' : <input id="kandySearchUserName" type="text" value="" class="select2" data-ajax-url="' . $get_user_for_search_url . '"/><input type="button" value="Add Contact" onclick="addContacts();"/></div>';
     }
     else {
-      $output = '<p>' . t('Can not setup kandy address book...') . '<p>';
+      $output = '<p>' . t('Can not setup kandy address book. Please contact administrator') . '<p>';
     }
     return $output;
   }
@@ -759,7 +759,7 @@ function kandy_shortcode_kandy_chat(array $attr) {
       }
     }
     else {
-      $output = '<p>' . t('Can not setup kandy video...') . '<p>';
+      $output = '<p>' . t('Can not setup kandy video. Please contact administrator') . '<p>';
     }
 
   }
