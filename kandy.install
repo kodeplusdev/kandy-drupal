@@ -108,4 +108,11 @@ function kandy_uninstall() {
   if (db_table_exists('kandy_users')) {
     drupal_uninstall_schema('kandy');
   }
+
+  variable_del('kandy_domain_name');
+  variable_del('kandy_api_key');
+  variable_del('kandy_domain_secret_key');
+  variable_del('kandy_js_url');
+  variable_del('kandy_fcs_url');
+  variable_del('kandy_jquery_reload');
 }
