@@ -4,3 +4,9 @@ JS SDK and Rest APIs"
 package = Kandy
 core = 7.x
 configure = admin/config/content/kandy
+
+; Information added by Drupal.org packaging script on 2014-05-01
+version = "7.x-1.4"
+core = "7.x"
+project = "kandy"
+datestamp = "1398963366"
