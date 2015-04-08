@@ -13,18 +13,96 @@ Your users could start a video call with other online users and
  enhance the collaboration experience.
 Home page: http://www.kandy.io/
 ## User guide
-**Kandy Drupal Module** help you use kandy in your website easily 
-by following steps:
+**Installation**
 + Install **shortcode** module https://www.drupal.org/project/shortcode
 + Install **Kandy** module https://github.com/kandy-io/kandy-drupal
 + At **Configuration > Content Authoring > Text Formats**, 
-select one of them or add new text format then enable *shortcode filter*
+select one of them or add new text format then enable **shortcode filter**
 + Uncheck auto **Convert line breaks into HTML**
 + Configure all required options at **Configuration > Content Authoring >kandy**
 + Synchronize and assign kandy user at 
 **Configuration > Content Authoring > kandy > Kandy User Assignment**
 + Create new content(basic page, article, or a new content types) 
 with kandy shortcode syntax.
+
+**Settings:**
+
+Login to https://www.kandy.io, select one project and get the following information: 
+- **API Key:** Kandy API key of the selected project.
+- **Domain Secret Key:** Domain Kandy API key of the selected project.
+- **Domain Name:** Domain name of the selected project.
+
+Below are default configuration:
+- **Javascript Library Url**: https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/1.1.4/kandy.js
+- **FCS Library Url**: https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.0/fcs.js
+- **Jquery Reload**: If you need to use kandy jquery library, set it to yes.
+
+**User assignment:**  help you synchronize kandy users
+from kandy server to your users system. 
+Select your user and click edit button to assign(unassign) kandy user.
+
+**Style customization**: help you edit 
+kandy shortcode(video, voice, chat...) style. 
+Select appropriate file(.css) then click edit them.
+
+**Script customization** 
+help you edit kandy shortcode(video, voice, chat...) script(add more behaviour).
+Select appropriate file(.js) then click edit them.
+
+***All support script callback:***
+```sh
+window.login_success_callback = function () {
+   //do something when you login successfully
+}
+
+window.login_failed_callback = function () {
+    //do something when you login fail
+}
+
+window.call_incoming_callback = function (call, isAnonymous) {
+    //do something when your are calling
+}
+
+window.on_call_callback = function (call) {
+    //do something when you are on call
+}
+
+window.call_answered_callback = function (call, isAnonymous) {
+    //do something when someone answer your call
+}
+
+window.call_ended_callback = function () {
+   //do something when someone end  your call
+}
+
+window.answer_voice_call_callback = function (stage) {
+    //do something when you answer voice call
+}
+
+window.answer_video_call_callback = function (stage) {
+    //do something when you answer video call
+}
+
+window.make_call_callback = function (stage) {
+   //do something when you make call
+}
+
+window.end_all_callback = function (stage) {
+   //do something when you click end call button
+}
+
+window.remote_video_initialized_callback(videoTag) {
+   //do something with your remote video
+}
+
+window.local_video_initialized_callback = function(videoTag) {
+    //do some thing with your local video
+}
+
+window.presence_notification_callback = function(userId, state, description, activity) {
+    //do something with status notification
+}
+```
 
 ####Kandy components and shortcode syntax:
 
@@ -120,85 +198,6 @@ which help you send instant message to your friend in contact.
 **Kandy Chat**:
 ```sh
 [kandyChat class="myChatStyle" id="my-chat"][/kandyChat]
-```
-
-####Kandy Administration:
-**Settings:**
-
-- **API Key:** Kandy API key which found in your kandy account.
-- **Domain Secret Key:** Domain Kandy API key which found in your kandy account.
-- **Domain Name:** Domain name of you kandy account.
-- **Javascript Library Url**: Link to kandy javascript library.
-- **FCS Library Url**: Link to kandy FCS javascript library.
-- **Jquery Reload**: If you need use kandy jquery library, set it yes.
-
-
-**User assignment:**  help you synchronize kandy users
-from kandy server to your users system. 
-Select your user and click edit button to assign(unassign) kandy user.
-
-**Style customization**: help you edit 
-kandy shortcode(video, voice, chat...) style. 
-Select appropriate file(.css) then click edit them.
-
-**Script customization** 
-help you edit kandy shortcode(video, voice, chat...) script(add more behaviour).
-Select appropriate file(.js) then click edit them.
-
-***All support script callback:***
-```sh
-window.login_success_callback = function () {
-   //do something when you login successfully
-}
-
-window.login_failed_callback = function () {
-    //do something when you login fail
-}
-
-window.call_incoming_callback = function (call, isAnonymous) {
-    //do something when your are calling
-}
-
-window.on_call_callback = function (call) {
-    //do something when you are on call
-}
-
-window.call_answered_callback = function (call, isAnonymous) {
-    //do something when someone answer your call
-}
-
-window.call_ended_callback = function () {
-   //do something when someone end  your call
-}
-
-window.answer_voice_call_callback = function (stage) {
-    //do something when you answer voice call
-}
-
-window.answer_video_call_callback = function (stage) {
-    //do something when you answer video call
-}
-
-window.make_call_callback = function (stage) {
-   //do something when you make call
-}
-
-window.end_all_callback = function (stage) {
-   //do something when you click end call button
-}
-
-window.remote_video_initialized_callback(videoTag){
-   //do something with your remote video
-}
-
-window.local_video_initialized_callback = function(videoTag){
-    //do some thing with your local video
-}
-
-window.presence_notification_callback =
-function(userId, state, description, activity) {
-    //do something with status notification
-}
 ```
 
 ### Kandy API
