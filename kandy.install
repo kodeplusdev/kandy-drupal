@@ -94,3 +94,18 @@ function kandy_install() {
   module_load_include('php', 'kandy', 'kandy_api');
   kandy_publish_assets();
 }
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Removes the database tables and persistent variables managed through Drupal.
+ *  Anything set in the Kandy Admin Interface will be forgotten.
+ *
+ * Uninstall the DB schema and clean up as much as is feasible.
+ */
+function kandy_uninstall() {
+  // Drop my tables.
+  if (db_table_exists('kandy_users')) {
+    drupal_uninstall_schema('kandy');
+  }
+}
