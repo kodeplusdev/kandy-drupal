@@ -55,7 +55,7 @@ window.call_ended_callback = function () {
  * @param stage
  */
 window.answer_video_call_callback = function (stage) {
-  changeUIState(stage);
+
 };
 
 /**
@@ -64,7 +64,7 @@ window.answer_video_call_callback = function (stage) {
  * @param stage
  */
 window.answer_voice_call_callback = function (stage) {
-  changeUIState(stage);
+
 };
 
 /**
@@ -73,7 +73,7 @@ window.answer_voice_call_callback = function (stage) {
  * @param stage
  */
 window.make_call_callback = function (stage) {
-  changeUIState(stage);
+
 };
 
 /**

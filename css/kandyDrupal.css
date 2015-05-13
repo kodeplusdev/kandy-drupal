@@ -21,7 +21,6 @@
 
 .kandyButton .kandyButtonComponent input {
   margin-right: 5px;
-  width: 90px;
 }
 
 .kandyButton .kandyButtonComponent input[type='text'] {
@@ -30,6 +29,8 @@
 
 .kandyButton .kandyButtonComponent input[type='button'] {
   cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
 }
 
 .kandyButton .kandyButtonComponent .someonesCalling,
