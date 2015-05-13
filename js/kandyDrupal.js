@@ -442,6 +442,7 @@ var get_display_name_for_contact = function (data, url) {
   if (data.length) {
     jQuery.ajax({
       url: url,
+      type: "POST",
       data: {data: data},
       async: false
     }).done(function (response) {
@@ -465,6 +466,7 @@ var get_display_name_for_chat_content = function (data, url) {
   if (data.messages.length) {
     jQuery.ajax({
       url: url,
+      type: "POST",
       data: {data: data.messages},
       async: false
     }).done(function (response) {
