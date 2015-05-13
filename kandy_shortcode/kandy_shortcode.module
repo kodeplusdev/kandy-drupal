@@ -192,9 +192,6 @@ function kandy_setup() {
       $password = $assign_user->password;
       $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
 
-      drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL));
-      drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
-
       if (variable_get('kandy_jquery_reload', 1)) {
         drupal_add_js(KANDY_JQUERY, array(
           'group' => 'kandy',
@@ -211,6 +208,16 @@ function kandy_setup() {
           'group' => 'kandy',
           'weight' => 2,
         ));
+
+      drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL),array(
+        'group' => 'kandy',
+        'weight' => 3,
+      ));
+
+      drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL), array(
+        'group' => 'kandy',
+        'weight' => 4,
+      ));
 
       drupal_add_js(
         "if (window.login == undefined){
@@ -368,6 +375,72 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         $id = filter_xss($attr['id']);
       }
 
+      // Init incomingLabel attribute.
+      $incoming_label = 'Incoming Call...';
+      if (isset($attr['incomingLabel'])) {
+        $incoming_label = ($attr['incomingLabel']);
+      }
+
+      // Init incomingLabel attribute.
+      $incoming_button_text = 'Answer';
+      if (isset($attr['incomingButtonText'])) {
+        $incoming_button_text = ($attr['incomingButtonText']);
+      }
+
+      // Init incomingLabel attribute.
+      $reject_button_text = 'Reject';
+      if (isset($attr['rejectButtonText'])) {
+        $incoming_button_text = ($attr['rejectButtonText']);
+      }
+
+      // Init callOutLabel attribute.
+      $call_out_label = 'User to call';
+      if (isset($attr['callOutLabel'])) {
+        $call_out_label = ($attr['callOutLabel']);
+      }
+
+      // Init callOutButtonText attribute.
+      $call_out_button_text = 'Call';
+      if (isset($attr['callOutButtonText'])) {
+        $call_out_button_text = filter_xss($attr['callOutButtonText']);
+      }
+
+      // Init callOutLabel attribute.
+      $calling_label = 'Calling...';
+      if (isset($attr['callingLabel'])) {
+        $calling_label = filter_xss($attr['callingLabel']);
+      }
+
+      // Init callOutButtonText attribute.
+      $calling_button_text = 'End Call';
+      if (isset($attr['callingButtonText'])) {
+        $calling_button_text = filter_xss($attr['callingButtonText']);
+      }
+
+      // Init callOutLabel attribute.
+      $on_call_label = 'You are connected!';
+      if (isset($attr['onCallLabel'])) {
+        $on_call_label = filter_xss($attr['onCallLabel']);
+      }
+
+      // Init callOutButtonText attribute.
+      $on_call_button_text = 'End Call';
+      if (isset($attr['onCallButtonText'])) {
+        $on_call_button_text = filter_xss($attr['onCallButtonText']);
+      }
+
+      // Init $hold_call_button_text attribute.
+      $hold_call_button_text = 'Hold Call';
+      if (isset($attr['holdCallButtonText'])) {
+        $hold_call_button_text = filter_xss($attr['holdCallButtonText']);
+      }
+
+      // Init $resume_call_button_text attribute.
+      $resume_call_button_text = 'Resume Call';
+      if (isset($attr['resumeCallButtonText'])) {
+        $resume_call_button_text = filter_xss($attr['resumeCallButtonText']);
+      }
+
       $ajax_user_search_url = url(
         'kandy/get_user_for_search',
         array('absolute' => TRUE)
@@ -375,23 +448,30 @@ function kandy_shortcode_kandy_video_button(array $attr) {
 
       $output = '<div class="' . $class . '" id ="' . $id . '">' .
         '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="incomingCall">' .
-        '<label>Incoming Call...</label>' .
-        '<input class="btmAnswerVideoCall" type="button" value="Answer" onclick="kandy_answer_video_call(this)"/>' .
+        '<label>' . $incoming_label . '</label>' .
+        '<input class="btmAnswerVideoCall" type="button" value="' . $incoming_button_text . '" onclick="kandy_answer_video_call(this)"/>' .
+        '<input class="btmAnswerRejectCall" type="button" onclick="kandy_reject_video_call(this)" value="' . $reject_button_text . '"/>' .
         '</div>' .
 
         '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">' .
-        '<label>User to call</label><input id="callOutUserId" data-ajax-url="' . $ajax_user_search_url . '" type="text" value="" class="select2"/>' .
-        '<input class="btnCall" id="callBtn" type="button" value="Call" onclick="kandy_make_video_call(this)"/>' .
+        '<label>' . $call_out_label . '</label><input id="callOutUserId" data-ajax-url="' . $ajax_user_search_url . '" type="text" value="" class="select2"/>' .
+        '<input class="btnCall" id="callBtn" type="button" value="' . $call_out_button_text . '" onclick="kandy_make_video_call(this)"/>' .
         '</div>' .
 
         '<div class="kandyButtonComponent kandyVideoButtonCalling" id="calling">' .
-        '<label>Calling...</label>' .
-        '<input type="button" class="btnEndCall" value="End Call" onclick="kandy_end_call(this)"/>' .
+        '<label>' . $calling_label . '</label>' .
+        '<input type="button" class="btnEndCall" value="' . $calling_button_text . '" onclick="kandy_end_call(this)"/>' .
         '</div>' .
         '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="onCall">' .
-        '<label>You are connected!</label>' .
-        '<input class="btnEndCall" type="button" value="End Call" onclick="kandy_end_call(this)"/>' .
+        '<label>' . $on_call_label . '</label>' .
+        '<input class="btnEndCall" type="button" value="' . $on_call_button_text . '" onclick="kandy_end_call(this)"/>' .
+        '<input class="btnHoldCall" type="button" value="' . $hold_call_button_text . '" onclick="kandy_hold_call(this)"/>' .
+        '<input class="btnResumeCall" type="button" value="' . $resume_call_button_text . '" onclick="kandy_resume_call(this)"/>' .
         '</div></div>';
+
+      if (isset($result['output'])) {
+        $output .= $result['output'];
+      }
     }
     else {
       $output = '<p>' . t('Can not setup kandy video button. Please contact administrator') . '<p>';
@@ -477,13 +557,31 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
       // Init callOutLabel attribute.
       $on_call_label = 'You are connected!';
       if (isset($attr['onCallLabel'])) {
-        $on_call_label = $attr['onCallLabel'];
+        $on_call_label = filter_xss($attr['onCallLabel']);
       }
 
       // Init callOutButtonText attribute.
       $on_call_button_text = 'End Call';
       if (isset($attr['onCallButtonText'])) {
         $on_call_button_text = filter_xss($attr['onCallButtonText']);
+      }
+
+      // Init holdCallButtonText attribute.
+      $hold_call_button_text = 'Hold Call';
+      if (isset($attr['holdCallButtonText'])) {
+        $hold_call_button_text = filter_xss($attr['holdCallButtonText']);
+      }
+
+      // Init resumeCallButtonText attribute.
+      $resume_call_button_text = 'Resume Call';
+      if (isset($attr['resumeCallButtonText'])) {
+        $resume_call_button_text = filter_xss($attr['resumeCallButtonText']);
+      }
+
+      // Init incomingLabel attribute.
+      $reject_button_text = 'Reject';
+      if (isset($attr['rejectButtonText'])) {
+        $incoming_button_text = filter_xss($attr['rejectButtonText']);
       }
 
       $ajax_user_search_url = url(
@@ -495,6 +593,7 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
         '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="incomingCall">' .
         '<label>' . $incoming_label . '</label>' .
         '<input class="btnAnswerVoiceCall" type="button" value="' . $incoming_button_text . '" onclick="kandy_answerVoiceCall(this)"/>' .
+        '<input class="btmAnswerRejectCall" type="button" onclick="kandy_reject_video_call(this)" value="' . $reject_button_text . '"/>' .
         '</div>' .
 
         '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">' .
@@ -510,7 +609,14 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
         '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="onCall">' .
         '<label>' . $on_call_label . '</label>' .
         '<input class="btnEndCall" type="button" value=" ' . $on_call_button_text . ' " onclick="kandy_end_call(this)"/>' .
-        '</div><div class="videoVoiceCallHolder"><span class="video"></span></div></div>';
+        '<input class="btnHoldCall" type="button" value="' . $hold_call_button_text . '" onclick="kandy_hold_call(this)"/>' .
+        '<input class="btnResumeCall" type="button" value="' . $resume_call_button_text . '" onclick="kandy_resume_call(this)"/>' .
+
+        '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';
+
+      if (isset($result['output'])) {
+        $output .= $result['output'];
+      }
     }
     else {
       $output = '<p>' . t('Can not setup kandy voice button. Please contact administrator') . '<p>';
