@@ -450,7 +450,7 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="incomingCall">' .
         '<label>' . $incoming_label . '</label>' .
         '<input class="btmAnswerVideoCall" type="button" value="' . $incoming_button_text . '" onclick="kandy_answer_video_call(this)"/>' .
-        '<input class="btmAnswerRejectCall" type="button" onclick="kandy_reject_video_call(this)" value="' . $reject_button_text . '"/>' .
+        '<input style="visibility: hidden" class="btmAnswerRejectCall" type="button" onclick="kandy_reject_video_call(this)" value="' . $reject_button_text . '"/>' .
         '</div>' .
 
         '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">' .
@@ -465,8 +465,8 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="onCall">' .
         '<label>' . $on_call_label . '</label>' .
         '<input class="btnEndCall" type="button" value="' . $on_call_button_text . '" onclick="kandy_end_call(this)"/>' .
-        '<input class="btnHoldCall" type="button" value="' . $hold_call_button_text . '" onclick="kandy_hold_call(this)"/>' .
-        '<input class="btnResumeCall" type="button" value="' . $resume_call_button_text . '" onclick="kandy_resume_call(this)"/>' .
+        '<input style="visibility: hidden" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '" onclick="kandy_hold_call(this)"/>' .
+        '<input style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '" onclick="kandy_resume_call(this)"/>' .
         '</div></div>';
 
       if (isset($result['output'])) {
@@ -593,7 +593,7 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
         '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="incomingCall">' .
         '<label>' . $incoming_label . '</label>' .
         '<input class="btnAnswerVoiceCall" type="button" value="' . $incoming_button_text . '" onclick="kandy_answerVoiceCall(this)"/>' .
-        '<input class="btmAnswerRejectCall" type="button" onclick="kandy_reject_video_call(this)" value="' . $reject_button_text . '"/>' .
+        '<input style="visibility: hidden" class="btmAnswerRejectCall" type="button" onclick="kandy_reject_video_call(this)" value="' . $reject_button_text . '"/>' .
         '</div>' .
 
         '<div class="kandyButtonComponent kandyVideoButtonCallOut" id="callOut">' .
@@ -609,8 +609,8 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
         '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="onCall">' .
         '<label>' . $on_call_label . '</label>' .
         '<input class="btnEndCall" type="button" value=" ' . $on_call_button_text . ' " onclick="kandy_end_call(this)"/>' .
-        '<input class="btnHoldCall" type="button" value="' . $hold_call_button_text . '" onclick="kandy_hold_call(this)"/>' .
-        '<input class="btnResumeCall" type="button" value="' . $resume_call_button_text . '" onclick="kandy_resume_call(this)"/>' .
+        '<input style="visibility: hidden" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '" onclick="kandy_hold_call(this)"/>' .
+        '<input style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '" onclick="kandy_resume_call(this)"/>' .
 
         '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';
 
