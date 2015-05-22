@@ -142,7 +142,9 @@ window.presence_notification_callback = function(userId, state, description, act
         callingLabel = "Calling..."
         callingButtonText = "End Call"
         onCallLabel = "You are connected!"
-        onCallButtonText = "End Call"]
+        onCallButtonText = "End Call"
+        type = "PSTN"
+        callTo ="01234xxxxx"]
 [/kandyVoiceButton]
 ```
 
@@ -163,7 +165,8 @@ which list all friend in your contact.
         class = "myAddressBookStyle"
         id = "myContact"
         title = "My Contact"
-        userLabel = "User"]
+        userLabel = "User"
+        addContactLabel = "Add Contact"]
 [/kandyAddressBook]
   ```
 
@@ -182,6 +185,17 @@ which help you send instant message to your friend in contact.
 ```sh
 [kandyVoiceButton class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
 ```
+
+**Kandy Voice Call PSTN**
+```sh
+[kandyVoiceButton type= "PSTN" class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+```
+
+**Kandy Voice Call PSTN with number**
+```sh
+[kandyVoiceButton type= "PSTN" callTo = "01234xxxx" class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+```
+
 **Kandy Video Call**: use a video call button and two video
 (**myVideo** and **theirVideo** id is required).
    ```sh
