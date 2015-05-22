@@ -25,6 +25,7 @@
 
 .kandyButton .kandyButtonComponent input[type='text'] {
   width: 250px;
+  display: none;
 }
 
 .kandyButton .kandyButtonComponent input[type='button'] {

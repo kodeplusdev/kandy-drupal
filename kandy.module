@@ -20,6 +20,7 @@ define('KANDY_VIDEO_STYLE_DEFAULT', 'width: 340px; height: 250px;background-colo
 define('KANDY_VIDEO_MY_TITLE_DEFAULT', 'me');
 define('KANDY_VIDEO_THEIR_TITLE_DEFAULT', 'their');
 define('KANDY_UN_ASSIGN_USER', 'kandy-un-assign-user');
+define('KANDY_PSTN_TYPE', 'PSTN');
 /**
  * Implements hook_help().
  */
