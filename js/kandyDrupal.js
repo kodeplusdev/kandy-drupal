@@ -5,11 +5,11 @@
 
 var activeContainerId;
 
-// Create audio objects to play incoming calls and outgoing calls sound
+// Create audio objects to play incoming calls and outgoing calls sound.
 var $audioRingIn = jQuery('<audio>', { loop: 'loop', id: 'ring-in' });
 var $audioRingOut = jQuery('<audio>', { loop: 'loop', id: 'ring-out' });
 
-// Load audio source to DOM to indicate call events
+// Load audio source to DOM to indicate call events.
 var audioSource = {
   ringIn: [
     { src: 'https://kandy-portal.s3.amazonaws.com/public/sounds/ringin.mp3', type: 'audio/mp3' },
@@ -126,7 +126,8 @@ kandy_presence_notification_callback = function (userId, state, description, act
 };
 
 /**
- * Event handler for callinitiate
+ * Event handler for callinitiate.
+ *
  * @param call
  */
 function kandy_on_call_initiate(call) {
@@ -136,14 +137,16 @@ function kandy_on_call_initiate(call) {
   $audioRingOut[0].play();
 }
 
-// Event handler for callinitiatefail event
+/**
+ * Event handler for callinitiatefail event..
+ */
 function kandy_on_call_initiate_fail() {
   $audioRingOut[0].pause();
 
 }
 
 /**
- * Event handler for callrejected event
+ * Event handler for callrejected event.
  */
 
 function kandy_on_call_rejected() {
@@ -227,6 +230,7 @@ function kandy_on_call_ended_failed() {
 
 /**
  * Change AnswerButtonState with KandyButton Widget.
+ *
  * @param target
  * @param state
  */
@@ -255,6 +259,7 @@ changeAnswerButtonState = function (state, target) {
       kandyButton.find('.kandyVideoButtonCalling').show();
       kandyButton.find('.kandyVideoButtonOnCall').hide();
       break;
+
     case 'HOLD_CALL':
 
       kandyButton.find('.kandyVideoButtonOnCall .btnHoldCall').hide();
@@ -674,7 +679,6 @@ var liContentWrapSelector = "." + wrapDivClass + " ." + liContentWrapClass;
 var userHoldingAttribute = "data-content";
 var activeClass = "selected";
 var chatMessageTimeStamp = 0;
-// group chat vars
 
 var listUserClass = 'list-users';
 var liTabGroupsWrap = liTabWrapSelector + '.groups';
@@ -833,7 +837,9 @@ kandy_getIms = function () {
         if (msg.messageType == 'chat') {
           if (chatMessageTimeStamp == msg.timestamp) {
             continue;
-          } else {
+
+          }
+          else {
             chatMessageTimeStamp = msg.timestamp;
           }
           // Get user info.
@@ -951,13 +957,8 @@ var move_contact_to_top_and_set_active = function (user) {
 };
 
 /**
- * Load group details
- * @param sessionId
- */
-
-
-/**
- * Build list of participants
+ * Build list of participants.
+ *
  * @param sessionDetails
  */
 
@@ -970,18 +971,15 @@ var buildListParticipants = function (sessionId, participants) {
   if (participants.length) {
     for (var i in participants) {
       displayNames[participants[i].full_user_id] = participants[i].display_name;
-      jQuery(listUsersGroup).append(
-        '<li data-user="' + participants[i].full_user_id + '">' +
-          '<a>' + displayNames[participants[i].full_user_id] + '</a>' +
-          '<i class="status"></i>' +
-          '</li>'
+      jQuery(listUsersGroup).append('<li data-user="' + participants[i].full_user_id + '">' +
+          '<a>' + displayNames[participants[i].full_user_id] + '</a><i class="status"></i></li>'
       );
     }
   }
 
 };
 /**
- * Load open group chat
+ * Load open group chat.
  */
 var kandy_loadGroups = function () {
   KandyAPI.Session.getOpenSessions(
@@ -991,18 +989,14 @@ var kandy_loadGroups = function () {
         if (result.sessions.length) {
           jQuery(groupSeparator).removeClass('hidden');
           for (var i in result.sessions) {
-            //build sessions list here
+
             groupNames[result.sessions[i].session_id] = result.sessions[i].session_name;
             if (!jQuery(liTabGroupsWrap + " li[data-group='" + result.sessions[i].session_id + "']").length) {
               jQuery(liTabGroupsWrap).append(
                 '<li data-group="' + result.sessions[i].session_id + '" class="group">' +
-                  '<i class="toggle fa fa-plus-square-o"></i>' +
-                  '<a title="' + result.sessions[i].session_status + '" onclick="kandy_loadGroupDetails(\'' + result.sessions[i].session_id + '\')" data-content="' + result.sessions[i].session_id + '" href="#">' +
+                  '<i class="toggle fa fa-plus-square-o"></i><a title="' + result.sessions[i].session_status + '" onclick="kandy_loadGroupDetails(\'' + result.sessions[i].session_id + '\')" data-content="' + result.sessions[i].session_id + '" href="#">' +
                   result.sessions[i].session_name +
-                  '</a>' +
-                  '<div class="groupAction"></div>' +
-                  '<ul class="list-users"></ul>' +
-                  '</li>'
+                  '</a><div class="groupAction"></div><ul class="list-users"></ul></li>'
               );
             }
             if (!jQuery(liContentWrapSelector + " li[" + userHoldingAttribute + "='" + result.sessions[i].session_id + "']").length) {
@@ -1012,7 +1006,8 @@ var kandy_loadGroups = function () {
             }
             kandy_loadGroupDetails(result.sessions[i].session_id);
           }
-        } else {
+        }
+        else {
           jQuery(groupSeparator).addClass('hidden');
         }
       }
@@ -1024,7 +1019,7 @@ var kandy_loadGroups = function () {
 };
 
 /**
- *  Event handler for onData event
+ * Event handler for onData event.
  */
 var kandy_onSessionData = function (msg) {
   var newMessage = '<div class="their-message">\
@@ -1061,25 +1056,23 @@ var getGroupContent = function (groupId) {
 
 
 var kandy_createGroup = function (config) {
-  /** create(sessionConfig, success, failure)
-   Creates a new session. The creating user is the administrator.
-   @params <object> sessionConfig, <function> success/failure
-   */
   KandyAPI.Session.create(
     config,
-    function (result) {  // success
-      // trying activate group
+    function (result) {
+
       activateGroup(result.session_id);
-      //reload groups list
+
       kandy_loadGroups();
     },
-    function (msg, code) {  // failure
+    function (msg, code) {
       console.log('Error:' + code + ' - ' + msg);
     }
   );
 };
+
 /**
- * Send group IM
+ * Send group IM.
+ *
  * @param groupId
  * @param msg
  */
@@ -1107,7 +1100,8 @@ var kandy_onJoinRequest = function (notification) {
   var confirm = window.confirm(message);
   if (confirm) {
     kandy_ApproveJoinGroup(notification.session_id, notification.full_user_id);
-  } else {
+  }
+  else {
     kandy_RejectJoinGroup(notification.session_id, notification.full_user_id);
   }
 };
@@ -1149,7 +1143,8 @@ var kandy_onLeaveGroup = function (notification) {
   kandy_loadGroupDetails(notification.session_id);
 };
 /**
- * Remove user from group
+ * Remove user from group.
+ *
  * @param sessionId
  * @param userId
  */
@@ -1168,16 +1163,21 @@ var activateGroup = function (groupId) {
   KandyAPI.Session.activate(
     groupId,
     function () {
-      //success callback
+
       console.log('activate group successful');
     }, function () {
-      //fail callback
+
       console.log('Error activating group');
     }
   );
 
 };
 
+/**
+ * User Join Group Event.
+ *
+ * @param sessionId
+ */
 var kandy_JoinGroup = function (sessionId) {
   KandyAPI.Session.join(
     sessionId,
@@ -1191,12 +1191,15 @@ var kandy_JoinGroup = function (sessionId) {
   );
 };
 
+/**
+ * User Leave Group event.
+ *
+ * @param sessionId
+ */
 var kandy_LeaveGroup = function (sessionId) {
   KandyAPI.Session.leave(sessionId,
     '',
     function () {
-      //success callback
-      //kandy_loadGroups();
       kandy_loadGroupDetails(sessionId);
     },
     function () {
@@ -1205,15 +1208,26 @@ var kandy_LeaveGroup = function (sessionId) {
   )
 }
 
+/**
+ * User Join Group Event.
+ *
+ * @param notification
+ */
 var kandy_onJoin = function (notification) {
   kandy_loadGroupDetails(notification.session_id);
 };
 
+/**
+ * Kandy User Boot Event.
+ *
+ * @param notification
+ */
 var kandy_onUserBoot = function (notification) {
   kandy_loadGroupDetails(notification.session_id);
 };
 /**
- * Terminate a session
+ * Terminate a session.
+ *
  * @param sessionId
  */
 var kandy_terminateGroup = function (sessionId) {
@@ -1226,7 +1240,8 @@ var kandy_terminateGroup = function (sessionId) {
   );
 };
 /**
- * session terminate event callback
+ * Session terminate event callback.
+ *
  * @param notification
  */
 var kandy_onTerminateGroup = function (notification) {
@@ -1234,14 +1249,16 @@ var kandy_onTerminateGroup = function (notification) {
   kandy_loadGroups();
 };
 /**
- * session active event callback
+ * Session active event callback.
+ *
  * @param notification
  */
 var kandy_onActiveGroup = function (notification) {
   kandy_loadGroups();
 };
 /**
- * Clean things up after remove group
+ * Clean things up after remove group.
+ *
  * @param sessionId
  */
 var removeGroupContent = function (sessionId) {
@@ -1250,13 +1267,16 @@ var removeGroupContent = function (sessionId) {
     toBeRemove.siblings('[data-content="example"]').addClass('selected');
   }
   toBeRemove.remove();
-  //remove from list of session
+
   var sessionIndex = sessionListeners.indexOf(sessionId);
   if (sessionIndex > -1) {
     sessionListeners.splice(sessionIndex, 1);
   }
 };
 
+/**
+ * Update User Group Status.
+ */
 var updateUserGroupStatus = function () {
   if (usersStatus) {
     if (jQuery(liTabGroupsWrap).length) {
@@ -1271,6 +1291,11 @@ var updateUserGroupStatus = function () {
   }
 };
 
+/**
+ * Load group chat detail.
+ *
+ * @param sessionId
+ */
 var kandy_loadGroupDetails = function (sessionId) {
   var listeners = {
     'onData': kandy_onSessionData,
@@ -1284,9 +1309,6 @@ var kandy_loadGroupDetails = function (sessionId) {
     'onBoot': kandy_onUserBoot,
     'onTermination': kandy_onTerminateGroup,
     'onJoinApprove': kandy_onJoinApprove
-    //'onActive': kandy_onActiveGroup,
-    //'onInactive': onInactive,
-
   };
   KandyAPI.Session.getInfoById(sessionId,
     function (result) {
@@ -1294,16 +1316,17 @@ var kandy_loadGroupDetails = function (sessionId) {
       var groupAction = jQuery(liTabWrapSelector + ' li a[data-content="' + sessionId + '"]').parent().find('.groupAction');
       var messageInput = jQuery(liContentWrapSelector + ' li[data-content="' + sessionId + '"] form .imMessageToSend');
       buildListParticipants(sessionId, result.session.participants);
-      //if current user is owner of this group
+
+      // If current user is owner of this group.
       if (jQuery(".kandy_user").val() === result.session.admin_full_user_id) {
-        //add admin functionality
+        // Add admin functionality.
         isOwner = true;
         groupActivity = '<a class="" href="javascipt:;"><i title="remove group" onclick="kandy_terminateGroup(\'' + result.session.session_id + '\')" class="fa fa-remove"></i></a>';
         jQuery(liTabWrapSelector + ' li[data-group="' + sessionId + '"] ' + ' .' + listUserClass + ' li[data-user!="' + result.session.admin_full_user_id + '"]').append(
           '<i title="remove" class="remove fa fa-remove"></i>'
         );
       }
-      //check if user is not in group
+      // Check if user is not in group.
       for (var j in result.session.participants) {
         if (result.session.participants[j].full_user_id == jQuery(".kandy_user").val()) {
           notInGroup = false;
@@ -1311,9 +1334,10 @@ var kandy_loadGroupDetails = function (sessionId) {
       }
       if (notInGroup) {
         groupActivity = '<a class="join" title="join" onclick="kandy_JoinGroup(\'' + result.session.session_id + '\')" href="javascript:;"><i class="fa fa-sign-in"></i></a>';
-        //disable message input if user not belongs to a specific group
+        // Disable message input if user not belongs to a specific group.
         messageInput.prop('disabled', true);
-      } else if (!isOwner) {
+      }
+      else if (!isOwner) {
         groupActivity = '<a class="leave" title="leave" onclick="kandy_LeaveGroup(\'' + result.session.session_id + '\')" href="javascript:;"><i class="fa fa-sign-out"></i></a>';
         if (messageInput.is(':disabled')) {
           messageInput.prop('disabled', false);
@@ -1334,7 +1358,7 @@ var kandy_loadGroupDetails = function (sessionId) {
 };
 
 /**
- * Ready================================================================================================================
+ * Kandy Ready.
  */
 jQuery(document).ready(function (jQuery) {
 
@@ -1390,7 +1414,8 @@ jQuery(document).ready(function (jQuery) {
 
       if (jQuery(this).is('[data-user]')) {
         kandy_send_message(username);
-      } else {
+      }
+      else {
         kandy_sendGroupIm(jQuery(this).data('group'), jQuery(this).find('.imMessageToSend').val());
         jQuery(this).find('.imMessageToSend').val('');
       }
@@ -1408,13 +1433,14 @@ jQuery(document).ready(function (jQuery) {
       var errors = [];
       var errorContainer = jQuery(".errors");
       var creationTime = new Date().getTime();
-      var timeExpire = creationTime + 31536000;// expire in 1 year
+      var timeExpire = creationTime + 31536000;
       errorContainer.empty();
       if (groupName == '') {
         alert('Group must have a name.');
         jQuery('#kandy-chat-create-session-name').focus();
-      } else {
-        var config = { //config
+      }
+      else {
+        var config = {
           session_type: 'groupChat',
           session_name: groupName,
           session_description: '',
@@ -1438,9 +1464,6 @@ jQuery(document).ready(function (jQuery) {
 
     });
 
-
-
-
     jQuery('.list-users li .remove').live('click', function (e) {
       var userId = jQuery(this).parent().data('user');
       var groupId = jQuery(this).closest('[data-group]').data('group');
@@ -1461,10 +1484,8 @@ jQuery(document).ready(function (jQuery) {
         selectedItem.addClass('selected');
         selectedContent.addClass('selected').siblings('li').removeClass('selected');
 
-        // Set focus.
         selectedContent.find(".imMessageToSend").focus();
 
-        // Set chat heading.
         jQuery(".chat-with-message").show();
         jQuery(".chat-friend-name").html(selectedItem.html());
 

@@ -27,14 +27,17 @@ with kandy shortcode syntax.
 
 **Settings:**
 
-Login to https://www.kandy.io, select one project and get the following information: 
+Login to https://www.kandy.io, select one project and get the following
+information:
 - **API Key:** Kandy API key of the selected project.
 - **Domain Secret Key:** Domain Kandy API key of the selected project.
 - **Domain Name:** Domain name of the selected project.
 
 Below are default configuration:
-- **Javascript Library Url**: https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/1.1.4/kandy.js
-- **FCS Library Url**: https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.0/fcs.js
+- **Javascript Library Url**:
+  https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/1.1.4/kandy.js
+- **FCS Library Url**:
+  https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.0/fcs.js
 - **Jquery Reload**: If you need to use kandy jquery library, set it to yes.
 
 **User assignment:**  help you synchronize kandy users
@@ -188,12 +191,14 @@ which help you send instant message to your friend in contact.
 
 **Kandy Voice Call PSTN**
 ```sh
-[kandyVoiceButton type= "PSTN" class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+[kandyVoiceButton type= "PSTN" class= "myButtonStyle" id="my-button"]
+[/kandyVoiceButton]
 ```
 
 **Kandy Voice Call PSTN with number**
 ```sh
-[kandyVoiceButton type= "PSTN" callTo = "01234xxxx" class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+[kandyVoiceButton type= "PSTN" callTo = "01234xxxx"
+class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
 ```
 
 **Kandy Video Call**: use a video call button and two video
