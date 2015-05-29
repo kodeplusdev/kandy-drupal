@@ -514,9 +514,10 @@ function kandy_get_name_for_contact_callback() {
   if (isset($_POST['data'])) {
     $contacts = $_POST['data'];
     foreach ($contacts as &$contact) {
-      if(isset($contact['contact_user_name'])) {
+      if (isset($contact['contact_user_name'])) {
         $user = kandy_get_user_by_user_mail($contact['contact_user_name']);
-      } else {
+      }
+      else {
         $user = kandy_get_user_by_user_mail($contact['full_user_id']);
       }
 
@@ -763,7 +764,8 @@ function kandy_file_edit_form() {
  */
 function kandy_file_edit_form_submit($form, $form_state) {
   if (isset($_GET['fileStyle']) && isset($_GET['fileName']) &&
-    isset($form_state['values']['content'])) {
+    isset($form_state['values']['content'])
+  ) {
     $public_path = "public://kandy";
 
     $file_style = preg_replace('/[^A-Za-z]+/', '-', $_GET['fileStyle']);
