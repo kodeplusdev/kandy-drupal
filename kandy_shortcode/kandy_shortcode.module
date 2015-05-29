@@ -890,10 +890,18 @@ function kandy_shortcode_kandy_chat(array $attr) {
 
       $kandy_public_path = "public://kandy";
       drupal_add_js($kandy_public_path . '/js/KandyChat.js');
+
+      drupal_add_css(KANDY_FONT_AWESOME,array(
+        'group' => 'kandy',
+        'weight' => 2,
+        'type' => 'external',
+      ));
+
       drupal_add_css($kandy_public_path . '/css/KandyChat.css', array(
           'group' => 'kandy',
           'weight' => 100,
         ));
+
       // Init class attribute.
       $class = 'kandyChat ';
       if (isset($attr['class'])) {
@@ -937,6 +945,7 @@ function kandy_shortcode_kandy_chat(array $attr) {
 
         $output = '<div class="' . $class . ' cd-tabs" id="' . $id . '" ' . filter_xss($html_options_attributes) . ' >' .
           '<input type="hidden" class="kandy_current_username" value="' . $user->name . '"/>' .
+          '<input type="hidden" class="kandy_user" value="' . $assign_user->user_id . '@' . $assign_user->domain_name . '"/>' .
           '<input id="get_name_for_contact_url" type="hidden" value="' . $get_name_for_contact_url . '" />' .
           '<input id="get_name_for_chat_content_url" type="hidden" value="' . $get_name_for_chat_content_url . '" />' .
           '<div class="chat-heading">
@@ -957,10 +966,21 @@ function kandy_shortcode_kandy_chat(array $attr) {
                         <div class="chat-with-message">
                             Chatting with <span class="chat-friend-name"></span>
                         </div>
+                        <button id="btn-create-group-modal" class="chat-create-group">Create group</button>
                         <div class="clear-fix"></div>
                     </div>' .
-          '<nav><ul class="cd-tabs-navigation"></ul></nav>' .
-          '<ul class="cd-tabs-content"></ul><div style="clear: both;"></div></div>';
+          '<nav> <ul class="cd-tabs-navigation contacts"></ul>
+                  <div class="separator hidden"><span>Groups</span></div>
+                  <ul class="cd-tabs-navigation groups"></ul>
+          </nav>' .
+          '<ul class="cd-tabs-content"></ul><div style="clear: both;"></div>';
+
+        $output .= '<div id="kandy-chat-create-group-modal" title="Create a new group">
+                                    <label for="right-label" class="right inline">Group name</label>
+                                    <input type="text" id="kandy-chat-create-session-name" placeholder="Group name">
+                                    <button id="kandy-chat-modal-button-create-group" class="button tiny">Create group</button>
+                                    <button id="kandy-chat-modal-button-close" class="button tiny">Cancel</button>
+                                </div></div>';
       }
       else {
         $output = t('Not found kandy user');
