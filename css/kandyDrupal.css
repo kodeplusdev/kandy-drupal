@@ -157,6 +157,11 @@
   width: 100%;
 }
 
+.kandyChat .chat-heading button.chat-create-group{
+  display: inline-block;
+  float: right;
+}
+
 .kandyChat .cd-tabs-navigation li a {
   text-indent: 16px;
 }
@@ -168,11 +173,11 @@
   text-indent: 16px;
 }
 
-.kandyChat .cd-tabs-navigation li.kandy-chat-status-available a {
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-available > a {
   background: url("../img/available.png") left center no-repeat;
 }
 
-.kandyChat .cd-tabs-navigation li.kandy-chat-status-offline a {
+.kandyChat .cd-tabs-navigation li.kandy-chat-status-offline > a {
   background: url("../img/offline.png") left center no-repeat;
 }
 
@@ -208,12 +213,14 @@
 .kandyChat .cd-tabs-navigation {
   list-style: none;
   margin: 0;
-  padding: 3px !important;
+  padding: 10px 5px !important;
+  overflow: auto;
 }
 
 .kandyChat .cd-tabs-navigation li {
   float: left;
-  width: 98%;
+  width: 96%;
+  position: relative;
 }
 
 .kandyChat .cd-tabs-navigation a {
@@ -382,4 +389,152 @@
   display: none;
   float: left;
   padding-left: 10px;
+}
+#kandy-chat-create-group-modal {
+  display: none;
+  width:400px;
+  height: 100px;
+  display: none;
+  position: absolute;
+  top: 5%;
+  left: 20%;
+  border: #000000;
+  background: #ccccff;
+  padding: 5px 10px;
+
+}
+
+#kandy-chat-create-group-modal input[type='text'] {
+  width: 96%;
+  padding: 5px 6px;
+}
+.kandy-chat #btn-create-group-modal {
+  padding: 3px 5px;
+}
+#kandy-chat-create-group-modal button {
+  display: inline-block;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.select2 {
+  min-width: 150px;
+  width: 30%;
+}
+
+.kandyChat .cd-tabs-navigation li .list-users {
+  list-style: none;
+  font-size: 14px;
+  display: none;
+}
+
+.kandyChat .cd-tabs-navigation li .list-users.expanding {
+  list-style: none;
+  display: block;
+  margin: 0px 5px;
+  padding: 5px 0px;
+}
+
+.kandyChat .cd-tabs-navigation li .list-users.expanding a {
+  padding: 0px 15px;
+}
+
+.kandyChat .cd-tabs-navigation li .list-users .remove{
+  top: 8px !important;
+}
+
+.kandyChat .cd-tabs-navigation li i.toggle{
+  font-size:12px;
+  margin-right:5px;
+}
+
+.kandyChat .cd-tabs-navigation li i.toggle.expand{
+  content: '&#8722;';
+}
+
+.kandyChat .cd-tabs-navigation li.group{
+  padding: 5px;
+  position: relative;
+
+}
+
+.kandyChat .cd-tabs-navigation li.group a{
+  display: inline;
+  font-size: 1em;
+}
+
+.kandyChat .cd-tabs-navigation li.group li a{
+  padding-left: 15px;
+}
+
+.kandyChat .cd-tabs-navigation li.group a.join:hover{
+  color: green;
+}
+.kandyChat .cd-tabs-navigation li.group a.leave:hover{
+  color: red;
+}
+
+.kandyChat .cd-tabs-navigation li.group .groupAction:hover, .kandyChat .cd-tabs-navigation li.group .remove:hover{
+  cursor: pointer;
+  color:red;
+}
+
+.kandyChat .cd-tabs-navigation li.group .groupAction, .kandyChat .cd-tabs-navigation li.group .remove{
+  float: right;
+  top: 0;
+  right: 0;
+  position: absolute;
+}
+
+.kandyChat .cd-tabs-navigation li.group .groupAction a{
+  line-height: 40px;
+}
+
+.kandyChat .cd-tabs-navigation.contacts li:last-of-type {
+  margin-bottom: 20px;
+}
+
+.separator {
+  font-size: 12px;
+  line-height: 0.5;
+  text-align: center;
+  width: 100%;
+}
+.separator span {
+  display: inline-block;
+  position: relative;
+  height: 12px;
+  overflow: visible;
+}
+.separator span:before,
+.separator span:after {
+  content: "";
+  position: absolute;
+  height: 3px;
+  background: #e4e4e4;
+  top: 0;
+  width: 100%;
+}
+.separator span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+.separator span:after {
+  left: 100%;
+  margin-left: 15px;
+}
+
+#myChat nav {
+  overflow-x: hidden;
+}
+
+.modalToggle {
+  margin-right: 23px;
+}
+
+.fa {
+  font-size: 15px;
+}
+.hidden {
+  display:none;
 }
