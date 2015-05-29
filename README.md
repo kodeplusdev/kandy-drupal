@@ -102,7 +102,8 @@ window.local_video_initialized_callback = function(videoTag) {
     //do some thing with your local video
 }
 
-window.presence_notification_callback = function(userId, state, description, activity) {
+window.presence_notification_callback =
+function(userId, state, description, activity) {
     //do something with status notification
 }
 ```
