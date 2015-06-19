@@ -464,30 +464,25 @@
   font-size: 1em;
 }
 
-.kandyChat .cd-tabs-navigation li.group li a {
-  padding-left: 15px;
+.kandyChat .cd-tabs-navigation li.group .groupAction:hover, .kandyChat .cd-tabs-navigation li.group .remove:hover{
+    cursor: pointer;
+    color:red;
 }
 
-.kandyChat .cd-tabs-navigation li.group a.join:hover {
-  color: green;
+.kandyChat .cd-tabs-navigation li.group .groupAction:hover, .kandyChat .cd-tabs-navigation li.group .approve:hover{
+    cursor: pointer;
+    color:green;
 }
 
-.kandyChat .cd-tabs-navigation li.group a.leave:hover {
-  color: red;
+.kandyChat .cd-tabs-navigation li.group .groupAction {
+    float: right;
+    top: 0;
+    right: 0;
+    position: absolute;
 }
 
-.kandyChat .cd-tabs-navigation li.group .groupAction:hover,
-.kandyChat .cd-tabs-navigation li.group .remove:hover {
-  cursor: pointer;
-  color: red;
-}
-
-.kandyChat .cd-tabs-navigation li.group .groupAction,
-.kandyChat .cd-tabs-navigation li.group .remove {
-  float: right;
-  top: 0;
-  right: 0;
-  position: absolute;
+.kandyChat .cd-tabs-navigation li.group .actions{
+    float: right;
 }
 
 .kandyChat .cd-tabs-navigation li.group .groupAction a {
