@@ -35,9 +35,9 @@ information:
 
 Below are default configuration:
 - **Javascript Library Url**:
-  https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/1.1.4/kandy.js
+  https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/2.2.1/kandy.js
 - **FCS Library Url**:
-  https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.0/fcs.js
+  https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.4/fcs.js
 - **Jquery Reload**: If you need to use kandy jquery library, set it to yes.
 
 **User assignment:**  help you synchronize kandy users
