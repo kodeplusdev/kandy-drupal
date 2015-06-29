@@ -58,12 +58,13 @@ function kandy_shortcode_shortcode_info() {
     'tips callback' => 'kandy_shortcode_kandy_chat_tip',
   );
 
-	$shortcodes['kandySms'] = array(
+  $shortcodes['kandySms'] = array(
     'title' => t('Kandy SMS'),
     'description' => t('Show kandy SMS'),
     'process callback' => 'kandy_shortcode_kandy_sms',
     'tips callback' => 'kandy_shortcode_kandy_sms_tip',
   );
+
   return $shortcodes;
 }
 

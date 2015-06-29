@@ -230,7 +230,7 @@ which help you send sms message to a phone number.
 
 **Kandy Sms**:
 ```sh
-[kandySms class="mySmsStyle" id="my-chat"][/kandySms]
+[kandySms class="mySmsStyle" id="my-sms"][/kandySms]
 ```
 
 ### Kandy API
