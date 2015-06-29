@@ -1391,6 +1391,35 @@ var kandy_loadGroupDetails = function (sessionId) {
 };
 
 /**
+ * Send SMS message.
+ *
+ * @param receiver
+ * @param sender
+ * @param message
+ * @param successCallback
+ * @param errorCallback
+ */
+var kandy_sendSms = function (receiver, sender, message, successCallback, errorCallback) {
+	KandyAPI.Phone.sendSMS(
+		receiver,
+		sender,
+		message,
+		function () {
+			if (typeof successCallback == 'function') {
+				successCallback();
+			}
+		},
+		function (message, status) {
+			console.log(message);
+			console.log(status);
+			if (typeof errorCallback == 'function') {
+				errorCallback(message, status);
+			}
+		}
+	);
+};
+
+/**
  * Kandy Ready.
  */
 jQuery(document).ready(function (jQuery) {
@@ -1556,4 +1585,34 @@ jQuery(document).ready(function (jQuery) {
       jQuery(this).siblings('.list-users').toggleClass('expanding');
     });
   }
+
+	/**
+	 * Click on send sms button.
+	 */
+	jQuery('.kandy-sms-send-btn').live('click', function () {
+		var wrapper = jQuery(this).closest('.kandy-sms-wrapper');
+		var to = wrapper.find('.kandy-sms-to').val();
+		var message = wrapper.find('.kandy-sms-content').val();
+		kandy_sendSms(to, "", message, function (data) {
+			alert('Sent!');
+		}, function (message, status) {
+			alert('SMS send failed!');
+			console.log(message);
+		});
+	});
+
+	/**
+	 * Validate send sms button.
+	 */
+	jQuery('.kandy-sms-content, .kandy-sms-to').live('input', function () {
+		var wrapper = jQuery(this).closest('.kandy-sms-wrapper');
+		var to = wrapper.find('.kandy-sms-to').val();
+		var message = wrapper.find('.kandy-sms-content').val();
+		var sendBtn = wrapper.find('.kandy-sms-send-btn');
+		if (to != '' && message != '') {
+			sendBtn.removeAttr('disabled');
+		} else {
+			sendBtn.attr('disabled', true);
+		}
+	});
 });

@@ -57,6 +57,13 @@ function kandy_shortcode_shortcode_info() {
     'process callback' => 'kandy_shortcode_kandy_chat',
     'tips callback' => 'kandy_shortcode_kandy_chat_tip',
   );
+
+	$shortcodes['kandySms'] = array(
+    'title' => t('Kandy SMS'),
+    'description' => t('Show kandy SMS'),
+    'process callback' => 'kandy_shortcode_kandy_sms',
+    'tips callback' => 'kandy_shortcode_kandy_sms_tip',
+  );
   return $shortcodes;
 }
 
@@ -170,6 +177,25 @@ function kandy_shortcode_kandy_chat_tip($format, $long) {
   $output = array();
   $output[] = '<p><strong>' . t('[kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]') . '</strong> ';
   $output[] = t('Inserts an Kandy Chat.') . '</p>';
+
+  return implode(' ', $output);
+}
+
+/**
+ * Display shortcode kandySms help.
+ *
+ * @param string $format
+ *   Format.
+ * @param string $long
+ *   Long.
+ *
+ * @return string
+ *   Kandy Chat Tip
+ */
+function kandy_shortcode_kandy_sms_tip($format, $long) {
+  $output = array();
+  $output[] = '<p><strong>' . t('[kandySms class="mySmsStyle" id ="my-chat"][/kandySms]') . '</strong> ';
+  $output[] = t('Inserts an Kandy Sms.') . '</p>';
 
   return implode(' ', $output);
 }
@@ -986,6 +1012,90 @@ function kandy_shortcode_kandy_chat(array $attr) {
     }
 
   }
+  return $output;
+
+}
+
+/**
+ * Kandy SMS Content.
+ *
+ * @param array $attr
+ *   Attribute Array.
+ *
+ * @return null|string
+ *   Kandy Chat.
+ */
+function kandy_shortcode_kandy_sms(array $attr) {
+  $output = "";
+  // Do not render shortcode when edit page.
+  if (arg(0) == 'node' && arg(2) == 'edit') {
+    return FALSE;
+  }
+  if ( ! empty( $attr )) {
+    $result = kandy_setup();
+    if ($result['success']) {
+
+      // Init class attribute.
+      $class = '';
+      if (isset( $attr['class'] )) {
+        $class .= ' ' . filter_xss($attr['class']);
+      }
+
+      // Init id attribute.
+      $id = 'kandy-sms' . rand() . ' ';
+      if (isset( $attr['id'] )) {
+        $id = filter_xss($attr['id']);
+      }
+
+      $message_holder = 'Message...';
+      if (isset($attr['messageholder'])) {
+        $message_holder = ($attr['messageholder']);
+      }
+
+      $number_holder = 'Number...';
+      if (isset($attr['numberholder'])) {
+        $number_holder = ($attr['numberholder']);
+      }
+
+      $btn_send_label = 'Send';
+      if (isset($attr['btnsendlabel']) && $attr['btnsendlabel'] != '') {
+        $btn_send_label = ($attr['btnsendlabel']);
+      }
+
+      // Init htmlOptions attribute.
+      $html_options_attributes = '';
+
+      foreach ($attr as $key => $value) {
+        if ($key != "id" && $key != "class" && $key != "title") {
+          $html_options_attributes .= $key . "= '" . $value . "'";
+        }
+      }
+      // Get current kandy user.
+      global $user;
+      $assign_user = kandy_get_assign_user($user->uid);
+      if ($assign_user) {
+        $output = '<div class="kandy-sms-wrapper' . $class . '" ' . filter_xss($html_options_attributes) . '>
+            <div class="kandy-sms-msg-content-wrapper">
+                <textarea class="kandy-sms-content" placeholder="' . $message_holder . '" name="msg" id="kandy-sms-content-' . $id . '" cols="50" rows="3"></textarea>
+            </div>
+            <div class="kandy-sms-to-wrapper">
+                <input class="kandy-sms-to" type="text" placeholder="' . $number_holder . '" name="phoneNum" id="kandy-sms-to-' . $id . '">
+            </div>
+            <input disabled class="kandy-sms-send-btn" id="kandy-sms-send-btn' . $id . '" type="button" value="' . $btn_send_label . '"/>
+        </div>';
+      }
+      else {
+        $output = t('Not found kandy user');
+      }
+    }
+    else {
+      $output
+        = '<p>' . t('Can not setup kandy chat. Please contact administrator')
+          . '<p>';
+    }
+
+  }
+
   return $output;
 
 }

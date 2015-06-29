@@ -182,10 +182,22 @@ which help you send instant message to your friend in contact.
 [/kandyChat]
   ```
 
+**Kandy Chat**: make a kandy sms component
+which help you send sms message to a phone number.
+```sh
+[kandySms
+        class = "mySmsStyle"
+        id = "my-sms"
+        messageHolder = "Message..."
+        numberHolder = "Number..."
+        btnSendLabel = "Send"
+[/kandySms]
+  ```
+
 ### Quick Examples:
 **Kandy Voice Call**
 ```sh
-[kandyVoiceButton class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+[kandyVoiceButton class="myButtonStyle" id="my-button"][/kandyVoiceButton]
 ```
 
 **Kandy Voice Call PSTN**
@@ -214,6 +226,11 @@ which help you send instant message to your friend in contact.
 **Kandy Chat**:
 ```sh
 [kandyChat class="myChatStyle" id="my-chat"][/kandyChat]
+```
+
+**Kandy Sms**:
+```sh
+[kandySms class="mySmsStyle" id="my-chat"][/kandySms]
 ```
 
 ### Kandy API
