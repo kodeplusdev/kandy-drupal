@@ -391,10 +391,9 @@
   padding-left: 10px;
 }
 
-#kandy-chat-create-group-modal {
+.kandyModal {
   display: none;
-  width: 400px;
-  height: 100px;
+  width: 160px;
   display: none;
   position: absolute;
   top: 5%;
@@ -404,7 +403,16 @@
   padding: 5px 10px;
 }
 
-#kandy-chat-create-group-modal input[type='text'] {
+.kandyModal .buttons {
+    margin-top: 10px;
+}
+
+.kandyModal hr {
+    border: 1px solid #eeeeee;
+    height: 0;
+}
+
+.kandyModal input[type='text'] {
   width: 96%;
   padding: 5px 6px;
 }
@@ -413,7 +421,7 @@
   padding: 3px 5px;
 }
 
-#kandy-chat-create-group-modal button {
+.kandyModal button {
   display: inline-block;
   padding: 5px 10px;
   cursor: pointer;
@@ -541,4 +549,9 @@
 
 .hidden {
   display: none;
+}
+
+.kandyChat .groups .list-users li a span {
+    font-size: 11px;
+    font-style: italic;
 }
