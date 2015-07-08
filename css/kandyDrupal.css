@@ -393,8 +393,7 @@
 
 #kandy-chat-create-group-modal {
   display: none;
-  width: 400px;
-  height: 100px;
+  width: 160px;
   display: none;
   position: absolute;
   top: 5%;
@@ -541,4 +540,9 @@
 
 .hidden {
   display: none;
+}
+
+.kandyChat .groups .list-users li a span {
+    font-size: 11px;
+    font-style: italic;
 }

@@ -247,12 +247,14 @@ function kandy_setup() {
       ));
 
       drupal_add_js(
-        "if (window.login == undefined){
-        window.login = function() {
-                                KandyAPI.Phone.login('" . $kandy_api_key . "', '" . $user_name . "', '" . $password . "');
-                    };
-                }",
-        'inline'
+          array(
+              'loginInfo' => array(
+                  'apiKey'    => $kandy_api_key,
+                  'username'  => $user_name,
+                  'password'  => $password
+              )
+          ),
+          'setting'
       );
 
       $kandy_public_path = "public://kandy";

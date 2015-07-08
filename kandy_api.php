@@ -35,9 +35,7 @@ function kandy_get_user_data() {
       continue;
     }
 
-    $url = url('/admin/config/content/kandy/assignment/edit',
-      array('query' => array('id' => $row->uid), 'absolute' => TRUE)
-    );
+    $url = url("/admin/config/content/kandy/assignment/edit/{$row->uid}");
 
     $kandy_user = kandy_get_assign_user($row->uid);
 
@@ -74,7 +72,7 @@ function kandy_get_domain_access_token() {
     'domain_api_secret' => $kandy_domain_secret_key,
   );
 
-  $fields_string = http_build_query($params);
+  $fields_string = drupal_http_build_query($params);
   $url = KANDY_API_BASE_URL . 'domains/accesstokens?' . $fields_string;
 
   try {
@@ -90,7 +88,7 @@ function kandy_get_domain_access_token() {
   }
 
   $response = json_decode($response->data);
-  if (isset($response->message) && $response->message == 'success') {
+  if (isset($response->message) && ($response->message == 'success')) {
     return array(
       'success' => TRUE,
       'message' => '',
@@ -127,7 +125,7 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
         'key' => $domain_access_token,
       );
 
-      $fields_string = http_build_query($params);
+      $fields_string = drupal_http_build_query($params);
       $url = KANDY_API_BASE_URL . 'domains/users?' . $fields_string;
 
       try {
@@ -143,7 +141,7 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
       }
       $response = json_decode($response->data);
 
-      if ($response) {
+      if ($response && isset($response->result)) {
         $data = $response->result;
         $result = $data->users;
       }
@@ -176,9 +174,7 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
         }
       }
       $query_data = $query->execute();
-      foreach ($query_data as $record) {
-        $result[] = $record;
-      }
+      $result = $query_data->fetchAll();
     }
 
   }
@@ -295,7 +291,7 @@ function kandy_get_domain() {
       'key' => $domain_access_token,
       'domain_api_key' => $kandy_domain_api_key,
     );
-    $fields_string = http_build_query($params);
+    $fields_string = drupal_http_build_query($params);
     $url = KANDY_API_BASE_URL . 'accounts/domains/details?' . $fields_string;
 
     try {
@@ -312,7 +308,7 @@ function kandy_get_domain() {
     }
 
     $response = json_decode($request->data);
-    if ($response->message == 'success') {
+    if (isset($response->message) && ($response->message == 'success')) {
       variable_set('kandy_domain_name', $response->result->domain->domain_name);
       return array(
         'success' => TRUE,
@@ -542,18 +538,14 @@ function kandy_logout() {
       drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
 
       drupal_add_js(
-        "if (window.login == undefined){
-        window.login = function() {
-                                KandyAPI.Phone.login('" . $kandy_api_key . "', '" . $user_name . "', '" . $password . "');
-                    };
-                }
-
-
-                window.kandy_logout = function() {
-                                        KandyAPI.Phone.logout();
-                    };
-                ",
-        'inline'
+          array(
+              'loginInfo' => array(
+                'apiKey'    => $kandy_api_key,
+                'username'  => $user_name,
+                'password'  => $password
+              )
+          ),
+          'setting'
       );
 
       drupal_add_js($module_path . '/js/kandyDrupal.js');

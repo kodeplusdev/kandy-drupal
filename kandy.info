@@ -4,3 +4,4 @@ JS SDK and Rest APIs"
 package = Kandy
 core = 7.x
 configure = admin/config/content/kandy
+dependencies[] = shortcode
