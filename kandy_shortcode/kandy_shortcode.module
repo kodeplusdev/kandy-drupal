@@ -236,11 +236,6 @@ function kandy_setup() {
           'weight' => 2,
         ));
 
-      drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL), array(
-        'group' => 'kandy',
-        'weight' => 3,
-      ));
-
       drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL), array(
         'group' => 'kandy',
         'weight' => 4,

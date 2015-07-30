@@ -6,7 +6,6 @@
 
 define('KANDY_API_BASE_URL', 'https://api.kandy.io/v1.2/');
 define('KANDY_JS_URL', "https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/2.2.1/kandy.js");
-define('KANDY_FCS_URL', "https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.4/fcs.js");
 define('KANDY_JQUERY', "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 define('KANDY_FONT_AWESOME', "http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
 define('KANDY_SELECT2_PATH', "https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/");
@@ -378,16 +377,6 @@ function kandy_form($form, &$form_state) {
     '#required' => TRUE,
   );
 
-  $form['kandy_fcs_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Kandy FCS Javascript Url'),
-    '#default_value' => variable_get('kandy_fcs_url', KANDY_FCS_URL),
-    '#size' => 100,
-    '#maxlength' => 255,
-    '#description' => t('The javascript fcs api url'),
-    '#required' => TRUE,
-  );
-
   $form['kandy_jquery_reload'] = array(
     '#type' => 'select',
     '#title' => t('Jquery Reload'),
@@ -513,14 +502,12 @@ function kandy_get_name_for_contact_callback() {
  */
 function kandy_get_name_for_chat_content_callback() {
   module_load_include('php', 'kandy', 'kandy_api');
-  $messages = array();
   if (isset($_POST['data'])) {
-    $messages = $_POST['data'];
-    foreach ($messages as &$message) {
-      if (!isset($message['sender'])) {
-        continue;
-      }
-      $sender = $message['sender'];
+    $message = $_POST['data'];
+    if (!isset($message['sender'])) {
+      return;
+    }
+    $sender = $message['sender'];
       $user = kandy_get_user_by_user_id($sender['user_id']);
       $display_name = "";
       if ($user) {
@@ -529,13 +516,12 @@ function kandy_get_name_for_chat_content_callback() {
           $display_name = $result->name;
         }
       }
-      $sender['display_name'] = $display_name;
-      $sender['contact_user_name'] = $sender['full_user_id'];
-      $message['sender'] = $sender;
-    }
+    $sender['display_name'] = $display_name;
+    $sender['contact_user_name'] = $sender['full_user_id'];
+    $message['sender'] = $sender;
   }
 
-  echo drupal_json_encode($messages);
+  echo drupal_json_encode($message);
   exit(0);
 }
 

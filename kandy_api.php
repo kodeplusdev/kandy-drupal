@@ -534,7 +534,6 @@ function kandy_logout() {
       if (variable_get('kandy_jquery_reload', 1)) {
         drupal_add_js(KANDY_JQUERY);
       }
-      drupal_add_js(variable_get('kandy_fcs_url', KANDY_FCS_URL));
       drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL));
 
       drupal_add_js(
