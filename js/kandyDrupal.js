@@ -86,6 +86,11 @@ kandy_login_success_callback = function () {
     setTimeout(updateUserGroupStatus, 3000);
 
   }
+
+  if(jQuery("#coBrowsing").length){
+    kandy_getOpenSessionsByType("cobrowsing",loadSessionList);
+  }
+
   // Call user callback.
   if (typeof login_success_callback == 'function') {
     login_success_callback();
@@ -1392,13 +1397,175 @@ var login = function (apiKey, username, password, successCallback, failCallback)
       failCallback();
     }
   })
-}
+};
+
+
+
+/**
+ * onJoinApprove event use for co-browsing session
+ * @param notification
+ */
+var kandy_onSessionJoinApprove = function(notification){
+  if(typeof sessionJoinApprovedCallback !== 'undefined'){
+    sessionJoinApprovedCallback(notification.session_id);
+  }
+};
+
+/**
+ * Approve join session request
+ * @param sessionId
+ * @param userId
+ * @param successCallback
+ */
+var kandy_ApproveJoinSession = function(sessionId, userId, successCallback){
+  KandyAPI.Session.acceptJoinRequest(sessionId, userId,
+    function () {
+      if(typeof successCallback == "function"){
+        successCallback(sessionId);
+      }
+    },
+    function (msg, code) {
+      console.log('Error:'+code+': '+msg);
+    }
+  );
+};
+
+var kandy_createSession = function(config, successCallback, failCallback) {
+  KandyAPI.Session.create(
+    config,
+    function(result){
+      if(typeof successCallback == "function"){
+        activateSession(result.session_id);
+        successCallback(result);
+      }
+    },
+    function(){
+      if(typeof failCallback == "function"){
+        failCallback();
+      }
+    }
+  )
+};
+
+var kandy_getOpenSessionsByType = function(sessionType, successCallback){
+  KandyAPI.Session.getOpenSessionsByType (
+    sessionType,
+    function(result){
+      for(var i = 0; i < result.sessions.length; i++){
+        if(result.sessions[i].session_type != sessionType){
+          result.sessions.splice(i,1);
+        }
+      }
+      if(typeof successCallback == "function") {
+        successCallback(result.sessions);
+      }
+    },
+    function(msg, code){
+
+    }
+  );
+};
+
+var getCoBrowsingSessions = function() {
+  kandy_getOpenSessionsByType('cobrowsing', loadSessionList);
+};
+
+var activateSession = function(sessionId){
+  KandyAPI.Session.activate(
+    sessionId,
+    function(){
+      //success callback
+      console.log('activate group successful');
+    },function(){
+      //fail callback
+      console.log('Error activating group');
+    }
+  );
+
+};
+
+var kandy_getSessionInfo = function(sessionId, successCallback, failCallback){
+  KandyAPI.Session.getInfoById(sessionId,
+    function(result){
+      if(typeof successCallback == 'function'){
+        successCallback(result);
+      }
+    },
+    function (msg, code) {
+      if(typeof failCallback == 'function' ){
+        failCallback(msg,code);
+      }
+    }
+  )
+};
+
+/**
+ * @param sessionId
+ * @param holder - id of browsing holder
+ */
+var kandy_startCoBrowsingAgent = function(sessionId, holder) {
+  KandyAPI.CoBrowse.startBrowsingAgent(sessionId, holder);
+};
+
+var kandy_stopCoBrowsingAgent = function() {
+  KandyAPI.CoBrowse.stopBrowsingAgent();
+};
+
+var kandy_startCoBrowsing = function(sessionId) {
+  KandyAPI.CoBrowse.startBrowsingUser(sessionId);
+};
+
+var kandy_stopCoBrowsing = function() {
+  KandyAPI.CoBrowse.stopBrowsingUser();
+};
+
+/**
+ * Terminate a session
+ * @param sessionId
+ */
+var kandy_terminateSession = function(sessionId, successCallback){
+  KandyAPI.Session.terminate(
+    sessionId,
+    successCallback,
+    function (msg, code) {
+      console.log('Terminate session fail : '+code+': '+msg);
+    }
+  );
+};
+
+var kandy_joinSession = function (sessionId, successCallback){
+  KandyAPI.Session.join(
+    sessionId,
+    {},
+    function () {
+      if(typeof successCallback == "function"){
+        successCallback(sessionId);
+      }
+    },
+    function (msg, code) {
+      console.log(code + ": " + msg);
+    }
+  );
+};
+
+var kandy_LeaveSession= function(sessionId, successCallBack){
+  KandyAPI.Session.leave(sessionId,
+    '',
+    function(){
+      if(typeof successCallBack == 'function'){
+        successCallBack(sessionId);
+      }
+    },
+    function(){
+      console.log('Leave group fail');
+    }
+  )
+};
 
 /**
  * Kandy Ready.
  */
 jQuery(document).ready(function (jQuery) {
-
   // Register kandy widget event.
   setup();
   login(Drupal.settings.loginInfo.apiKey, Drupal.settings.loginInfo.username, Drupal.settings.loginInfo.password, kandy_login_success_callback, kandy_login_failed_callback);

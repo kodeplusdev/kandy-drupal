@@ -65,6 +65,13 @@ function kandy_shortcode_shortcode_info() {
     'tips callback' => 'kandy_shortcode_kandy_sms_tip',
   );
 
+  $shortcodes['kandyCoBrowsing'] = array(
+    'title' => t('Kandy Co-browsing'),
+    'description' => t('Show kandy Co-browsing'),
+    'process callback' => 'kandy_shortcode_kandy_cobrowsing',
+    'tips callback' => 'kandy_shortcode_kandy_cobrowsing_tip'
+  );
+
   return $shortcodes;
 }
 
@@ -201,6 +208,14 @@ function kandy_shortcode_kandy_sms_tip($format, $long) {
   return implode(' ', $output);
 }
 
+function kandy_short_code_kandy_cobrowsing_tip($format, $long) {
+  $output = array();
+  $output[] = '<p><strong>' . t('[kandyCoBrowsing class="myCoBrowsingStyle" id ="co-browsing"][/kandyCoBrowsing]') . '</strong> ';
+  $output[] = t('Inserts an Kandy Co-browsing.') . '</p>';
+
+  return implode(' ', $output);
+}
+
 /**
  * Kandy Setup load js, login.
  */
@@ -220,6 +235,7 @@ function kandy_setup() {
       $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
 
       if (variable_get('kandy_jquery_reload', 1)) {
+        drupal_add_js('var jq = jQuery.noConflict();', 'inline');
         drupal_add_js(KANDY_JQUERY, array(
           'group' => 'kandy',
           'weight' => 1,
@@ -1109,7 +1125,76 @@ function kandy_shortcode_kandy_sms(array $attr) {
     }
 
   }
-
   return $output;
 
+}
+
+function kandy_shortcode_kandy_cobrowsing($attr)
+{
+  module_load_include('php', 'kandy', 'kandy_api');
+  global $user;
+  $assignUser = kandy_get_assign_user($user->uid);
+  $output = "";
+  $defaults = array(
+    'class'                     => '',
+    'holder_id'                  => 'cobrowsing-holder',
+    'btn_terminate_id'            => 'btnTerminateSession',
+    'btn_stop_id'                 => 'btnStopCoBrowsing',
+    'btn_leave_id'                => 'btnLeaveSession',
+    'btn_start_browsing_viewer_id'  => 'btnStartCoBrowsingViewer',
+    'btn_start_cobrowsing_id'      => 'btnStartCoBrowsing',
+    'btn_connect_session_id'       => 'btnConnectSession',
+    'current_user'               => $assignUser,
+    'session_list_id'             => 'openSessions'
+  );
+
+  $params = array_merge($defaults,$attr);
+
+  if(!empty($params)){
+    $result = kandy_setup();
+    // get current kandy user
+    if($result['success']){
+      if($assignUser) {
+        $module_path = drupal_get_path('module', 'kandy');
+        drupal_add_library('system','ui.dialog');
+        drupal_add_js('var cobrowsing = ' . json_encode($params) . ';', 'inline');
+        drupal_add_js(KANDY_COBROWSING_JS, array(
+          'group' => 'kandy',
+          'weight' => 4
+        ));
+        drupal_add_js($module_path . '/js/kandyCoBrowsing.js', array(
+          'group' => 'kandy',
+          'weight' => 5
+        ));
+
+        $output = "
+                <div id=\"coBrowsing\" class='{$params["class"]}'>
+                    <button class=\"small tiny\" id=\"btnCreateSession\">Create Session</button>
+                    <div>
+                        <div class=\"openSessionWrap\">
+                            <label>Available sessions</label>
+                            <select id=\"{$params['session_list_id']}\"></select>
+                        </div>
+                        <div class=\"buttons\">
+                            <button class=\"small\" title='join session' id=\"{$params['btn_connect_session_id']}\">Connect</button>
+                            <button class=\"small\" title='Terminate session' id=\"{$params['btn_terminate_id']}\">Terminate</button>
+                            <button class=\"small\" title='Start co-browsing' id=\"{$params['btn_start_cobrowsing_id']}\">Start</button>
+                            <button class=\"small\" title='Start co-browsing viewer' id=\"{$params['btn_start_browsing_viewer_id']}\">Start viewer</button>
+                            <button class=\"small\" title='Stop co-browsing' id=\"{$params['btn_stop_id']}\">Stop</button>
+                            <button class=\"small\" title='Leave session' id=\"{$params['btn_leave_id']}\">Leave</button>
+                        </div>
+                    </div>
+                    <div id=\"{$params['holder_id']}\"></div>
+                </div>
+                <div id=\"kandy-chat-create-group-modal\" title=\"Create a session\">
+                    <label for=\"right-label\" class=\"right inline\">Session name</label>
+                    <input type=\"text\" id=\"kandy-chat-create-session-name\" placeholder=\"Session name\">
+                </div>";
+
+      }
+    } else {
+      $output = '<p>' . t('Could not setup Kandy CoBrowsing. Please contact administrator') . '<p>';
+    }
+  }
+  return $output;
 }
