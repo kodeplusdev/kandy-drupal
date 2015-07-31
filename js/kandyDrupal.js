@@ -698,7 +698,9 @@ var chatMessageTimeStamp = 0;
 var listUserClass = 'list-users';
 var liTabGroupsWrap = liTabWrapSelector + '.groups';
 var liTabContactWrap = liTabWrapSelector + '.contacts';
-var groupSeparator = '.' + wrapDivClass + ' .separator';
+var groupSeparator = '.' + wrapDivClass + ' .separator.group';
+var liTabLiveChatWrap = liTabWrapSelector + '.livechats';
+var liveChatGroupSeparator = '.' + wrapDivClass + ' .separator.livechatgroup';
 var displayNames = [];
 var groupNames = [];
 var usersStatus = {};
@@ -898,7 +900,12 @@ var emptyContact = function () {
  * @param user
  */
 var prependContact = function (user) {
+  var isLiveChat = false;
   var username = user.contact_user_name;
+  if(typeof user.user_email != "undefined"){
+    isLiveChat = true;
+    username = user.user_email;
+  }
 
   var liParent = jQuery(liTabContactWrap + " li a[" + userHoldingAttribute + "='" + username + "']").parent();
   var liContact = "";
@@ -908,10 +915,16 @@ var prependContact = function (user) {
   else {
     liContact = getLiContact(user);
   }
-
-  jQuery(liTabContactWrap).prepend(liContact);
+  if(!isLiveChat) {
+    jQuery(liTabContactWrap).prepend(liContact);
+  } else {
+    jQuery(liTabLiveChatWrap).prepend(liContact);
+    if(jQuery(liveChatGroupSeparator).hasClass('hidden')){
+      jQuery(liveChatGroupSeparator).removeClass('hidden');
+    }
+  }
   if (!jQuery(liContentWrapSelector + " li[" + userHoldingAttribute + "='" + username + "']").length) {
-    var liContent = getLiContent(username);
+    var liContent = getLiContent(username, user.contact_user_name);
     jQuery(liContentWrapSelector).prepend(liContent);
   }
 };
@@ -941,7 +954,9 @@ var setFocusContact = function (user) {
  */
 var move_contact_to_top = function (user) {
   var username = user.contact_user_name;
-
+  if(typeof user.user_email != "undefined"){
+    username = user.user_email;
+  }
   var contact = jQuery(liTabWrapSelector + " li a[" + userHoldingAttribute + "='" + username + "']").parent();
   var active = contact.hasClass(activeClass);
 
@@ -1560,6 +1575,12 @@ var kandy_LeaveSession= function(sessionId, successCallBack){
       console.log('Leave group fail');
     }
   )
+};
+
+var heartBeat = function(interval){
+  return setInterval(function(){
+    jQuery.get('/kandy/kandy_still_alive');
+  },parseInt(interval));
 };
 
 /**

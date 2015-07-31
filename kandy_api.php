@@ -614,3 +614,87 @@ function kandy_publish_assets() {
   }
 
 }
+
+function kandy_get_chat_agents() {
+  // We are extending the PagerDefault class here.
+  // It has a default of 10 rows per page.
+  // The extend('PagerDefault') part here does all the magic.
+  $agentType = KANDY_USER_TYPE_AGENT;
+  $query = db_select("kandy_users", "ku")->extend('PagerDefault');
+  $query->join("users", "u", "u.uid = ku.main_user_id");
+  $query->leftJoin("kandy_live_chat_rate","r", "u.uid = r.main_user_id");
+  $query->condition("ku.type",$agentType,"=");
+  $query->fields("ku", array('id', "user_id", "main_user_id"));
+  $query->fields("r", array("comment"));
+  $query->addExpression("avg(point)","average");
+  $query->fields("u", array("name"));
+  $query->groupBy('id');
+  $result = $query->execute();
+  $rows = array();
+  foreach ($result as $row) {
+    $urlRemove = url("/admin/config/content/kandy/livechat/removeAgent/{$row->id}");
+    $urlView = url("/admin/config/content/kandy/livechat/viewAgent/{$row->main_user_id}");
+    $tableCell = array(
+      $row->id,
+      $row->name,
+      $row->user_id,
+      $row->average,
+      l('Remove', $urlRemove).'&nbsp&nbsp'.l('View', $urlView),
+    );
+    $rows[] = $tableCell;
+  }
+  return $rows;
+
+}
+
+function kandy_get_not_agent() {
+  $query = db_select("users", 'u');
+  $query->join("kandy_users", "ku","u.uid = ku.main_user_id");
+  $query->fields('ku', array('id'));
+  $query->fields('u', array('name'));
+  $query->condition(db_or()->isNull('ku.type')->condition('ku.type', KANDY_USER_TYPE_AGENT, '<>'));
+  $result = $query->execute()->fetchAllKeyed();
+  return $result;
+}
+
+function kandy_get_agent_progress($main_user_id) {
+  $query = db_select('kandy_live_chat_rate','kr');
+  $query->fields('kr');
+  $query->condition('main_user_id',$main_user_id,'=');
+  $result = $query->execute();
+  $rows = array();
+  foreach($result as $row) {
+    $tableCell = array(
+      $row->id,
+      $row->rated_by,
+      date('m/d/Y H:i:s',$row->rated_time),
+      $row->point,
+      $row->comment
+    );
+    $rows[] = $tableCell;
+  }
+  return $rows;
+}
+
+function kandy_log_user_login($kandy_user_id, $user_type, $logType = KANDY_USER_STATUS_ONLINE) {
+  $now = time();
+  $affectedRow = db_update("kandy_user_login")
+    ->fields(array(
+      'status'  => $logType,
+      'time'    => $now
+    ))
+    ->condition("kandy_user_id",$kandy_user_id,'=')
+    ->execute();
+  if(!$affectedRow) {
+    db_insert("kandy_user_login")
+      ->fields(array(
+        'kandy_user_id' => $kandy_user_id,
+        'type'          => $user_type,
+        'status'        => $logType,
+        'browser_agent' => $_SERVER['HTTP_USER_AGENT'],
+        'ip_address'    => $_SERVER['REMOTE_ADDR'],
+        'time'          => $now
+      ))
+      ->execute();
+  }
+}

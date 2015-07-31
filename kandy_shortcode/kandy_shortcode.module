@@ -14,7 +14,8 @@
  * @return mixed
  *   Array info.
  */
-function kandy_shortcode_shortcode_info() {
+function kandy_shortcode_shortcode_info()
+{
 
   $shortcodes['kandyVideo'] = array(
     'title' => t('Kandy Video'),
@@ -72,6 +73,12 @@ function kandy_shortcode_shortcode_info() {
     'tips callback' => 'kandy_shortcode_kandy_cobrowsing_tip'
   );
 
+  $shortcodes['kandyLiveChat'] = array(
+    'title' => t('Kandy Live Chat'),
+    'description' => t('Show kandy live chat widget'),
+    'process callback' => 'kandy_shortcode_kandy_livechat'
+  );
+
   return $shortcodes;
 }
 
@@ -86,7 +93,8 @@ function kandy_shortcode_shortcode_info() {
  * @return string
  *   Kandy Video Tip.
  */
-function kandy_shortcode_kandy_video_tip($format, $long) {
+function kandy_shortcode_kandy_video_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyVideo title="Me" id="myVideo"][/kandyVideo]') . '</strong> ';
   $output[] = t('Inserts an Kandy Video.') . '</p>';
@@ -105,7 +113,8 @@ function kandy_shortcode_kandy_video_tip($format, $long) {
  * @return string
  *   Kandy video button tip.
  */
-function kandy_shortcode_kandy_video_button_tip($format, $long) {
+function kandy_shortcode_kandy_video_button_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyVideoButton class="myButtonStyle"][/kandyVideoButton]') . '</strong> ';
   $output[] = t('Inserts an Kandy Video Button. Two kandy video shortcode should be inline.') . '</p>';
@@ -124,7 +133,8 @@ function kandy_shortcode_kandy_video_button_tip($format, $long) {
  * @return string
  *   Kandy Video tip.
  */
-function kandy_shortcode_kandy_voice_button_tip($format, $long) {
+function kandy_shortcode_kandy_voice_button_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyVoiceButton class= "myButtonStyle" id="my-button"][/kandyVoiceButton]') . '</strong> ';
   $output[] = t('Inserts an Kandy Voice Button.') . '</p>';
@@ -143,7 +153,8 @@ function kandy_shortcode_kandy_voice_button_tip($format, $long) {
  * @return string
  *   Kandy Status.
  */
-function kandy_shortcode_kandy_status_tip($format, $long) {
+function kandy_shortcode_kandy_status_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyStatus class="myStatusStyle" id="myStatus"][/kandyStatus]') . '</strong> ';
   $output[] = t('Inserts an Kandy Status.') . '</p>';
@@ -162,7 +173,8 @@ function kandy_shortcode_kandy_status_tip($format, $long) {
  * @return string
  *   Kandy AddressBook Tip
  */
-function kandy_shortcode_kandy_address_book_tip($format, $long) {
+function kandy_shortcode_kandy_address_book_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyAddressBook class="myAddressBookStyle" id="myContact"][/kandyAddressBook]') . '</strong> ';
   $output[] = t('Inserts an Kandy AddressBook.') . '</p>';
@@ -181,7 +193,8 @@ function kandy_shortcode_kandy_address_book_tip($format, $long) {
  * @return string
  *   Kandy Chat Tip
  */
-function kandy_shortcode_kandy_chat_tip($format, $long) {
+function kandy_shortcode_kandy_chat_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyChat class="myChatStyle" id ="my-chat"][/kandyChat]') . '</strong> ';
   $output[] = t('Inserts an Kandy Chat.') . '</p>';
@@ -200,7 +213,8 @@ function kandy_shortcode_kandy_chat_tip($format, $long) {
  * @return string
  *   Kandy Chat Tip
  */
-function kandy_shortcode_kandy_sms_tip($format, $long) {
+function kandy_shortcode_kandy_sms_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandySms class="mySmsStyle" id ="my-chat"][/kandySms]') . '</strong> ';
   $output[] = t('Inserts an Kandy Sms.') . '</p>';
@@ -208,7 +222,8 @@ function kandy_shortcode_kandy_sms_tip($format, $long) {
   return implode(' ', $output);
 }
 
-function kandy_short_code_kandy_cobrowsing_tip($format, $long) {
+function kandy_short_code_kandy_cobrowsing_tip($format, $long)
+{
   $output = array();
   $output[] = '<p><strong>' . t('[kandyCoBrowsing class="myCoBrowsingStyle" id ="co-browsing"][/kandyCoBrowsing]') . '</strong> ';
   $output[] = t('Inserts an Kandy Co-browsing.') . '</p>';
@@ -219,7 +234,8 @@ function kandy_short_code_kandy_cobrowsing_tip($format, $long) {
 /**
  * Kandy Setup load js, login.
  */
-function kandy_setup() {
+function kandy_setup()
+{
   if (arg(0) == 'node' && arg(2) == 'edit') {
     return FALSE;
   }
@@ -243,14 +259,14 @@ function kandy_setup() {
       }
 
       drupal_add_css(KANDY_SELECT2_PATH . 'select2.min.css', array(
-          'group' => 'kandy',
-          'weight' => 2,
-          'type' => 'external',
-        ));
+        'group' => 'kandy',
+        'weight' => 2,
+        'type' => 'external',
+      ));
       drupal_add_js(KANDY_SELECT2_PATH . 'select2.min.js', array(
-          'group' => 'kandy',
-          'weight' => 2,
-        ));
+        'group' => 'kandy',
+        'weight' => 2,
+      ));
 
       drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL), array(
         'group' => 'kandy',
@@ -258,14 +274,14 @@ function kandy_setup() {
       ));
 
       drupal_add_js(
-          array(
-              'loginInfo' => array(
-                  'apiKey'    => $kandy_api_key,
-                  'username'  => $user_name,
-                  'password'  => $password
-              )
-          ),
-          'setting'
+        array(
+          'loginInfo' => array(
+            'apiKey' => $kandy_api_key,
+            'username' => $user_name,
+            'password' => $password
+          )
+        ),
+        'setting'
       );
 
       $kandy_public_path = "public://kandy";
@@ -275,24 +291,22 @@ function kandy_setup() {
       }
 
       drupal_add_js($module_path . '/js/kandyDrupal.js', array(
-          'group' => 'kandy',
-          'weight' => 1,
-        ));
+        'group' => 'kandy',
+        'weight' => 1,
+      ));
       drupal_add_css($module_path . '/css/kandyDrupal.css', array(
-          'group' => 'kandy',
-          'weight' => 1,
-        ));
+        'group' => 'kandy',
+        'weight' => 1,
+      ));
       $result = array("success" => TRUE, "message" => '');
-    }
-    else {
+    } else {
       $result = array(
         "success" => FALSE,
         "message" => t('Can not found kandy user'),
       );
     }
 
-  }
-  else {
+  } else {
     $result = array(
       "success" => FALSE,
       "message" => t('Can not found kandy module'),
@@ -305,7 +319,8 @@ function kandy_setup() {
 /**
  * Kandy shortcode init every page, clear cace before render shortcode.
  */
-function kandy_shortcode_init() {
+function kandy_shortcode_init()
+{
   if ($node = menu_get_object()) {
     if (isset($node->nid)) {
       $nid = $node->nid;
@@ -324,7 +339,8 @@ function kandy_shortcode_init() {
  * @return null|string
  *   Kandy Shortcode Video.
  */
-function kandy_shortcode_kandy_video(array $attr) {
+function kandy_shortcode_kandy_video(array $attr)
+{
   if (arg(0) == 'node' && arg(2) == 'edit') {
     return FALSE;
   }
@@ -335,8 +351,7 @@ function kandy_shortcode_kandy_video(array $attr) {
       // Init title attribute.
       if (isset($attr['title'])) {
         $title = $attr['title'];
-      }
-      else {
+      } else {
         $title = 'Kandy Video';
       }
 
@@ -368,8 +383,7 @@ function kandy_shortcode_kandy_video(array $attr) {
       $output .= '<p class="title">' . $title . '</p>';
       $output .= '<span class="video" id="' . $id . '"  ' . $html_options_attributes . '></span>';
       $output .= '</div>';
-    }
-    else {
+    } else {
       $output = '<p>' . t("Can not setup kandy video. Please contact administrator") . '</p>';
     }
   }
@@ -386,7 +400,8 @@ function kandy_shortcode_kandy_video(array $attr) {
  * @return null|string
  *   Kandy Video Button.
  */
-function kandy_shortcode_kandy_video_button(array $attr) {
+function kandy_shortcode_kandy_video_button(array $attr)
+{
   $output = "";
   // Do not render shortcode when edit page.
   if (arg(0) == 'node' && arg(2) == 'edit') {
@@ -399,9 +414,9 @@ function kandy_shortcode_kandy_video_button(array $attr) {
       $kandy_public_path = "public://kandy";
       drupal_add_js($kandy_public_path . '/js/KandyVideo.js');
       drupal_add_css($kandy_public_path . '/css/KandyVideo.css', array(
-          'group' => 'kandy',
-          'weight' => 100,
-        ));
+        'group' => 'kandy',
+        'weight' => 100,
+      ));
 
       // Init class attribute.
       $class = 'kandyButton ';
@@ -510,8 +525,7 @@ function kandy_shortcode_kandy_video_button(array $attr) {
       if (isset($result['output'])) {
         $output .= $result['output'];
       }
-    }
-    else {
+    } else {
       $output = '<p>' . t('Can not setup kandy video button. Please contact administrator') . '<p>';
     }
   }
@@ -527,7 +541,8 @@ function kandy_shortcode_kandy_video_button(array $attr) {
  * @return null|string
  *   Kandy Voice Button.
  */
-function kandy_shortcode_kandy_voice_button(array $attr) {
+function kandy_shortcode_kandy_voice_button(array $attr)
+{
 
   // Do not render shortcode when edit page.
   if (arg(0) == 'node' && arg(2) == 'edit') {
@@ -540,9 +555,9 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
       $kandy_public_path = "public://kandy";
       drupal_add_js($kandy_public_path . '/js/KandyVoice.js');
       drupal_add_css($kandy_public_path . '/css/KandyVoice.css', array(
-          'group' => 'kandy',
-          'weight' => 100,
-        ));
+        'group' => 'kandy',
+        'weight' => 100,
+      ));
 
       // Init type attribute.
       $call_type = '';
@@ -668,8 +683,7 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
             '<input data-container="' . $id . '" style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
             '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';
 
-        }
-        else {
+        } else {
           $output .= '<div class="' . $class . '" id ="' . $id . '" data-call-id="0">' .
             '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="' . $id . '-incomingCall">' .
             '<label>' . $incoming_label . '</label>
@@ -692,8 +706,7 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
 
         }
 
-      }
-      else {
+      } else {
         if (empty($call_to)) {
           $output = '<div class="' . $class . '" id ="' . $id . '" data-call-id="">' .
             '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="' . $id . '-incomingCall">' .
@@ -718,8 +731,7 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
             '<input data-container="' . $id . '"  style="visibility: hidden" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
             '<input data-container="' . $id . '"  style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
             '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';
-        }
-        else {
+        } else {
           $output = '<div class="' . $class . '" id ="' . $id . '" data-call-id="">' .
             '<div class="kandyButtonComponent kandyVideoButtonSomeonesCalling" id="' . $id . '-incomingCall">' .
             '<label>' . $incoming_label . '</label>
@@ -745,11 +757,9 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
 
       if (isset($result['output'])) {
         $output .= $result['output'];
+      } else {
       }
-      else {
-      }
-    }
-    else {
+    } else {
       $output = '<p>' . t('Can not setup kandy voice button. Please contact administrator') . '<p>';
     }
     return $output;
@@ -766,7 +776,8 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
  * @return bool|string
  *   Kandy Status.
  */
-function kandy_shortcode_kandy_status(array $attr) {
+function kandy_shortcode_kandy_status(array $attr)
+{
   // Do not render shortcode when edit page.
   if (arg(0) == 'node' && arg(2) == 'edit') {
     return FALSE;
@@ -778,8 +789,7 @@ function kandy_shortcode_kandy_status(array $attr) {
       // Init title attribute.
       if (isset($attr['title'])) {
         $title = filter_xss($attr['title']);
-      }
-      else {
+      } else {
         $title = t('My Status');
       }
       // Init class attribute.
@@ -810,8 +820,7 @@ function kandy_shortcode_kandy_status(array $attr) {
         '<option value="1">Unavailable</option><option value="2">Away</option><option value="3">Out To Lunch</option>' .
         '<option value="4">Busy</option><option value="5">On Vacation</option><option value="6">Be Right Back</option></select>' .
         '</div>';
-    }
-    else {
+    } else {
       $output = '<p>' . t('Can not setup kandy status. Please contact administrator') . '<p>';
     }
     return $output;
@@ -827,7 +836,8 @@ function kandy_shortcode_kandy_status(array $attr) {
  * @return null|string
  *   Kandy AddressBook.
  */
-function kandy_shortcode_kandy_address_book(array $attr) {
+function kandy_shortcode_kandy_address_book(array $attr)
+{
   // Do not render shortcode when edit page.
   if (arg(0) == 'node' && arg(2) == 'edit') {
     return FALSE;
@@ -839,15 +849,14 @@ function kandy_shortcode_kandy_address_book(array $attr) {
       $kandy_public_path = "public://kandy";
       drupal_add_js($kandy_public_path . '/js/KandyAddressBook.js');
       drupal_add_css($kandy_public_path . '/css/KandyAddressBook.css', array(
-          'group' => 'kandy',
-          'weight' => 100,
-        ));
+        'group' => 'kandy',
+        'weight' => 100,
+      ));
 
       // Init title attribute.
       if (isset($attr['title'])) {
         $title = filter_xss($attr['title']);
-      }
-      else {
+      } else {
         $title = t('My Contact');
       }
       // Init class attribute.
@@ -895,8 +904,7 @@ function kandy_shortcode_kandy_address_book(array $attr) {
       $output = '<div class="' . $class . '" id="' . $id . '" ' . filter_xss($html_options_attributes) . '>
       <div class="kandyAddressContactList"><div class="myContactsTitle"><p>' . $title . '</p><input id="get_user_for_search_url" type="hidden" value="' . $get_user_for_search_url . '" /><input id="get_name_for_contact_url" type="hidden" value="' . $get_name_for_contact_url . '" /></div></div><div class="kandyDirectorySearch">' .
         $user_label . ' : <input id="kandySearchUserName" type="text" value="" class="select2" data-ajax-url="' . $get_user_for_search_url . '"/><input type="button" value="' . $add_contact_label . '" onclick="addContacts();"/></div>';
-    }
-    else {
+    } else {
       $output = '<p>' . t('Can not setup kandy address book. Please contact administrator') . '<p>';
     }
     return $output;
@@ -913,7 +921,8 @@ function kandy_shortcode_kandy_address_book(array $attr) {
  * @return null|string
  *   Kandy Chat.
  */
-function kandy_shortcode_kandy_chat(array $attr) {
+function kandy_shortcode_kandy_chat(array $attr)
+{
   $output = "";
   // Do not render shortcode when edit page.
   if (arg(0) == 'node' && arg(2) == 'edit') {
@@ -933,9 +942,9 @@ function kandy_shortcode_kandy_chat(array $attr) {
       ));
 
       drupal_add_css($kandy_public_path . '/css/KandyChat.css', array(
-          'group' => 'kandy',
-          'weight' => 100,
-        ));
+        'group' => 'kandy',
+        'weight' => 100,
+      ));
 
       // Init class attribute.
       $class = 'kandyChat ';
@@ -990,7 +999,7 @@ function kandy_shortcode_kandy_chat(array $attr) {
           '<div class="chat-heading">
               <div class="contact-heading">
                   <label>' . $contact_label . '</label>
-                            <select id="contactFilter">
+                            <select id="contactFilter" onchange="kandy_contactFilterChanged(jQuery(this).val())">
                             <option value="all">All</option>
                             <option value="offline">Offline</option>
                             <option value="available">Available</option>
@@ -1009,8 +1018,10 @@ function kandy_shortcode_kandy_chat(array $attr) {
                         <div class="clear-fix"></div>
                     </div>' .
           '<nav> <ul class="cd-tabs-navigation contacts"></ul>
-                  <div class="separator hidden"><span>Groups</span></div>
+                  <div class="separator hidden group"><span>Groups</span></div>
                   <ul class="cd-tabs-navigation groups"></ul>
+                  <div class="separator hidden livechatgroup"><span>Live Chat</span></div>
+                  <ul class="cd-tabs-navigation livechats "></ul>
           </nav>' .
           '<ul class="cd-tabs-content"></ul><div style="clear: both;"></div>';
 
@@ -1026,18 +1037,25 @@ function kandy_shortcode_kandy_chat(array $attr) {
                     <div class="kandyModal" id="kandy-chat-add-user-modal" title="Add user to group">
                         <h3>Add user to group</h3><hr>
                         <label for="right-label" class="right inline">Username</label>
-                        <input class="select2" id="kandy-chat-invite-username" placeholder="Username" data-ajax-url="'.$get_user_for_search_url.'">
+                        <input class="select2" id="kandy-chat-invite-username" placeholder="Username" data-ajax-url="' . $get_user_for_search_url . '">
                         <div class="buttons">
                             <button id="kandy-chat-modal-button-add-user" class="button tiny">Add User</button>
                             <button id="kandy-chat-modal-invite-button-close" class="button tiny">Cancel</button>
                         </div>
                     </div></div>';
-      }
-      else {
+        if($assign_user->type == KANDY_USER_TYPE_AGENT) {
+          drupal_add_js(
+            "jQuery(document).ready(function()
+                {
+                    heartBeat(60000);
+                }
+            )",
+          'inline');
+        }
+      } else {
         $output = t('Not found kandy user');
       }
-    }
-    else {
+    } else {
       $output = '<p>' . t('Can not setup kandy chat. Please contact administrator') . '<p>';
     }
 
@@ -1055,25 +1073,26 @@ function kandy_shortcode_kandy_chat(array $attr) {
  * @return null|string
  *   Kandy Chat.
  */
-function kandy_shortcode_kandy_sms(array $attr) {
+function kandy_shortcode_kandy_sms(array $attr)
+{
   $output = "";
   // Do not render shortcode when edit page.
   if (arg(0) == 'node' && arg(2) == 'edit') {
     return FALSE;
   }
-  if ( ! empty( $attr )) {
+  if (!empty($attr)) {
     $result = kandy_setup();
     if ($result['success']) {
 
       // Init class attribute.
       $class = '';
-      if (isset( $attr['class'] )) {
+      if (isset($attr['class'])) {
         $class .= ' ' . filter_xss($attr['class']);
       }
 
       // Init id attribute.
       $id = 'kandy-sms' . rand() . ' ';
-      if (isset( $attr['id'] )) {
+      if (isset($attr['id'])) {
         $id = filter_xss($attr['id']);
       }
 
@@ -1113,15 +1132,13 @@ function kandy_shortcode_kandy_sms(array $attr) {
             </div>
             <input disabled class="kandy-sms-send-btn" id="kandy-sms-send-btn' . $id . '" type="button" value="' . $btn_send_label . '"/>
         </div>';
-      }
-      else {
+      } else {
         $output = t('Not found kandy user');
       }
-    }
-    else {
+    } else {
       $output
         = '<p>' . t('Can not setup kandy chat. Please contact administrator')
-          . '<p>';
+        . '<p>';
     }
 
   }
@@ -1136,27 +1153,27 @@ function kandy_shortcode_kandy_cobrowsing($attr)
   $assignUser = kandy_get_assign_user($user->uid);
   $output = "";
   $defaults = array(
-    'class'                     => '',
-    'holder_id'                  => 'cobrowsing-holder',
-    'btn_terminate_id'            => 'btnTerminateSession',
-    'btn_stop_id'                 => 'btnStopCoBrowsing',
-    'btn_leave_id'                => 'btnLeaveSession',
-    'btn_start_browsing_viewer_id'  => 'btnStartCoBrowsingViewer',
-    'btn_start_cobrowsing_id'      => 'btnStartCoBrowsing',
-    'btn_connect_session_id'       => 'btnConnectSession',
-    'current_user'               => $assignUser,
-    'session_list_id'             => 'openSessions'
+    'class' => '',
+    'holder_id' => 'cobrowsing-holder',
+    'btn_terminate_id' => 'btnTerminateSession',
+    'btn_stop_id' => 'btnStopCoBrowsing',
+    'btn_leave_id' => 'btnLeaveSession',
+    'btn_start_browsing_viewer_id' => 'btnStartCoBrowsingViewer',
+    'btn_start_cobrowsing_id' => 'btnStartCoBrowsing',
+    'btn_connect_session_id' => 'btnConnectSession',
+    'current_user' => $assignUser,
+    'session_list_id' => 'openSessions'
   );
 
-  $params = array_merge($defaults,$attr);
+  $params = array_merge($defaults, $attr);
 
-  if(!empty($params)){
+  if (!empty($params)) {
     $result = kandy_setup();
     // get current kandy user
-    if($result['success']){
-      if($assignUser) {
+    if ($result['success']) {
+      if ($assignUser) {
         $module_path = drupal_get_path('module', 'kandy');
-        drupal_add_library('system','ui.dialog');
+        drupal_add_library('system', 'ui.dialog');
         drupal_add_js('var cobrowsing = ' . json_encode($params) . ';', 'inline');
         drupal_add_js(KANDY_COBROWSING_JS, array(
           'group' => 'kandy',
@@ -1198,3 +1215,137 @@ function kandy_shortcode_kandy_cobrowsing($attr)
   }
   return $output;
 }
+
+function kandy_shortcode_kandy_livechat($attr)
+{
+  if (!empty($attr)) {
+    if (variable_get('kandy_jquery_reload', 1)) {
+      drupal_add_js(KANDY_JQUERY, array(
+        'group' => 'kandy',
+        'weight' => 1
+      ));
+    }
+    drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL), array(
+      'group' => 'kandy',
+      'weight' => 4,
+    ));
+    drupal_add_js(KANDY_RATING_JS, array(
+      'group' => 'kandy',
+      'weight' => 4,
+    ));
+
+    drupal_add_js(KANDY_LIVECHAT_JS, array(
+      'group' => 'kandy',
+      'weight' => 4
+    ));
+
+    drupal_add_css(KANDY_LIVECHAT_CSS, array(
+      'group' => 'kandy',
+      'weight' => 99
+    ));
+
+    drupal_add_css(KANDY_RATING_CSS, array(
+      'group' => 'kandy',
+      'weight' => 100
+    ));
+    $defaultAttr = array(
+      'id' => 'liveChat',
+      'class' => '',
+    );
+    $attr = array_merge($defaultAttr, $attr);
+
+    if (!isset($_SESSION['kandyLiveChatUserInfo'])) {
+      $attr['class'] .= ' kandy_hidden';
+      $func = 'LiveChatUI.changeState();';
+    } else {
+      $userInfo = $_SESSION['kandyLiveChatUserInfo'];
+      $func = 'getKandyUsers()';
+    }
+    $output = '
+      <div id="' . $attr['id'] . '" class="liveChat ' . $attr['class'] . '">
+    <div class="header">
+      Kandy live chat
+      <span class="closeChat handle" title="end chat" style="display: none">x</span>
+      <span class="minimize handle" title="minimize">_</span>
+      <span id="restoreBtn"></span>
+    </div>
+    <div class="liveChatBody">
+      <div id="waiting">
+        <img id="loading" width="30px" height="30px" src="' . KANDY_MODULE_URL . '/img/loading.gif' . '" title="loading">
+        <p>Please wait a moment...</p>
+      </div>
+      <div id="registerForm">
+        <form id="customerInfo" method="POST" action="" >
+          <label for="customerName">Your name</label>
+          <input type="text" name="customerName" id="customerName" class="" />
+          <span data-input="customerName" style="display: none" class="error"></span>
+          <label for="customerEmail">Your email</label>
+          <input type="text" name="customerEmail" id="customerEmail" class="" />
+          <span data-input="customerEmail" style="display: none" class="error"></span>
+          <input class="form-submit" type="submit" value="Start chat"/>
+        </form>
+      </div>
+      <div id="ratingForm">
+        <h3 class="formTitle">Rate for <span class="agentName"></span> </h3>
+        <form>
+          <select id="backing2b">
+            <option title="" value="1">1</option>
+            <option title="" value="2">2</option>
+            <option title="" value="3">3</option>
+            <option title="" value="4">4</option>
+            <option title="" value="5" selected="selected">5</option>
+          </select>
+          <div class="rateit" data-rateit-backingfld="#backing2b"></div>
+          <textarea id="rateComment" rows="3" placeholder="Say something about your supporter"></textarea>
+          <a id="btnEndSession" class="button" href="javascript:;">No, thanks</a>
+          <input id="btnSendRate" class="form-submit" type="submit"/>
+        </form>
+        <div class="message">
+          <h3>Thanks you! Good bye!</h3>
+        </div>
+      </div>
+        <div class="customerService">
+          <div class="avatar">
+              <img src="' . KANDY_MODULE_URL . '/img/icon-helpdesk.png' . '">
+          </div>
+          <div class="helpdeskInfo">
+              <span class="agentName"></span>
+              <p class="title">Support Agent</p>
+          </div>
+        </div>
+        <div id="messageBox" class="" style="">
+          <ul>
+              <li class="their-message"><span class="username"></span>: Hi, what brings you here?</li>
+          </ul>
+        </div>
+        <div class="formChat" style="">
+          <form id="formChat">
+              <input type="text" value="" name="message" id="messageToSend" placeholder="Type here and press Enter to send">
+          </form>
+        </div>
+    </div>
+  </div>';
+  drupal_add_js(
+    '//agent user id
+    var agent;
+    var rateData;
+    jQuery(function(){
+      ' . $func . '
+      jQuery(".liveChat #ratingForm .rateit").bind("rated", function(){
+        var ri = jQuery(this);
+        rateData = rateData || {};
+        rateData.rate = {id: agent.main_user_id, point: ri.rateit("value")}
+      });
+
+    jQuery(".liveChat #ratingForm .rateit").bind("reset", function(){
+      rateData = rateData || {};
+        if(rateData.hasOwnProperty("rate")){
+          delete rateData.rate;
+        }
+      });
+  });'
+  ,'inline');
+    return $output;
+  }
+}
+
