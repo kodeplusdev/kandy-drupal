@@ -601,8 +601,7 @@ function kandy_get_name_for_contact_callback() {
     }
   }
 
-  echo drupal_json_encode($contacts);
-  exit(0);
+  drupal_json_output($contacts);
 }
 
 /**
@@ -646,8 +645,7 @@ function kandy_get_name_for_chat_content_callback() {
     $message['sender'] = $sender;
   }
 
-  echo drupal_json_encode($message);
-  exit(0);
+  drupal_json_output($message);
 }
 
 /**
@@ -669,8 +667,7 @@ function kandy_get_un_assign_user_callback() {
     }
   }
 
-  echo drupal_json_encode($result);
-  exit(0);
+  drupal_json_output($result);
 }
 
 /**
@@ -1073,9 +1070,9 @@ function kandy_register_guest_callback() {
     }
     if(empty($errors)){
       $_SESSION['kandyLiveChatUserInfo'] = $userInfo;
-      echo json_encode($userInfo);exit;
+      drupal_json_output($userInfo);
     }else{
-      echo json_encode(array('errors' => $errors));exit;
+      drupal_json_output(array('errors' => $errors));
     }
   }
 
@@ -1217,10 +1214,10 @@ function kandy_rate_agent_callback() {
   $point = intval($rate['point']);
   $comment = check_plain($_POST['comment']);
   if(!isset($_SESSION['kandyLiveChatUserInfo'])) {
-    echo json_encode(array(
+    drupal_json_output(array(
       'success' => false,
       'message' => 'not allowed'
-    ));exit;
+    ));
   } else {
     $liveChatSessionInfo = $_SESSION['kandyLiveChatUserInfo'];
     if(!$userId) {
@@ -1245,8 +1242,8 @@ function kandy_rate_agent_callback() {
         'success' => true
       );
     }
+    drupal_json_output($result);
   }
-  drupal_json_output($result);
 }
 
 function kandy_update_login_status_callback() {
