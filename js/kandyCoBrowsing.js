@@ -10,7 +10,7 @@
     var message = 'User ' + notification.full_user_id + ' request to join session ' + sessionNames[notification.session_id];
     var confirm = window.confirm(message);
     if (confirm) {
-      kandy_ApproveJoinSession(notification.session_id, notification.full_user_id);
+      kandy_approveJoinSession(notification.session_id, notification.full_user_id);
     } else {
       console.log("join request has been disapproved");
     }
@@ -120,6 +120,29 @@
     mySessions.push(sessionId);
     displayButtons();
   };
+  /**
+   * @param sessionId
+   * @param holder - id of browsing holder
+   */
+  var kandy_startCoBrowsingAgent = function (sessionId, holder) {
+    KandyAPI.CoBrowse.startBrowsingAgent(sessionId, holder);
+  };
+
+  var kandy_stopCoBrowsingAgent = function () {
+    KandyAPI.CoBrowse.stopBrowsingAgent();
+  };
+
+  var kandy_startCoBrowsing = function (sessionId) {
+    KandyAPI.CoBrowse.startBrowsingUser(sessionId);
+  };
+
+  var kandy_stopCoBrowsing = function () {
+    KandyAPI.CoBrowse.stopBrowsingUser();
+  };
+
+  var getCoBrowsingSessions = function () {
+    kandy_getOpenSessionsByType('cobrowsing', loadSessionList);
+  };
   /* Document ready */
   jQuery(function () {
     jq("#kandy-chat-create-group-modal").dialog({
@@ -212,8 +235,8 @@
       if (confirm) {
         if (currentSession) {
           //delete from my session array
-          kandy_LeaveSession(currentSession.session_id, function () {
-            mySessions.splice(mySessions.indexOf(currentSession), 1);
+          kandy_leaveSession(currentSession.session_id, function (sessionId) {
+            mySessions.splice(mySessions.indexOf(sessionId), 1);
             displayButtons();
           });
         }

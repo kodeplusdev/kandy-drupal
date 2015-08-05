@@ -251,7 +251,11 @@ function kandy_setup()
       $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
 
       if (variable_get('kandy_jquery_reload', 1)) {
-        drupal_add_js('var jq = jQuery.noConflict();', 'inline');
+
+        if (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1]['function'] == 'kandy_shortcode_kandy_cobrowsing') {
+          //add jquery no conflict to use built in jquery ui dialog in cobrowsing shortcode
+          drupal_add_js('var jq = jQuery.noConflict();', 'inline');
+        }
         drupal_add_js(KANDY_JQUERY, array(
           'group' => 'kandy',
           'weight' => 1,
@@ -1258,7 +1262,6 @@ function kandy_shortcode_kandy_livechat($attr)
       $attr['class'] .= ' kandy_hidden';
       $func = 'LiveChatUI.changeState();';
     } else {
-      $userInfo = $_SESSION['kandyLiveChatUserInfo'];
       $func = 'getKandyUsers()';
     }
     $output = '

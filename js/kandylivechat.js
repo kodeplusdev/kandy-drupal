@@ -165,7 +165,6 @@ jQuery(function () {
       data: form.serialize(),
       type: 'POST',
       success: function (res) {
-        res = jQuery.parseJSON(res);
         if (res.hasOwnProperty('errors')) {
           form.find("span.error").empty().hide();
           for (var e in res.errors) {
