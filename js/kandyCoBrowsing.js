@@ -128,6 +128,37 @@
     KandyAPI.CoBrowse.startBrowsingAgent(sessionId, holder);
   };
 
+  var kandy_createSession = function (config, successCallback, failCallback) {
+    KandyAPI.Session.create(
+      config,
+      function (result) {
+        if (typeof successCallback == "function") {
+          activateSession(result.session_id);
+          successCallback(result);
+        }
+      },
+      function () {
+        if (typeof failCallback == "function") {
+          failCallback();
+        }
+      }
+    )
+  };
+
+  var activateSession = function (sessionId) {
+    KandyAPI.Session.activate(
+      sessionId,
+      function () {
+        //success callback
+        console.log('activate group successful');
+      }, function () {
+        //fail callback
+        console.log('Error activating group');
+      }
+    );
+
+  };
+
   var kandy_stopCoBrowsingAgent = function () {
     KandyAPI.CoBrowse.stopBrowsingAgent();
   };
