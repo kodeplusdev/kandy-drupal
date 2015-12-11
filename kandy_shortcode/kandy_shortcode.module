@@ -1003,7 +1003,7 @@ function kandy_shortcode_kandy_chat(array $attr)
           '<div class="chat-heading">
               <div class="contact-heading">
                   <label>' . $contact_label . '</label>
-                            <select id="contactFilter" onchange="kandy_contactFilterChanged(jQuery(this).val())">
+                            <select id="contactFilter">
                             <option value="all">All</option>
                             <option value="offline">Offline</option>
                             <option value="available">Available</option>

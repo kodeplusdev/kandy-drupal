@@ -73,7 +73,7 @@
    * Login Success Callback.
    */
   var kandy_login_success_callback = function () {
-    KandyAPI.Phone.updatePresence(0);
+    kandy.getLastSeen([Drupal.settings.loginInfo.username]);
 
     // Have kandy Address Book widget.
     if (jQuery(".kandyAddressBook").length) {
@@ -1659,6 +1659,10 @@
           jQuery('#kandy-chat-invite-username').val('');
           jQuery("#kandy-chat-add-user-modal").hide();
         }
+      });
+
+      jQuery('#contactFilter').on('change',function(){
+        kandy_contactFilterChanged(jQuery(this).val());
       });
 
 
