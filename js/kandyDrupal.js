@@ -77,7 +77,7 @@
 
     // Have kandy Address Book widget.
     if (jQuery(".kandyAddressBook").length) {
-      kandy_loadContacts_addressBook();
+      kandy_load_contacts_addressbook();
     }
     // Have kandy Chat widget.
     if (jQuery(".kandyChat").length) {
@@ -585,7 +585,7 @@
     }
     else {
       // Get and AddressBook.Entry object for this contact.
-      KandyAPI.Phone.searchDirectoryByUserName(
+      kandy.addressbook.searchDirectoryByUserName(
         userId,
         function (results) {
           for (var i = 0; i < results.length; ++i) {
@@ -617,7 +617,7 @@
                 contact['contact_email'] = results[i].email;
               }
 
-              KandyAPI.Phone.addToPersonalAddressBook(
+              kandy.addressbook.addToPersonalAddressBook(
                 contact,
                 kandy_load_contacts_addressbook,
                 function (message) {
@@ -641,8 +641,8 @@
    * @param nickname
    */
   kandy_removeFromContacts = function (nickname) {
-    KandyAPI.Phone.removeFromPersonalAddressBook(nickname,
-      kandy_loadContacts_addressBook,
+    kandy.addressbook.removeFromPersonalAddressBook(nickname,
+      kandy_load_contacts_addressbook,
       function () {
         console.log('Error kandy_removeFromContacts ');
       }
@@ -1022,9 +1022,13 @@
         if (result.hasOwnProperty('groups')) {
           if (result.groups.length) {
             jQuery(groupSeparator).removeClass('hidden');
+            console.log(result);
+
             for (var i in result.groups) {
               //build sessions list here
-              groupNames[result.groups[i].group_id] = result.groups[i].group_name;
+              if(!groupNames.hasOwnProperty(result.groups[i].group_id)) {
+                groupNames[result.groups[i].group_id] = result.groups[i].group_name;
+              }
               if (!jQuery(liTabGroupsWrap + " li[data-group='" + result.groups[i].session_id + "']").length) {
                 jQuery(liTabGroupsWrap).append(
                   '<li data-group="' + result.groups[i].group_id + '" class="group">' +
@@ -1346,7 +1350,7 @@
         if (currentUser === result.owners[0].full_user_id) {
           // Add admin functionality.
           isOwner = true;
-          groupActivity = '<a class="" href="javascipt:;"><i title="Remove group" onclick="kandy_terminateGroup(\'' + result.group_id + '\')" class="fa fa-remove"></i></a>';
+          groupActivity = '<a class="btnRemoveGroup" data-group-id="'+result.group_id+'" href="javascipt:;"><i title="Remove group" class="fa fa-remove"></i></a>';
           jQuery(liTabWrapSelector + ' li[data-group="' + groupId + '"] ' + ' .' + listUserClass + ' li[data-user!="' + result.owners[0].full_user_id + '"] .actions').append(
             '<i title="Remove user" class="remove fa fa-remove"></i>'
           );
@@ -1354,7 +1358,7 @@
         if (isOwner) {
           groupActivity += '<a class="btnInviteUser" title="Add user"  href="javascript:;"><i class="fa fa-plus"></i></a>';
         } else {
-          groupActivity = '<a class="leave" title="Leave group" onclick="kandy_leaveGroup(\'' + result.group_id + '\')" href="javascript:;"><i class="fa fa-sign-out"></i></a>';
+          groupActivity = '<a class="leave btnLeaveGroup" title="Leave group" data-group-id="' + result.group_id + '" href="javascript:;"><i class="fa fa-sign-out"></i></a>';
           if (messageInput.is(':disabled')) {
             messageInput.prop('disabled', false);
           }
@@ -1629,6 +1633,8 @@
         },
         minimumInputLength: 1
       });
+
+      jQuery("#btnAddContact").bind('click',addContacts);
     }
     // Only work when kandyChat exists.
     if (jQuery('.kandyChat').length) {
@@ -1700,6 +1706,16 @@
       jQuery(".kandyChat .btnInviteUser").live('click', function () {
         jQuery("#kandy-chat-add-user-modal").attr('data-group', jQuery(this).closest('li.group').data('group')).show();
         jQuery("#kandy-chat-invite-username").focus();
+      });
+
+      jQuery(".kandyChat").on('click','.btnLeaveGroup', function(){
+        kandy_leaveGroup($(this).data('group-id'), kandy_loadGroups, function(){
+          console.log('leave group failed');
+        });
+      });
+
+      jQuery('.kandyChat').on('click','.btnRemoveGroup', function(){
+        kandy_terminateGroup($(this).data('group-id'), kandy_loadGroups);
       });
 
       jQuery('.list-users li .remove').live('click', function (e) {

@@ -392,15 +392,15 @@
 }
 
 .kandyModal {
-  display: none;
-  width: 160px;
-  display: none;
-  position: absolute;
-  top: 5%;
-  left: 20%;
-  border: #000000;
-  background: #ccccff;
-  padding: 5px 10px;
+    display: none;
+    width: 30%;
+    display: none;
+    position: absolute;
+    top: 5%;
+    left: 20%;
+    border: #000000;
+    background: #ccccff;
+    padding: 10px 20px;
 }
 
 .kandyModal .buttons {
