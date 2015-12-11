@@ -463,16 +463,6 @@ function kandy_form($form, &$form_state) {
     '#required' => FALSE,
   );
 
-  $form['kandy_js_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Kandy Javascript Url'),
-    '#default_value' => variable_get('kandy_js_url', KANDY_JS_URL),
-    '#size' => 100,
-    '#maxlength' => 255,
-    '#description' => t('The javascript api url'),
-    '#required' => TRUE,
-  );
-
   $form['kandy_jquery_reload'] = array(
     '#type' => 'select',
     '#title' => t('Jquery Reload'),

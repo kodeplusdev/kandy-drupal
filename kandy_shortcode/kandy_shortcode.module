@@ -272,7 +272,7 @@ function kandy_setup()
         'weight' => 2,
       ));
 
-      drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL), array(
+      drupal_add_js(KANDY_JS_URL, array(
         'group' => 'kandy',
         'weight' => 4,
       ));
@@ -907,7 +907,7 @@ function kandy_shortcode_kandy_address_book(array $attr)
       );
       $output = '<div class="' . $class . '" id="' . $id . '" ' . filter_xss($html_options_attributes) . '>
       <div class="kandyAddressContactList"><div class="myContactsTitle"><p>' . $title . '</p><input id="get_user_for_search_url" type="hidden" value="' . $get_user_for_search_url . '" /><input id="get_name_for_contact_url" type="hidden" value="' . $get_name_for_contact_url . '" /></div></div><div class="kandyDirectorySearch">' .
-        $user_label . ' : <input id="kandySearchUserName" type="text" value="" class="select2" data-ajax-url="' . $get_user_for_search_url . '"/><input type="button" value="' . $add_contact_label . '" onclick="addContacts();"/></div>';
+        $user_label . ' : <input id="kandySearchUserName" type="text" value="" class="select2" data-ajax-url="' . $get_user_for_search_url . '"/><input id="btnAddContact" type="button" value="' . $add_contact_label . '"/></div>';
     } else {
       $output = '<p>' . t('Can not setup kandy address book. Please contact administrator') . '<p>';
     }
@@ -1229,7 +1229,7 @@ function kandy_shortcode_kandy_livechat($attr)
         'weight' => 1
       ));
     }
-    drupal_add_js(variable_get('kandy_js_url', KANDY_JS_URL), array(
+    drupal_add_js(KANDY_JS_URL, array(
       'group' => 'kandy',
       'weight' => 4,
     ));
