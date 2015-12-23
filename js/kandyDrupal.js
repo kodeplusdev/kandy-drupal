@@ -1605,6 +1605,10 @@
 
       jQuery("#btnAddContact").bind('click',addContacts);
     }
+    jQuery('.kandyMyStatusDropDown').on('change', function(){
+      kandy_myStatusChanged(jQuery(this).val());
+    });
+	
     // Only work when kandyChat exists.
     if (jQuery('.kandyChat').length) {
       jQuery(".kandyChat form.send-message").live("submit", function (e) {
