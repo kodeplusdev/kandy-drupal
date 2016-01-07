@@ -22,11 +22,11 @@ define('KANDY_VIDEO_THEIR_TITLE_DEFAULT', 'their');
 define('KANDY_UN_ASSIGN_USER', 'kandy-un-assign-user');
 define('KANDY_PSTN_TYPE', 'PSTN');
 define('KANDY_COBROWSING_JS', 'https://kandy-portal.s3.amazonaws.com/public/javascript/cobrowse/1.0.1/kandy.cobrowse.min.js');
-define('KANDY_MODULE_URL', '/' . drupal_get_path('module','kandy'));
+define('KANDY_MODULE_URL', '/' . drupal_get_path('module', 'kandy'));
 define('KANDY_LIVECHAT_JS', KANDY_MODULE_URL . '/js/kandylivechat.js');
 define('KANDY_RATING_JS', KANDY_MODULE_URL . '/js/jquery.rateit.min.js');
-define('KANDY_RATING_CSS', drupal_get_path('module', 'kandy'). '/css/rateit.css');
-define('KANDY_LIVECHAT_CSS', drupal_get_path('module','kandy'). '/css/kandylivechat.css');
+define('KANDY_RATING_CSS', drupal_get_path('module', 'kandy') . '/css/rateit.css');
+define('KANDY_LIVECHAT_CSS', drupal_get_path('module', 'kandy') . '/css/kandylivechat.css');
 define('KANDY_USER_TYPE_AGENT', 1);
 define('KANDY_USER_TYPE_NORMAL', 0);
 define('KANDY_USER_TYPE_END_USER', 2);
@@ -35,7 +35,8 @@ define("KANDY_USER_STATUS_OFFLINE", 0);
 /**
  * Implements hook_help().
  */
-function kandy_help($path, $arg) {
+function kandy_help($path, $arg)
+{
   switch ($path) {
     case "admin/help#kandy":
       $module_path = drupal_get_path('module', 'kandy');
@@ -47,7 +48,8 @@ function kandy_help($path, $arg) {
 /**
  * Implements hook_menu().
  */
-function kandy_menu() {
+function kandy_menu()
+{
   $items = array();
   $items['admin/config/content/kandy'] = array(
     'title' => 'Kandy',
@@ -55,7 +57,7 @@ function kandy_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('kandy_form'),
     'access arguments' => array('administer site configuration'),
-    'weight'  => 4,
+    'weight' => 4,
     'type' => MENU_NORMAL_ITEM,
   );
 
@@ -83,7 +85,7 @@ function kandy_menu() {
   $items['admin/config/content/kandy/assignment/edit/%user'] = array(
     'title' => 'Kandy User Assignment',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('kandy_assignment_edit_form',6),
+    'page arguments' => array('kandy_assignment_edit_form', 6),
     'type' => MENU_CALLBACK,
     'weight' => 2,
     'access arguments' => array('administer site configuration'),
@@ -102,11 +104,11 @@ function kandy_menu() {
   $items['admin/config/content/kandy/file/edit/%/%'] = array(
     'title' => 'Kandy File Edit   ',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('kandy_file_edit_form',6,7),
+    'page arguments' => array('kandy_file_edit_form', 6, 7),
     'access arguments' => array('administer site configuration'),
-    'weight'  => 3,
+    'weight' => 3,
     'type' => MENU_CALLBACK,
-    'file'  => 'kandy.module'
+    'file' => 'kandy.module'
   );
 
   $items['kandy/get_user_for_search'] = array(
@@ -220,6 +222,19 @@ function kandy_menu() {
     'type' => MENU_CALLBACK
   );
 
+  $items['kandy/set_presence/%'] = array(
+    'page callback' => 'kandy_set_presence_status_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'page arguments' => array(2),
+  );
+
+  $items['kandy/get_presence'] = array(
+    'page callback' => 'kandy_get_presence_status_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK
+  );
+
 
   return $items;
 }
@@ -230,7 +245,8 @@ function kandy_menu() {
  * @return array
  *   Render Assign Page.
  */
-function kandy_assignment_page() {
+function kandy_assignment_page()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   // We are going to output the results in a table with a nice header.
   $header = array(
@@ -274,7 +290,8 @@ function kandy_assignment_page() {
  * @return string
  *   Render Sync user page.
  */
-function kandy_assignment_sync_page() {
+function kandy_assignment_sync_page()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $return_path = url('admin/config/content/kandy/assignment', array('absolute' => TRUE));
   if (isset($_GET['returnPath']) && drupal_valid_path($_GET['returnPath']) && isset($_GET['id'])) {
@@ -282,8 +299,7 @@ function kandy_assignment_sync_page() {
       'query' => array('id' => $_GET['id']),
       'absolute' => TRUE,
     ));
-  }
-  else {
+  } else {
     if (isset($_GET['returnPath']) && drupal_valid_path($_GET['returnPath'])) {
       $return_path = url($_GET['returnPath'], array('absolute' => TRUE));
     }
@@ -292,8 +308,7 @@ function kandy_assignment_sync_page() {
   if ($result["success"]) {
     drupal_set_message(t('Save successfully'));
     drupal_goto($return_path);
-  }
-  else {
+  } else {
     drupal_set_message(t('Sync Fail'), 'error');
     drupal_set_message(l(t('See log'), url('admin/reports/dblog', array('absolute' => TRUE))));
     return l(t('Try Again'), url('admin/config/content/kandy/assignment/sync', array('absolute' => TRUE)));
@@ -306,7 +321,8 @@ function kandy_assignment_sync_page() {
  * @return array
  *   Render edit user form.
  */
-function kandy_assignment_edit_form($form, $form_state, $account) {
+function kandy_assignment_edit_form($form, $form_state, $account)
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $form = array();
   if ($account) {
@@ -390,8 +406,7 @@ function kandy_assignment_edit_form($form, $form_state, $account) {
     );
 
     return $form;
-  }
-  else {
+  } else {
     drupal_goto('admin/config/content/kandy');
   }
 
@@ -405,7 +420,8 @@ function kandy_assignment_edit_form($form, $form_state, $account) {
  * @param string $form_state
  *   Form state.
  */
-function kandy_assignment_edit_form_submit($form, &$form_state) {
+function kandy_assignment_edit_form_submit($form, &$form_state)
+{
   module_load_include('php', 'kandy', 'kandy_api');
   if (isset($form_state['values']['main_user_id'])) {
     $main_user_id = intval($form_state['values']['main_user_id']);
@@ -413,8 +429,7 @@ function kandy_assignment_edit_form_submit($form, &$form_state) {
 
     if (empty($user_id)) {
       kandy_unassign_user($main_user_id);
-    }
-    else {
+    } else {
       kandy_assign_user($user_id, $main_user_id);
     }
   }
@@ -433,7 +448,8 @@ function kandy_assignment_edit_form_submit($form, &$form_state) {
  * @return mixed
  *   Form.
  */
-function kandy_form($form, &$form_state) {
+function kandy_form($form, &$form_state)
+{
   $form['kandy_api_key'] = array(
     '#type' => 'textfield',
     '#title' => t('Api key'),
@@ -498,14 +514,15 @@ function kandy_form($form, &$form_state) {
  * @param string $form_state
  *   Form State.
  */
-function kandy_form_submit($form, &$form_state) {
+function kandy_form_submit($form, &$form_state)
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $setting_attributes = $form_state['values'];
   $old_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
   $old_secret_key = variable_get('kandy_domain_secret_key', KANDY_DOMAIN_SECRET_KEY);
 
   foreach ($setting_attributes as $key => $value) {
-    if($key == "kandy_excluded_users") {
+    if ($key == "kandy_excluded_users") {
       $value = preg_replace("/[^a-zA-Z0-9,\s]/", "", $value);
     }
     variable_set($key, $value);
@@ -528,7 +545,8 @@ function kandy_form_submit($form, &$form_state) {
 /**
  * Get user for search.
  */
-function kandy_get_user_for_search() {
+function kandy_get_user_for_search()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $result = array();
   $query = db_select('users', 'u');
@@ -551,8 +569,7 @@ function kandy_get_user_for_search() {
         if (!empty($search_string) && stripos($user_to_add['text'], $search_string) !== FALSE) {
           array_push($result, $user_to_add);
         }
-      }
-      else {
+      } else {
         array_push($result, $user_to_add);
       }
     }
@@ -563,7 +580,8 @@ function kandy_get_user_for_search() {
 /**
  * Kandy get name for contact.
  */
-function kandy_get_name_for_contact_callback() {
+function kandy_get_name_for_contact_callback()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $contacts = array();
   if (isset($_POST['data'])) {
@@ -571,20 +589,17 @@ function kandy_get_name_for_contact_callback() {
     foreach ($contacts as &$contact) {
       if (isset($contact['contact_user_name'])) {
         $user = kandy_get_user_by_user_mail($contact['contact_user_name']);
-      }
-      else {
+      } else {
         $user = kandy_get_user_by_user_mail($contact['full_user_id']);
       }
 
       if (!empty($user)) {
         if ($user == KANDY_UN_ASSIGN_USER) {
           $display_name = $user;
-        }
-        else {
+        } else {
           $display_name = $user->name;
         }
-      }
-      else {
+      } else {
         $display_name = "";
       }
       $contact['display_name'] = $display_name;
@@ -597,7 +612,8 @@ function kandy_get_name_for_contact_callback() {
 /**
  * Kandy Get Name for chat content ajax.
  */
-function kandy_get_name_for_chat_content_callback() {
+function kandy_get_name_for_chat_content_callback()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   if (isset($_POST['data'])) {
     $message = $_POST['data'];
@@ -606,17 +622,17 @@ function kandy_get_name_for_chat_content_callback() {
     }
     $sender = $message['sender'];
     $display_name = "";
-    if(in_array($sender['user_id'], variable_get('kandy_live_chat_users', array()))){
+    if (in_array($sender['user_id'], variable_get('kandy_live_chat_users', array()))) {
       $fakeEndTime = PHP_INT_MAX;
       $user = db_select("kandy_live_chat", 'lc')
         ->fields('lc', array('customer_name', 'customer_email'))
         ->condition(
-          db_and()->condition('customer_user_id',$sender['full_user_id'],'=')
-            ->condition('end_at',$fakeEndTime, '=')
+          db_and()->condition('customer_user_id', $sender['full_user_id'], '=')
+            ->condition('end_at', $fakeEndTime, '=')
         )
         ->execute()
         ->fetchObject();
-      if($user) {
+      if ($user) {
         $display_name = $user->customer_name;
         $sender['user_email'] = $user->customer_email;
       }
@@ -641,7 +657,8 @@ function kandy_get_name_for_chat_content_callback() {
 /**
  * Kandy Get Name for chat content ajax.
  */
-function kandy_get_un_assign_user_callback() {
+function kandy_get_un_assign_user_callback()
+{
   $result = array();
 
   module_load_include('php', 'kandy', 'kandy_api');
@@ -663,7 +680,8 @@ function kandy_get_un_assign_user_callback() {
 /**
  * Implements hook_permission().
  */
-function kandy_permission() {
+function kandy_permission()
+{
   return array(
     'access kandy content' => array(
       'title' => t('Access content for the kandy module'),
@@ -677,7 +695,8 @@ function kandy_permission() {
  * @return mixed
  *   render style customization page
  */
-function kandy_style_customization_page() {
+function kandy_style_customization_page()
+{
   $module_path = drupal_get_path('module', 'kandy');
   $dir = $module_path . "/css/shortcode";
   $style = 'css';
@@ -706,7 +725,8 @@ function kandy_style_customization_page() {
  * @return mixed
  *   Render script customization page.
  */
-function kandy_script_customization_page() {
+function kandy_script_customization_page()
+{
   $module_path = drupal_get_path('module', 'kandy');
   $dir = $module_path . "/js/shortcode";
   $style = 'js';
@@ -736,7 +756,8 @@ function kandy_script_customization_page() {
  * @return array
  *   Render edit form.
  */
-function kandy_file_edit_form($form, &$form_state, $fileStyle, $fileName) {
+function kandy_file_edit_form($form, &$form_state, $fileStyle, $fileName)
+{
   $form = array();
   if ($fileStyle && $fileName) {
     $public_path = "public://kandy";
@@ -776,11 +797,10 @@ function kandy_file_edit_form($form, &$form_state, $fileStyle, $fileName) {
       $form['back'] = array(
         '#markup' => '<a href="' . $return_url . '"><input class="form-submit" type="button" value="' . t('Back') . '"/></a>',
       );
-    }
-    else {
+    } else {
       $form['label'] = array(
         '#markup' => '<p>' . t('Not found') . ': ' .
-        $file_name . '.' . $file_style . '</p>',
+          $file_name . '.' . $file_style . '</p>',
       );
       $link_style = ($file_style == 'css') ? 'style' : 'script';
       $return_url = url(
@@ -794,8 +814,7 @@ function kandy_file_edit_form($form, &$form_state, $fileStyle, $fileName) {
 
     return $form;
 
-  }
-  else {
+  } else {
     drupal_goto('admin/config/content/kandy');
     return array();
   }
@@ -810,7 +829,8 @@ function kandy_file_edit_form($form, &$form_state, $fileStyle, $fileName) {
  * @param string $form_state
  *   Form State.
  */
-function kandy_file_edit_form_submit($form, &$form_state) {
+function kandy_file_edit_form_submit($form, &$form_state)
+{
   if (isset($form_state['values']['content'])) {
     $public_path = "public://kandy";
 
@@ -824,12 +844,10 @@ function kandy_file_edit_form_submit($form, &$form_state) {
     if (file_exists($file_path)) {
       file_put_contents($file_path, $content);
       drupal_set_message(t('Save successfully'));
-    }
-    else {
+    } else {
       drupal_set_message(t('Some errors with your file. Please try again', 'error'));
     }
-  }
-  else {
+  } else {
     $form_state['redirect'] = 'admin/config/content/kandy';
   }
 }
@@ -837,7 +855,8 @@ function kandy_file_edit_form_submit($form, &$form_state) {
 /**
  * Implements hook_init().
  */
-function kandy_init() {
+function kandy_init()
+{
   $just_logout = FALSE;
   if (isset($_COOKIE['Drupal_visitor_kandy_user_logout'])) {
     $just_logout = TRUE;
@@ -854,28 +873,30 @@ function kandy_init() {
 /**
  * Implements hook_user_logout().
  */
-function kandy_user_logout() {
+function kandy_user_logout()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   global $user;
   user_cookie_save(array('kandy_user_logout' => $user->uid));
 
   $kandyUser = kandy_get_assign_user($user->uid);
-  if($kandyUser && ($kandyUser->type == KANDY_USER_TYPE_AGENT)) {
+  if ($kandyUser && ($kandyUser->type == KANDY_USER_TYPE_AGENT)) {
     kandy_log_user_login($kandyUser->user_id, KANDY_USER_TYPE_AGENT, KANDY_USER_STATUS_OFFLINE);
   }
 }
 
-function kandy_user_login(&$edit, $account) {
+function kandy_user_login(&$edit, $account)
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $kandyUser = kandy_get_assign_user($account->uid);
-  if($kandyUser && ($kandyUser->type == KANDY_USER_TYPE_AGENT)) {
-    kandy_log_user_login($kandyUser->user_id,KANDY_USER_TYPE_AGENT);
+  if ($kandyUser && ($kandyUser->type == KANDY_USER_TYPE_AGENT)) {
+    kandy_log_user_login($kandyUser->user_id, KANDY_USER_TYPE_AGENT);
   }
 }
 
 
-
-function kandy_view_agent_page($user_id) {
+function kandy_view_agent_page($user_id)
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $header = array(
     array('data' => t('ID')),
@@ -888,7 +909,7 @@ function kandy_view_agent_page($user_id) {
   $query->join('kandy_users', 'ku', 'u.uid = ku.main_user_id');
   $info = $query->fields('u', array('name'))
     ->fields('ku', array('user_id'))
-    ->condition('u.uid' , $user_id, '=')
+    ->condition('u.uid', $user_id, '=')
     ->execute()
     ->fetchObject();
   $rows = kandy_get_agent_progress($user_id);
@@ -902,7 +923,8 @@ function kandy_view_agent_page($user_id) {
   return $build;
 }
 
-function kandy_chat_agent_page() {
+function kandy_chat_agent_page()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   // We are going to output the results in a table with a nice header.
   $header = array(
@@ -939,6 +961,7 @@ function kandy_chat_agent_page() {
   $build['pager_pager'] = array('#theme' => 'pager');
   return $build;
 }
+
 /**
  * Kandy Add agent form
  *
@@ -950,7 +973,8 @@ function kandy_chat_agent_page() {
  * @return mixed
  *   Form.
  */
-function agent_form($form, &$form_state) {
+function agent_form($form, &$form_state)
+{
   module_load_include('php', 'kandy', 'kandy_api');
   $form['id'] = array(
     '#type' => 'select',
@@ -970,13 +994,14 @@ function agent_form($form, &$form_state) {
  * @param $form_state
  */
 
-function agent_form_submit($form, &$form_state) {
+function agent_form_submit($form, &$form_state)
+{
   $formValues = $form_state['values'];
   $rowAffected = db_update('kandy_users')
     ->fields(array('type' => KANDY_USER_TYPE_AGENT))
-    ->condition('id',$formValues['id'],'=')
+    ->condition('id', $formValues['id'], '=')
     ->execute();
-  if($rowAffected){
+  if ($rowAffected) {
     drupal_set_message(t("Add agent successfully"), 'status');
   } else {
     drupal_set_message(t('Cannot add chat agent'), 'error');
@@ -988,12 +1013,13 @@ function agent_form_submit($form, &$form_state) {
  * Remove user from chat agents list (change type to KANDY_USER_TYPE_NORMAL)
  * @param $id
  */
-function kandy_remove_agent($id) {
+function kandy_remove_agent($id)
+{
   $rowAffected = db_update('kandy_users')
     ->fields(array('type' => KANDY_USER_TYPE_NORMAL))
-    ->condition('id',$id,'=')
+    ->condition('id', $id, '=')
     ->execute();
-  if($rowAffected){
+  if ($rowAffected) {
     drupal_set_message(t("Remove agent successfully"), 'status');
   } else {
     drupal_set_message(t('Cannot remove chat agent'), 'error');
@@ -1007,9 +1033,10 @@ function kandy_remove_agent($id) {
  * @param $form_state
  * @return mixed
  */
-function user_form($form, &$form_state) {
+function user_form($form, &$form_state)
+{
   $excludedUsers = variable_get('kandy_excluded_users', "");
-  $excludedUsers = preg_split("/[\s,]+/",$excludedUsers);
+  $excludedUsers = preg_split("/[\s,]+/", $excludedUsers);
   $excludedUsers = array_combine($excludedUsers, $excludedUsers);
   $defaultValues = variable_get('kandy_live_chat_users', array());
   $form['kandy_user_id'] = array(
@@ -1031,37 +1058,39 @@ function user_form($form, &$form_state) {
  * @param $form
  * @param $form_state
  */
-function user_form_submit($form, &$form_state) {
+function user_form_submit($form, &$form_state)
+{
   $formValues = $form_state['values'];
   $users_id = $formValues['kandy_user_id'];
-  array_walk($users_id,'trim');
+  array_walk($users_id, 'trim');
   variable_set('kandy_live_chat_users', $users_id);
 }
 
 
-function kandy_register_guest_callback() {
-  if(!drupal_session_started()) {
+function kandy_register_guest_callback()
+{
+  if (!drupal_session_started()) {
     drupal_session_start();
   }
-  if(isset($_POST) && !empty($_POST)){
+  if (isset($_POST) && !empty($_POST)) {
     $username = $_POST['customerName'];
     $userEmail = $_POST['customerEmail'];
     //Save user info to database
     $userInfo = array(
-      'username'  => $username,
-      'email'     => $userEmail
+      'username' => $username,
+      'email' => $userEmail
     );
     $errors = [];
-    if( !$userEmail || !valid_email_address($userEmail)){
+    if (!$userEmail || !valid_email_address($userEmail)) {
       $errors['customerEmail'] = t('Please provide a valid email');
     }
-    if(!$username){
+    if (!$username) {
       $errors['customerName'] = t('Please enter your name');
     }
-    if(empty($errors)){
+    if (empty($errors)) {
       $_SESSION['kandyLiveChatUserInfo'] = $userInfo;
       drupal_json_output($userInfo);
-    }else{
+    } else {
       drupal_json_output(array('errors' => $errors));
     }
   }
@@ -1071,41 +1100,41 @@ function kandy_register_guest_callback() {
 function kandy_get_free_user_callback()
 {
   module_load_include('php', 'kandy', 'kandy_api');
-  if(!drupal_session_started()) {
+  if (!drupal_session_started()) {
     drupal_session_start();
   }
   $fakeEndTime = PHP_INT_MAX;
   $liveChatSession = $_SESSION['kandyLiveChatUserInfo'];
   $kandyLiveChatUsers = variable_get('kandy_live_chat_users', array());
-  if(isset($liveChatSession['user'])) {
+  if (isset($liveChatSession['user'])) {
     $query = db_select('kandy_users', 'ku');
     $query->fields('ku')
       ->addExpression("CONCAT(ku.user_id,'@', ku.domain_name)", 'full_user_id');
-    $query->condition('user_id',$liveChatSession['user']);
+    $query->condition('user_id', $liveChatSession['user']);
     $user = $query->execute()->fetchObject();
   } else {
     $query = db_select('kandy_users', 'ku');
     $query->leftJoin('kandy_live_chat', 'lc', 'ku.user_id = lc.customer_user_id');
     $query->leftJoin('kandy_user_login', 'ul', 'ku.user_id = ul.kandy_user_id');
     $query->fields('ku', array('user_id', 'password'));
-    $query->addExpression('MAX(end_at)','last_end_chat');
-    $query->addExpression('CONCAT(ku.user_id, \'@\', ku.domain_name)','full_user_id');
-    $query->addField('ul','time', 'last_active');
-    $query->condition('ku.user_id',$kandyLiveChatUsers, 'IN');
+    $query->addExpression('MAX(end_at)', 'last_end_chat');
+    $query->addExpression('CONCAT(ku.user_id, \'@\', ku.domain_name)', 'full_user_id');
+    $query->addField('ul', 'time', 'last_active');
+    $query->condition('ku.user_id', $kandyLiveChatUsers, 'IN');
     $query->havingCondition(db_or()->condition('last_end_chat', $fakeEndTime, '<')->isNull('last_end_chat'));
     $query->groupBy('ku.user_id');
     $query->orderBy('last_end_chat');
     $user = $query->execute()->fetchObject();
-    if($user) {
+    if ($user) {
       $liveChatSession['user'] = $user->user_id;
     }
   }
-  if(isset($liveChatSession['agent'])) {
+  if (isset($liveChatSession['agent'])) {
     $query = db_select('kandy_users', 'ku');
     $query->join('users', 'u', 'ku.main_user_id = u.uid');
     $query->fields('ku', array('user_id', 'main_user_id', 'password'));
     $query->fields('u', array('name'));
-    $query->addExpression("CONCAT(user_id,'@',domain_name)",'full_user_id');
+    $query->addExpression("CONCAT(user_id,'@',domain_name)", 'full_user_id');
     $query->condition('user_id', $liveChatSession['agent'], '=');
     $agent = $query->execute()->fetchObject();
   } else {
@@ -1118,29 +1147,29 @@ function kandy_get_free_user_callback()
     $query->addExpression("CONCAT(user_id,'@', domain_name)", 'full_user_id');
     $query->addExpression("MAX(lc.end_at)", 'last_end_chat');
     $query->addExpression('UNIX_TIMESTAMP() - ul.time', 'last_active');
-    $query->condition('ku.type', KANDY_USER_TYPE_AGENT,'=');
+    $query->condition('ku.type', KANDY_USER_TYPE_AGENT, '=');
     $query->condition('ul.status', KANDY_USER_STATUS_ONLINE);
     $query->groupBy('u.uid');
     $query->havingCondition(db_or()->condition('last_end_chat', $fakeEndTime, "<")->isNull("last_end_chat"));
-    $query->havingCondition('last_active',60, '<');
+    $query->havingCondition('last_active', 60, '<');
     $query->orderBy('last_active', "ASC");
     $query->orderBy("last_end_chat");
     $agent = $query->execute()->fetchObject();
-    if($agent) {
+    if ($agent) {
       $liveChatSession['agent'] = $agent->user_id;
     }
   }
-  if($user && $agent) {
+  if ($user && $agent) {
     $now = time();
     kandy_log_user_login($user->user_id, KANDY_USER_TYPE_END_USER);
     $lastID = db_insert("kandy_live_chat")->fields(
       array(
         'agent_user_id' => $agent->user_id,
-        'customer_user_id'  => $user->full_user_id,
-        'customer_name'     => $liveChatSession['username'],
-        'customer_email'    => $liveChatSession['email'],
-        'begin_at'          => $now,
-        'end_at'            => $fakeEndTime
+        'customer_user_id' => $user->full_user_id,
+        'customer_name' => $liveChatSession['username'],
+        'customer_email' => $liveChatSession['email'],
+        'begin_at' => $now,
+        'end_at' => $fakeEndTime
       )
     )->execute();
     //save last insert id
@@ -1159,7 +1188,7 @@ function kandy_get_free_user_callback()
     $query->addExpression('UNIX_TIMESTAMP() - time', 'last_active');
     $query->havingCondition('last_active', 60, '>');
     $inActiveUsers = $query->execute()->fetchCol();
-    if(!empty($inActiveUsers)){
+    if (!empty($inActiveUsers)) {
       $now = time();
       db_update("kandy_live_chat")
         ->fields(array(
@@ -1176,12 +1205,14 @@ function kandy_get_free_user_callback()
   drupal_json_output($result);
 }
 
-function kandy_end_chat_session_callback() {
-  if(!drupal_session_started()) {
+function kandy_end_chat_session_callback()
+{
+  if (!drupal_session_started()) {
     drupal_session_start();
   }
-  if(isset($_SESSION['kandyLiveChatUserInfo']) &&
-    ($chatSessionInfo = $_SESSION['kandyLiveChatUserInfo'])){
+  if (isset($_SESSION['kandyLiveChatUserInfo']) &&
+    ($chatSessionInfo = $_SESSION['kandyLiveChatUserInfo'])
+  ) {
     $currentSession = intval($chatSessionInfo['sessionId']);
     //save end session time
     db_update('kandy_live_chat')
@@ -1192,38 +1223,40 @@ function kandy_end_chat_session_callback() {
     unset($_SESSION['kandyLiveChatUserInfo']);
   }
   drupal_json_output(array(
-    'status'    => 'success',
+    'status' => 'success',
   ));
 }
 
-function kandy_rate_agent_callback() {
-  if(!drupal_session_started()) {
+function kandy_rate_agent_callback()
+{
+  if (!drupal_session_started()) {
     drupal_session_start();
-  }  $rate = $_POST['rate'];
+  }
+  $rate = $_POST['rate'];
   $userId = $rate['id'];
   $point = intval($rate['point']);
   $comment = check_plain($_POST['comment']);
-  if(!isset($_SESSION['kandyLiveChatUserInfo'])) {
+  if (!isset($_SESSION['kandyLiveChatUserInfo'])) {
     drupal_json_output(array(
       'success' => false,
       'message' => 'not allowed'
     ));
   } else {
     $liveChatSessionInfo = $_SESSION['kandyLiveChatUserInfo'];
-    if(!$userId) {
+    if (!$userId) {
       $result = array(
-        'success'   => false,
-        'message'   => 'agent is not specified'
+        'success' => false,
+        'message' => 'agent is not specified'
       );
     } else {
       $now = time();
       db_insert("kandy_live_chat_rate")
         ->fields(array(
-          'main_user_id'  => $userId,
-          'rated_time'    => $now,
-          'point'         => $point,
-          'rated_by'      => $liveChatSessionInfo['email'],
-          'comment'       => $comment
+          'main_user_id' => $userId,
+          'rated_time' => $now,
+          'point' => $point,
+          'rated_by' => $liveChatSessionInfo['email'],
+          'comment' => $comment
         ))
         ->execute();
       $liveChatSessionInfo['rated'] = true;
@@ -1236,22 +1269,72 @@ function kandy_rate_agent_callback() {
   }
 }
 
-function kandy_update_login_status_callback() {
+function kandy_update_login_status_callback()
+{
   module_load_include('php', 'kandy', 'kandy_api');
   global $user;
   $kandyUser = null;
-  if($user->uid) {
+  if ($user->uid) {
     $kandyUser = kandy_get_assign_user($user->uid);
   } elseif (isset($_SESSION['kandyLiveChatUserInfo']['user'])) {
     $kandyUserId = $_SESSION['kandyLiveChatUserInfo']['user'];
     $kandyUser = kandy_get_user_by_user_id($kandyUserId);
   }
-  if($kandyUser) {
+  if ($kandyUser) {
     db_update("kandy_user_login")
       ->fields(array(
         'time' => time()
       ))
-      ->condition('kandy_user_id',$kandyUser->user_id, '=')
+      ->condition('kandy_user_id', $kandyUser->user_id, '=')
       ->execute();
   }
+}
+
+function kandy_get_presence_status_callback()
+{
+  $serverTimestamp = isset($_POST['server_timestamp']) ? $_POST['server_timestamp']: time();
+  $users = isset($_POST['users']) ? $_POST['users'] : array();
+  module_load_include('php', 'kandy', 'kandy_api');
+  foreach ($users as $id => &$user) {
+    $lastActive = $serverTimestamp - $user['last_seen'];
+    if ($lastActive > 10000) {
+      $user['presence_status'] = 'Offline';
+    } else {
+      $userId = explode('@', $user['full_user_id']);
+      $userData = kandy_get_user_by_user_id($userId[0]);
+      $user['presence_status'] = ($userData->presence_status) ? ucfirst(str_replace('-', ' ', $userData->presence_status)) : 'Available';
+    }
+    $user['last_active_in'] = $lastActive;
+  }
+  echo json_encode($users);
+  exit;
+}
+
+function kandy_set_presence_status_callback($presenceStatus)
+{
+  global $user;
+  module_load_include('php', 'kandy', 'kandy_api');
+  $presenceStatus = check_plain($presenceStatus);
+  $availableStatuses = array('available', 'away', 'out-to-lunch', 'be-right-back', 'on-vacation', 'busy', 'unavailable');
+  if (!in_array($presenceStatus, $availableStatuses)) {
+    exit;
+  }
+  $kandyUser = kandy_get_assign_user($user->uid);
+  if ($kandyUser) {
+    db_update("kandy_users")
+      ->fields(array(
+        'presence_status' => $presenceStatus
+      ))
+      ->condition('user_id',$kandyUser->user_id,'=')
+      ->execute();
+    echo json_encode(array(
+      'status' => 'success',
+      'presence_status' => $presenceStatus
+    ));
+    exit;
+  }
+  echo json_encode(array(
+    'status' => 'fail'
+  ));
+  exit;
 }

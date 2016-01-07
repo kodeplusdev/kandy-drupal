@@ -4,7 +4,7 @@
  */
 (function() {
   var activeContainerId;
-
+  var kandyPresence = {};
 // Create audio objects to play incoming calls and outgoing calls sound.
   var $audioRingIn = jQuery('<audio>', {loop: 'loop', id: 'ring-in'});
   var $audioRingOut = jQuery('<audio>', {loop: 'loop', id: 'ring-out'});
@@ -51,7 +51,6 @@
         callinitiated: kandy_on_call_initiate,
         callinitiatefailed: kandy_on_call_initiate_fail,
         callrejected: kandy_on_call_rejected,
-        presencenotification: kandy_presence_notification_callback
       }
     });
     if (jQuery(".kandyChat").length) {
@@ -445,6 +444,38 @@
     changeAnswerButtonState("RESUME_CALL", '#' + kandyButtonId);
   };
 
+  var presence_changed_callback = function(){
+    for(var userId in kandyPresence){
+      kandy_presence_notification_callback(userId,kandyPresence[userId].toLowerCase(),kandyPresence[userId]);
+    }
+  };
+
+
+  var kandy_get_presence = function(lastSeen){
+    var get_presence_url = Drupal.settings.basePath + 'kandy/get_presence';
+    jQuery.post(get_presence_url,lastSeen, function(presences) {
+      presences.forEach(function(user, index){
+        kandyPresence[user.full_user_id] = user.presence_status;
+      });
+      presence_changed_callback();
+    }, 'json')
+
+  };
+
+
+  var get_last_seen = function(contacts){
+    kandy.getLastSeen(contacts, function(result){
+      kandy_get_presence(result);
+    });
+  };
+
+  var get_last_seen_interval = function(contacts) {
+    get_last_seen(contacts);
+    setInterval(get_last_seen,10000, contacts);
+  };
+
+
+
   /**
    * Add AddressBook widget.
    */
@@ -468,7 +499,7 @@
           jQuery('.kandyAddressBook .kandyAddressContactList').append("<div class='kandy-contact-heading'><span class='displayname'><b>Username</b></span><span class='userId'><b>Contact</b></span><span class='presence'><b>Status</b></span></div>");
           for (i = 0; i < results.length; i++) {
             if (results[i].display_name != "kandy-un-assign-user") {
-              contactListForPresence.push({full_user_id: results[i].contact_user_name});
+              contactListForPresence.push(results[i].contact_user_name);
 
               var id_attr = results[i].contact_user_name.replace(/[.@]/g, '_');
               jQuery('.kandyAddressBook .kandyAddressContactList').append(
@@ -486,8 +517,7 @@
               deleteContact.push({id_attr: id_attr, contact_id: results[i].contact_id});
             }
           }
-          KandyAPI.Phone.watchPresence(contactListForPresence);
-
+          get_last_seen_interval(contactListForPresence)
           // Delete empty contact id.
           for (i = 0; i < deleteContact.length; i++) {
             var contact_id = deleteContact[i].contact_id;
@@ -565,7 +595,13 @@
    * @param status
    */
   kandy_myStatusChanged = function (status) {
-    KandyAPI.Phone.updatePresence(status);
+    var set_presence_url = Drupal.settings.basePath +'kandy/set_presence/'+status;
+    jQuery.ajax({
+      url: set_presence_url,
+      dataType: 'json'
+    }).done(function(){
+
+    })
 
   };
 
@@ -808,10 +844,10 @@
         emptyContact();
         for (var i = 0; i < results.length; i++) {
           prependContact(results[i]);
-          contactListForPresence.push({full_user_id: results[i].contact_user_name});
+          contactListForPresence.push(results[i].contact_user_name);
         }
         addExampleBox();
-        KandyAPI.Phone.watchPresence(contactListForPresence);
+        get_last_seen_interval(contactListForPresence)
 
       },
       function () {
@@ -1558,7 +1594,6 @@
         },
         minimumInputLength: 1
       });
-
       jQuery('.kandyButton .btnVoiceCall').click(function () {
         kandy_make_voice_call(this);
       });

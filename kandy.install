@@ -86,6 +86,12 @@ function kandy_schema() {
         'description' => 'The updated time of kandy user',
         'mysql_type' => 'DATETIME',
       ),
+      'presence_status' => array(
+        'type' => 'varchar',
+        'not null' => false,
+        'description' => 'Presence status of user',
+        'length' => '50'
+      )
     ),
     'primary key' => array('id'),
   );
@@ -274,4 +280,16 @@ function kandy_update_7000() {
         'primary key' => array('id')
     );
     return $schema;
+}
+/**
+*
+* Add presence_status field to kandy_users table
+*/
+function kandy_update_7242() {
+     db_add_field('kandy_users', 'presence_status', array(
+        'type' => 'varchar',
+        'not null' => false,
+        'description' => 'Presence status of user',
+        'length' => '50'
+     ));
 }
