@@ -72,8 +72,8 @@
    * Login Success Callback.
    */
   var kandy_login_success_callback = function () {
+    console.log('login successful');
     kandy.getLastSeen([Drupal.settings.loginInfo.username]);
-
     // Have kandy Address Book widget.
     if (jQuery(".kandyAddressBook").length) {
       kandy_load_contacts_addressbook();
@@ -464,6 +464,7 @@
 
 
   var get_last_seen = function(contacts){
+    contacts = contacts || [current_kandy_user];
     kandy.getLastSeen(contacts, function(result){
       kandy_get_presence(result);
     });
@@ -494,6 +495,7 @@
         if (results.length == 0) {
           div = "<div class='kandyAddressBookNoResult'>-- No Contacts --</div>";
           jQuery('.kandyAddressBook .kandyAddressContactList').append(div);
+          get_last_seen_interval();
         }
         else {
           jQuery('.kandyAddressBook .kandyAddressContactList').append("<div class='kandy-contact-heading'><span class='displayname'><b>Username</b></span><span class='userId'><b>Contact</b></span><span class='presence'><b>Status</b></span></div>");
@@ -518,6 +520,7 @@
             }
           }
           get_last_seen_interval(contactListForPresence)
+
           // Delete empty contact id.
           for (i = 0; i < deleteContact.length; i++) {
             var contact_id = deleteContact[i].contact_id;
@@ -839,15 +842,20 @@
     var contactListForPresence = [];
     kandy.addressbook.retrievePersonalAddressBook(
       function (results) {
-        var get_name_for_contact_url = jQuery(".kandyChat #get_name_for_contact_url").val();
-        results = get_display_name_for_contact(results, get_name_for_contact_url);
-        emptyContact();
-        for (var i = 0; i < results.length; i++) {
-          prependContact(results[i]);
-          contactListForPresence.push(results[i].contact_user_name);
+        if(results.length) {
+          var get_name_for_contact_url = jQuery(".kandyChat #get_name_for_contact_url").val();
+          results = get_display_name_for_contact(results, get_name_for_contact_url);
+          emptyContact();
+          for (var i = 0; i < results.length; i++) {
+            prependContact(results[i]);
+            contactListForPresence.push(results[i].contact_user_name);
+          }
+          addExampleBox();
+          get_last_seen_interval(contactListForPresence);
+        } else {
+          get_last_seen_interval();
         }
-        addExampleBox();
-        get_last_seen_interval(contactListForPresence)
+
 
       },
       function () {
@@ -1025,7 +1033,6 @@
     var get_name_for_contact_url = jQuery(".kandyChat #get_name_for_contact_url").val();
     participants.push({full_user_id: admin_id});
     participants = get_display_name_for_contact(participants, get_name_for_contact_url);
-    var currentUser = jQuery(".kandy_user").val();
     if (participants.length) {
       for (var i in participants) {
         displayNames[participants[i].full_user_id] = participants[i].display_name;
@@ -1058,8 +1065,6 @@
         if (result.hasOwnProperty('groups')) {
           if (result.groups.length) {
             jQuery(groupSeparator).removeClass('hidden');
-            console.log(result);
-
             for (var i in result.groups) {
               //build sessions list here
               if(!groupNames.hasOwnProperty(result.groups[i].group_id)) {
@@ -1152,8 +1157,7 @@
     if (message.messageType == 'chatGroupBoot') {
       var bootedUser = message.booted[0];
       var notify;
-      var currentUser = jQuery('.kandy_user').val();
-      if (bootedUser != currentUser) {
+      if (bootedUser != current_kandy_user) {
         notify = (displayNames[bootedUser] || bootedUser.split('@')[0]) + ' is removed from this group';
         kandy_loadGroupDetails(message.group_id);
       } else {
@@ -1237,8 +1241,7 @@
     if (message.messageType == 'chatGroupLeave') {
       var leaverDisplayName = displayNames[message.leaver] || message.split('@')[0];
       var groupId = message.group_id;
-      var LoggedUser = jQuery(".kandy_user").val();
-      if (message.leaver != LoggedUser) {
+      if (message.leaver != current_kandy_user) {
         kandy_loadGroupDetails(message.group_id);
       } else {
         kandy_loadGroups();
@@ -1377,13 +1380,13 @@
   var kandy_loadGroupDetails = function (groupId) {
     kandy.messaging.getGroupById(groupId,
       function (result) {
-        var isOwner = false, notInGroup = true, groupActivity = '', currentUser = jQuery(".kandy_user").val();
+        var isOwner = false, notInGroup = true, groupActivity = '';
         var groupAction = jQuery(liTabWrapSelector + ' li a[data-content="' + groupId + '"]').parent().find('.groupAction');
         var messageInput = jQuery(liContentWrapSelector + ' li[data-content="' + groupId + '"] form .imMessageToSend');
         buildListParticipants(groupId, result.members, result.owners[0].full_user_id);
 
         // If current user is owner of this group.
-        if (currentUser === result.owners[0].full_user_id) {
+        if (current_kandy_user === result.owners[0].full_user_id) {
           // Add admin functionality.
           isOwner = true;
           groupActivity = '<a class="btnRemoveGroup" data-group-id="'+result.group_id+'" href="javascipt:;"><i title="Remove group" class="fa fa-remove"></i></a>';
