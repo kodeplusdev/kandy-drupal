@@ -1374,13 +1374,13 @@ function kandy_shortcode_kandy_livechat($attr)
   drupal_add_js(
     '//agent user id
     var agent;
-    var rateData;
+    var rateData = {};
     jQuery(function(){
       ' . $func . '
       jQuery(".liveChat #ratingForm .rateit").bind("rated", function(){
         var ri = jQuery(this);
         rateData = rateData || {};
-        rateData.rate = {id: agent.main_user_id, point: ri.rateit("value")}
+        rateData.rate = {point: ri.rateit("value")}
       });
 
     jQuery(".liveChat #ratingForm .rateit").bind("reset", function(){

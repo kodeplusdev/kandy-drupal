@@ -93,6 +93,7 @@ var getKandyUsers = function () {
         login(res.apiKey, username, res.user.password, login_success_callback, login_fail_callback);
         setup();
         agent = res.agent;
+        rateData.agent_id = agent.main_user_id;
         heartBeat(60000);
       } else {
         if (!checkAvailable) {

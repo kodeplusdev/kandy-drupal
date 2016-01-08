@@ -1233,8 +1233,8 @@ function kandy_rate_agent_callback()
     drupal_session_start();
   }
   $rate = $_POST['rate'];
-  $userId = $rate['id'];
-  $point = intval($rate['point']);
+  $userId = $_POST['agent_id'];
+  $point = $rate['point']?:5;
   $comment = check_plain($_POST['comment']);
   if (!isset($_SESSION['kandyLiveChatUserInfo'])) {
     drupal_json_output(array(
