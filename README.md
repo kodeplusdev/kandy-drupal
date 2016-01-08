@@ -403,6 +403,7 @@ at **admin > config > content > kandy**
     * When you uninstall kandy module, make sure to delete the public folder:
     **sites/default/files/kandy**
     * Select proper text format which enable shortcode filter.
+    * From Configuration > Content Authoring > Text Formats: Uncheck **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
     * Check provide menu link to make your content as a menu.
     * Uncheck promoted to front end
     * Uncheck Display author and date information.

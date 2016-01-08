@@ -76,7 +76,8 @@ function kandy_shortcode_shortcode_info()
   $shortcodes['kandyLiveChat'] = array(
     'title' => t('Kandy Live Chat'),
     'description' => t('Show kandy live chat widget'),
-    'process callback' => 'kandy_shortcode_kandy_livechat'
+    'process callback' => 'kandy_shortcode_kandy_livechat',
+    'tips callback' => 'kandy_shortcode_kandy_livechat_tip'
   );
 
   return $shortcodes;
@@ -222,11 +223,20 @@ function kandy_shortcode_kandy_sms_tip($format, $long)
   return implode(' ', $output);
 }
 
-function kandy_short_code_kandy_cobrowsing_tip($format, $long)
+function kandy_shortcode_kandy_cobrowsing_tip($format, $long)
 {
   $output = array();
   $output[] = '<p><strong>' . t('[kandyCoBrowsing class="myCoBrowsingStyle" id ="co-browsing"][/kandyCoBrowsing]') . '</strong> ';
   $output[] = t('Inserts an Kandy Co-browsing.') . '</p>';
+
+  return implode(' ', $output);
+}
+
+function kandy_shortcode_kandy_livechat_tip($format, $long)
+{
+  $output = array();
+  $output[] = '<p><strong>' . t('[kandyLiveChat class="myLiveChat"][/kandyLiveChat]') . '</strong> ';
+  $output[] = t('Inserts an Kandy Livechat widget.') . '</p>';
 
   return implode(' ', $output);
 }

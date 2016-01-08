@@ -1105,7 +1105,7 @@ function kandy_get_free_user_callback()
   }
   $fakeEndTime = PHP_INT_MAX;
   $liveChatSession = $_SESSION['kandyLiveChatUserInfo'];
-  $kandyLiveChatUsers = variable_get('kandy_live_chat_users', array());
+  $kandyLiveChatUsers = variable_get('kandy_live_chat_users', array(""));
   if (isset($liveChatSession['user'])) {
     $query = db_select('kandy_users', 'ku');
     $query->fields('ku')
