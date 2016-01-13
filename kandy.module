@@ -1156,22 +1156,24 @@ function kandy_get_free_user_callback()
     $agents = $query->execute()->fetchAll();
     $agent = null;
     $agentIds = [];
-    foreach($agents as $key => $item) {
-      array_push($agentIds,$item->full_user_id);
-    }
-    $lastSeen = kandy_get_last_seen($agentIds);
-    if($lastSeen->message == 'success') {
-      $lastSeenUsers = $lastSeen->result->users;
-      foreach($lastSeenUsers as $key => $u) {
-        if(($lastActive = $lastSeen->result->server_timestamp - $u->last_seen) && $lastActive < 10000) {
-          $agent = $agents[$key];
-        } else {
-          continue;
+    if($agents) {
+      foreach($agents as $key => $item) {
+        array_push($agentIds,$item->full_user_id);
+      }
+      $lastSeen = kandy_get_last_seen($agentIds);
+      if($lastSeen->message == 'success') {
+        $lastSeenUsers = $lastSeen->result->users;
+        foreach($lastSeenUsers as $key => $u) {
+          if(($lastActive = $lastSeen->result->server_timestamp - $u->last_seen) && $lastActive < 10000) {
+            $agent = $agents[$key];
+          } else {
+            continue;
+          }
         }
       }
-    }
-    if ($agent) {
-      $liveChatSession['agent'] = $agent->user_id;
+      if ($agent) {
+        $liveChatSession['agent'] = $agent->user_id;
+      }
     }
   }
   if ($user && $agent) {
