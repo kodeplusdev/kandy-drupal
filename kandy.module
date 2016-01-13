@@ -1141,20 +1141,35 @@ function kandy_get_free_user_callback()
     $query = db_select("kandy_users", 'ku');
     $query->leftJoin('kandy_live_chat', 'lc', 'ku.user_id = lc.agent_user_id');
     $query->leftJoin('users', 'u', 'ku.main_user_id = u.uid');
-    $query->join('kandy_user_login', 'ul', 'ku.user_id = ul.kandy_user_id');
+//    $query->join('kandy_user_login', 'ul', 'ku.user_id = ul.kandy_user_id');
     $query->fields('ku', array('user_id', 'password', 'main_user_id'));
     $query->fields('u', array('name'));
     $query->addExpression("CONCAT(user_id,'@', domain_name)", 'full_user_id');
     $query->addExpression("MAX(lc.end_at)", 'last_end_chat');
-    $query->addExpression('UNIX_TIMESTAMP() - ul.time', 'last_active');
+//    $query->addExpression('UNIX_TIMESTAMP() - ul.time', 'last_active');
     $query->condition('ku.type', KANDY_USER_TYPE_AGENT, '=');
-    $query->condition('ul.status', KANDY_USER_STATUS_ONLINE);
     $query->groupBy('u.uid');
     $query->havingCondition(db_or()->condition('last_end_chat', $fakeEndTime, "<")->isNull("last_end_chat"));
-    $query->havingCondition('last_active', 60, '<');
-    $query->orderBy('last_active', "ASC");
+//    $query->havingCondition('last_active', 60, '<');
+//    $query->orderBy('last_active', "ASC");
     $query->orderBy("last_end_chat");
-    $agent = $query->execute()->fetchObject();
+    $agents = $query->execute()->fetchAll();
+    $agent = null;
+    $agentIds = [];
+    foreach($agents as $key => $item) {
+      array_push($agentIds,$item->full_user_id);
+    }
+    $lastSeen = kandy_get_last_seen($agentIds);
+    if($lastSeen->message == 'success') {
+      $lastSeenUsers = $lastSeen->result->users;
+      foreach($lastSeenUsers as $key => $u) {
+        if(($lastActive = $lastSeen->result->server_timestamp - $u->last_seen) && $lastActive < 10000) {
+          $agent = $agents[$key];
+        } else {
+          continue;
+        }
+      }
+    }
     if ($agent) {
       $liveChatSession['agent'] = $agent->user_id;
     }

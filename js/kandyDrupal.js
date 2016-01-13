@@ -3,6 +3,7 @@
  * KANDY SETUP AND LISTENER CALLBACK.
  */
 (function() {
+  var last_seen_interval;
   var activeContainerId;
   var kandyPresence = {};
 // Create audio objects to play incoming calls and outgoing calls sound.
@@ -472,7 +473,10 @@
 
   var get_last_seen_interval = function(contacts) {
     get_last_seen(contacts);
-    setInterval(get_last_seen,10000, contacts);
+    if(last_seen_interval) {
+      clearInterval(last_seen_interval);
+    }
+    last_seen_interval = setInterval(get_last_seen,10000, contacts);
   };
 
 

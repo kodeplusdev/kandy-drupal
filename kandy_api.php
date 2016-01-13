@@ -698,3 +698,33 @@ function kandy_log_user_login($kandy_user_id, $user_type, $logType = KANDY_USER_
       ->execute();
   }
 }
+function kandy_get_last_seen(array $users) {
+  $result = kandy_get_domain_access_token();
+  if ($result['success'] == true) {
+    $domainAccessToken = $result['data'];
+  } else {
+    // Catch errors
+  }
+
+  $users = json_encode($users);
+
+  $params = array(
+    'key' => $domainAccessToken,
+    'users' => $users
+  );
+  $url = KANDY_API_BASE_URL . 'users/presence/last_seen?' . drupal_http_build_query($params);
+  try{
+    $response = drupal_http_request($url);
+  } catch (Exception $ex) {
+    watchdog_exception('kandy ', $ex);
+    return array(
+      'success' => FALSE,
+      'message' => $ex->getMessage(),
+      'data' => '',
+    );
+  }
+  $response = json_decode($response->data);
+  return $response;
+
+}
+
