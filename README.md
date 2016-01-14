@@ -36,13 +36,19 @@ information:
 Below are default configuration:
 - **Javascript Library Url**:
   https://kandy-portal.s3.amazonaws.com/public/javascript/kandy/2.2.1/kandy.js
-- **FCS Library Url**:
-  https://kandy-portal.s3.amazonaws.com/public/javascript/fcs/3.0.4/fcs.js
 - **Jquery Reload**: If you need to use kandy jquery library, set it to yes.
 
 **User assignment:**  help you synchronize kandy users
 from kandy server to your users system. 
 Select your user and click edit button to assign(unassign) kandy user.
+
+**Live chat configuration:** Live chat feature needs some configurations before using:
+
+- **Configure "Excluded Kandy Users" in Kandy Settings page**: these Kandy users will not be assigned to your users. They are reserved to live chat feature or some features in future. Each user separated by comma or whitespace.
+
+- **Add Excluded Kandy Users to live chat feature**: From Kandy configuration page, chose **Live Chat Users** tab, this page display your excluded users in previous step. You can assign a user to live chat feature by chosing from select box and click Save.
+
+- **Add Live Chat Agent**: From Kandy configuration page, click on **Live Chat Agents** Tab . You can add a user from your user system to assign him as a Live Chat Agent
 
 **Style customization**: help you edit 
 kandy shortcode(video, voice, chat...) style. 
@@ -109,7 +115,7 @@ window.presence_notification_callback = function(userId, state, description, act
 
 ####Kandy components and shortcode syntax:
 
-**Kandy Video Button**: make a video call button component(video call)
+**Kandy Video Button**: Make a video call button component(video call)
 ```sh
 [kandyVideoButton
         class = "myButtonStyle"
@@ -124,7 +130,7 @@ window.presence_notification_callback = function(userId, state, description, act
         onCallButtonText = "End Call"]
 [/kandyVideoButton]
 ```
-**Kandy Video**: make a video component (video call)
+**Kandy Video**: Make a video component (video call)
 ```sh
 [kandyVideo
     title = "Me"
@@ -133,7 +139,7 @@ window.presence_notification_callback = function(userId, state, description, act
 [/kandyVideo]
   ```
 
-  **Kandy Voice Button**: make a voice call button component (voice call)
+  **Kandy Voice Button**: Make a voice call button component (voice call)
 ```sh
 [kandyVoiceButton
         class = "myButtonStyle"
@@ -151,7 +157,7 @@ window.presence_notification_callback = function(userId, state, description, act
 [/kandyVoiceButton]
 ```
 
-**Kandy Status**: make a kandy user status component 
+**Kandy Status**: Make a Kandy user status component
 (available, unavailable, awway, busy....). 
 Kandy Status usually use with kandy address book component.
 ```sh
@@ -161,7 +167,7 @@ Kandy Status usually use with kandy address book component.
         title = "My Status"]
 [/kandyStatus]
   ```
-**Kandy Address Book**: make an address book component 
+**Kandy Address Book**: Make an address book component
 which list all friend in your contact.
 ```sh
 [kandyAddressBook
@@ -172,7 +178,7 @@ which list all friend in your contact.
 [/kandyAddressBook]
   ```
 
-**Kandy Chat**: make a kandy chat component 
+**Kandy Chat**: Make a Kandy chat component
 which help you send instant message to your friend in contact.
 ```sh
 [kandyChat
@@ -182,7 +188,7 @@ which help you send instant message to your friend in contact.
 [/kandyChat]
   ```
 
-**Kandy Chat**: make a kandy sms component
+**Kandy SMS**: Make a Kandy SMS component
 which help you send sms message to a phone number.
 ```sh
 [kandySms
@@ -190,9 +196,22 @@ which help you send sms message to a phone number.
         id = "my-sms"
         messageHolder = "Message..."
         numberHolder = "Number..."
-        btnSendLabel = "Send"
+        btnSendLabel = "Send"]
 [/kandySms]
   ```
+
+**Kandy LiveChat**: Make a small widget to help you implement live chat, give your customers ability to chat with customer service agent.
+```sh
+[kandyLiveChat class="myLiveChat"][/kandyLiveChat]
+```
+
+**Kandy Co-browsing**: Make a co-browsing component which help you share your browser screen with your friends.
+```sh
+[kandyCoBrowsing
+        class="myCoBrowsingStyle"
+        id ="co-browsing"]
+[/kandyCoBrowsing]
+```
 
 ### Quick Examples:
 **Kandy Voice Call**
@@ -232,6 +251,19 @@ which help you send sms message to a phone number.
 ```sh
 [kandySms class="mySmsStyle" id="my-sms"][/kandySms]
 ```
+
+**Kandy LiveChat**
+```sh
+[kandyLiveChat class="myLiveChat"][/kandyLiveChat]
+```
+
+**Kandy Co-browsing**
+```sh
+[kandyCoBrowsing class="myCoBrowsingStyle" id ="co-browsing"][/kandyCoBrowsing]
+```
+
+
+
 
 ### Kandy API
 You can use kandy module anywhere in your code by following code:
@@ -371,6 +403,7 @@ at **admin > config > content > kandy**
     * When you uninstall kandy module, make sure to delete the public folder:
     **sites/default/files/kandy**
     * Select proper text format which enable shortcode filter.
+    * From Configuration > Content Authoring > Text Formats: Uncheck **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
     * Check provide menu link to make your content as a menu.
     * Uncheck promoted to front end
     * Uncheck Display author and date information.

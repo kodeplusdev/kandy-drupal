@@ -391,20 +391,28 @@
   padding-left: 10px;
 }
 
-#kandy-chat-create-group-modal {
-  display: none;
-  width: 400px;
-  height: 100px;
-  display: none;
-  position: absolute;
-  top: 5%;
-  left: 20%;
-  border: #000000;
-  background: #ccccff;
-  padding: 5px 10px;
+.kandyModal {
+    display: none;
+    width: 30%;
+    display: none;
+    position: absolute;
+    top: 5%;
+    left: 20%;
+    border: #000000;
+    background: #ccccff;
+    padding: 10px 20px;
 }
 
-#kandy-chat-create-group-modal input[type='text'] {
+.kandyModal .buttons {
+    margin-top: 10px;
+}
+
+.kandyModal hr {
+    border: 1px solid #eeeeee;
+    height: 0;
+}
+
+.kandyModal input[type='text'] {
   width: 96%;
   padding: 5px 6px;
 }
@@ -413,7 +421,7 @@
   padding: 3px 5px;
 }
 
-#kandy-chat-create-group-modal button {
+.kandyModal button {
   display: inline-block;
   padding: 5px 10px;
   cursor: pointer;
@@ -542,3 +550,53 @@
 .hidden {
   display: none;
 }
+
+.kandyChat .groups .list-users li a span {
+    font-size: 11px;
+    font-style: italic;
+}
+
+#coBrowsing {
+    margin: 20px 0;
+    padding: 0 20px;
+}
+#coBrowsing .openSessionWrap {
+    width: 60%;
+    margin: 20px 0;
+}
+
+#coBrowsing .buttons {
+    width: 80%;
+}
+
+#coBrowsing button{
+    font-size: 12px;
+}
+
+#coBrowsing .buttons button {
+    display: none;
+}
+
+#coBrowsing.browsing .buttons #btnStartCoBrowsing,
+#coBrowsing.browsing .buttons #btnStartCoBrowsingViewer,
+#coBrowsing.browsing .buttons #btnTerminateSession,
+#coBrowsing.browsing .buttons #btnLeaveSession {
+    display: none !important;
+}
+
+#coBrowsing.browsing .buttons #btnStopCoBrowsing {
+    display: inline-block !important;
+}
+#coBrowsing #cobrowsing-holder {
+    overflow-y: auto;
+}
+iframe {
+    width: 100% !important;
+    height: 500px !important;
+}
+
+.openSessionWrap {
+    width: 300px;
+    margin-right: 30px;
+}
+
