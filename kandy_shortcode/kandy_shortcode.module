@@ -1276,10 +1276,7 @@ function kandy_shortcode_kandy_livechat($attr)
       'group' => 'kandy',
       'weight' => 4,
     ));
-    drupal_add_js(KANDY_RATING_JS, array(
-      'group' => 'kandy',
-      'weight' => 4,
-    ));
+    libraries_load('rateit');
 
     drupal_add_js(KANDY_LIVECHAT_JS, array(
       'group' => 'kandy',
@@ -1289,11 +1286,6 @@ function kandy_shortcode_kandy_livechat($attr)
     drupal_add_css(KANDY_LIVECHAT_CSS, array(
       'group' => 'kandy',
       'weight' => 99
-    ));
-
-    drupal_add_css(KANDY_RATING_CSS, array(
-      'group' => 'kandy',
-      'weight' => 100
     ));
     $defaultAttr = array(
       'id' => 'liveChat',

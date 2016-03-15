@@ -293,3 +293,25 @@ function kandy_update_7242() {
         'length' => '50'
      ));
 }
+/**
+ * Implements hook_requirements().
+ */
+function kandy_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  $requirements['rateit'] = array(
+      'title' => $t('Jquery Rateit Library'),
+  );
+  $libraries = libraries_get_libraries();
+  if (isset($libraries['rateit'])) {
+    $requirements['rateit']['value'] = $t('Installed');
+    $requirements['rateit']['severity'] = REQUIREMENT_OK;
+  }
+  else {
+    $requirements['rateit']['value'] = $t('Not Installed');
+    $requirements['rateit']['severity'] = REQUIREMENT_ERROR;
+    $requirements['rateit']['description'] = $t('Please install the rateit library %url.', array('%url' => 'https://rateit.codeplex.com'));
+  }
+
+  return $requirements;
+}

@@ -1355,3 +1355,32 @@ function kandy_set_presence_status_callback($presenceStatus)
   ));
   exit;
 }
+/**
+ * Implements hook_libraries_info().
+ *
+ * For defining external libraries.
+ */
+function kandy_libraries_info()
+{
+  $libraries['rateit'] = array(
+    'name' => 'RateIt',
+    'vendor url' => 'https://rateit.codeplex.com',
+    'download url' => 'https://rateit.codeplex.com/downloads/get/169043',
+    'version arguments' => array(
+      'file' => 'jquery.rateit.min.js', // Could be any file with version info
+      'pattern' => '/Version (\d+)/',
+      'lines' => 5,
+    ),
+    'version callback' => 'rateit_version',
+    'files' => array(
+      'js' => array('src/jquery.rateit.min.js'), //this can be a path to the file location like array('lib/simple.js')
+      'css' => array('src/rateit.css')
+    ),
+  );
+
+  return $libraries;
+}
+
+function rateit_version() {
+  return true;
+}
