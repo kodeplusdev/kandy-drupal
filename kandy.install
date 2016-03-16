@@ -88,7 +88,7 @@ function kandy_schema() {
       ),
       'presence_status' => array(
         'type' => 'varchar',
-        'not null' => false,
+        'not null' => FALSE,
         'description' => 'Presence status of user',
         'length' => '50'
       )
@@ -96,43 +96,43 @@ function kandy_schema() {
     'primary key' => array('id'),
   );
   $schema['kandy_live_chat'] = array(
-      'fields' => array(
-          'id' => array(
-              'description' => 'The primary key',
-              'type' => 'serial',
-              'unsigned' => TRUE,
-              'not null' => TRUE,
-          ),
-          'agent_user_id' => array(
-              'type' => 'varchar',
-              'length' => 255,
-              'not null' => TRUE,
-          ),
-          'customer_user_id' => array(
-              'type' => 'varchar',
-              'length' => 255,
-              'not null' => TRUE,
-          ),
-          'customer_name' => array(
-              'type' => 'varchar',
-              'length' => 255,
-              'not null' => TRUE,
-          ),
-          'customer_email' => array(
-              'type' => 'varchar',
-              'length' => 255,
-              'not null' => TRUE,
-          ),
-          'begin_at'  => array(
-              'type' => 'int',
-              'length' => 11,
-          ),
-          'end_at'  => array(
-              'type' => 'int',
-              'length' => 11,
-          )
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary key',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'agent_user_id' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'customer_user_id' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'customer_name' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'customer_email' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'begin_at'  => array(
+          'type' => 'int',
+          'length' => 11,
+        ),
+        'end_at'  => array(
+          'type' => 'int',
+          'length' => 11,
+        ),
       ),
-      'primary key' => array('id')
+      'primary key' => array('id'),
     );
   $schema['kandy_live_chat_rate'] = array(
     'fields' => array(
@@ -150,12 +150,12 @@ function kandy_schema() {
       'rated_by' => array(
         'type' => 'varchar',
         'length' => 255,
-        'not null' => true,
+        'not null' => TRUE,
       ),
       'rated_time' => array(
         'type' => 'int',
         'length' => 10,
-        'not null' => true
+        'not null' => TRUE
       ),
       'point' => array(
         'type' => 'int',
@@ -163,9 +163,9 @@ function kandy_schema() {
       ),
       'comment' => array(
         'type' => 'text',
-      )
+      ),
     ),
-    'primary key' => array('id')
+    'primary key' => array('id'),
   );
   $schema['kandy_user_login'] = array(
     'fields' => array(
@@ -183,7 +183,7 @@ function kandy_schema() {
       'type' => array(
         'description' => 'Type of user',
         'type' => 'int',
-        'not null' => TRUE
+        'not null' => TRUE,
       ),
       'status' => array(
         'description' => 'login status of user',
@@ -192,7 +192,7 @@ function kandy_schema() {
       'browser_agent' => array(
         'description' => 'Browser agent info of user',
         'type' => 'varchar',
-        'length' => 255
+        'length' => 255,
       ),
       'ip_address' => array(
         'description' => 'IP address of user',
@@ -202,9 +202,9 @@ function kandy_schema() {
       'time' => array(
         'description' => 'Last time when user is considered active',
         'type' => 'int',
-      )
+      ),
     ),
-    'primary key' => array('id')
+    'primary key' => array('id'),
   );
   return $schema;
 }
@@ -238,60 +238,63 @@ function kandy_uninstall() {
   variable_del('kandy_fcs_url');
   variable_del('kandy_jquery_reload');
 }
-
+/**
+ * Implements hook_update().
+ * Add new table schema for new live chat feature
+ */
 function kandy_update_7000() {
-    $schema['kandy_live_chat'] = array(
-        'fields' => array(
-            'id' => array(
-                'description' => 'The primary key',
-                'type' => 'serial',
-                'unsigned' => TRUE,
-                'not null' => TRUE,
-            ),
-            'agent_user_id' => array(
-                'type' => 'varchar',
-                'length' => 255,
-                'not null' => TRUE,
-            ),
-            'customer_user_id' => array(
-                'type' => 'varchar',
-                'length' => 255,
-                'not null' => TRUE,
-            ),
-            'customer_name' => array(
-                'type' => 'varchar',
-                'length' => 255,
-                'not null' => TRUE,
-            ),
-            'customer_email' => array(
-                'type' => 'varchar',
-                'length' => 255,
-                'not null' => TRUE,
-            ),
-            'begin_at'  => array(
-                'type' => 'int',
-                'length' => 11,
-            ),
-            'end_at'  => array(
-                'type' => 'int',
-                'length' => 11,
-            )
-        ),
-        'primary key' => array('id')
-    );
-    return $schema;
+  $schema['kandy_live_chat'] = array(
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary key',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'agent_user_id' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'customer_user_id' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'customer_name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'customer_email' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'begin_at'  => array(
+        'type' => 'int',
+        'length' => 11,
+      ),
+      'end_at'  => array(
+        'type' => 'int',
+        'length' => 11,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  return $schema;
 }
 /**
-*
+* Implement hook_update()
 * Add presence_status field to kandy_users table
 */
 function kandy_update_7242() {
-     db_add_field('kandy_users', 'presence_status', array(
-        'type' => 'varchar',
-        'not null' => false,
-        'description' => 'Presence status of user',
-        'length' => '50'
-     ));
+  db_add_field('kandy_users', 'presence_status', array(
+    'type' => 'varchar',
+    'not null' => FALSE,
+    'description' => 'Presence status of user',
+    'length' => '50',
+  ));
 }
 /**
  * Implements hook_requirements().
@@ -312,6 +315,5 @@ function kandy_requirements($phase) {
     $requirements['rateit']['severity'] = REQUIREMENT_ERROR;
     $requirements['rateit']['description'] = $t('Please install the rateit library %url.', array('%url' => 'https://rateit.codeplex.com'));
   }
-
   return $requirements;
 }

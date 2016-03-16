@@ -1,5 +1,6 @@
 /**
- * Created by Khanh on 28/5/2015.
+ * @file
+ * contains functions used for live chat feature
  */
 
 var LiveChatUI = {};
@@ -11,6 +12,7 @@ LiveChatUI.changeState = function (state) {
       jQuery(".liveChat #registerForm").hide();
       jQuery(".liveChat .customerService ,.liveChat #messageBox, .liveChat .formChat").hide();
       break;
+
     case 'READY':
       jQuery(".liveChat #registerForm").hide();
       jQuery('.liveChat #waiting').hide();
@@ -19,27 +21,33 @@ LiveChatUI.changeState = function (state) {
       jQuery(".liveChat #messageBox li.their-message span.username").html(agent.name);
       jQuery(".liveChat .handle.closeChat").show();
       break;
+
     case "UNAVAILABLE":
       jQuery(".liveChat #waiting p").html('There is something wrong, please try again later.');
       jQuery(".liveChat #loading").hide();
       break;
+
     case "RECONNECTING":
       jQuery(".liveChat #waiting p").html('Chat agents not available, please wait...');
       jQuery(".liveChat #loading").show();
       break;
+
     case "RATING":
       jQuery(".liveChat #ratingForm").show();
       jQuery(".liveChat .customerService, .liveChat #messageBox, .liveChat .formChat").hide();
       break;
+
     case "ENDING_CHAT":
       jQuery(".liveChat #ratingForm form").hide();
       jQuery(".liveChat #ratingForm .formTitle").hide();
       jQuery(".liveChat #ratingForm .message").show();
       break;
+
     default :
       jQuery('.liveChat #registerForm').show();
       jQuery(".liveChat .customerService, .liveChat #messageBox, .liveChat .formChat").hide();
       break;
+
   }
 };
 
@@ -149,7 +157,7 @@ var onMessage = function (msg) {
 };
 
 jQuery(function () {
-  //hide vs restore box chat
+  // Hide vs restore box chat.
   jQuery(".handle.minimize, #restoreBtn").click(function () {
     jQuery(".liveChat").toggleClass('kandy_hidden');
   });
@@ -179,16 +187,18 @@ jQuery(function () {
     })
   });
 
-  //form chat submit handle
+  // Form chat submit handle.
   jQuery("#formChat").on('submit', function (e) {
     e.preventDefault();
     sendIM(agent.full_user_id, jQuery("#messageToSend").val());
   });
-  //end chat session if user close browser or tab
+  // End chat session if user close browser or tab.
   window.onbeforeunload = function () {
     endChatSession();
   };
-  /** Rating for agents JS code **/
+  /**
+  * Rating for agents JS code
+  */
   jQuery(".liveChat #ratingForm #btnEndSession").click(function (e) {
     e.preventDefault();
     LiveChatUI.changeState('ENDING_CHAT');
