@@ -5,3 +5,4 @@ package = Kandy
 core = 7.x
 configure = admin/config/content/kandy
 dependencies[] = shortcode
+dependencies[] = libraries

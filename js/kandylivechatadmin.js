@@ -1,16 +1,17 @@
 /**
- * Created by Khanh on 17/6/2015.
+ * @file
+ * Admin functional for Kandy live chat feature.
  */
 
-jQuery(document).ready(function($){
+jQuery(document).ready(function($) {
     $("#kandyBtnAddAgent").click(function(){
         $.ajax({
             url: ajaxurl + '?action=kandy_add_chat_agent',
             data: {id: $("#kandyUserListForAgents").val()},
             type: 'GET',
             dataType: 'json',
-            success: function(res){
-                if(res.success){
+            success: function(res) {
+                if (res.success){
                     window.location.reload();
                 }
             }

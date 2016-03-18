@@ -42,13 +42,21 @@ Below are default configuration:
 from kandy server to your users system. 
 Select your user and click edit button to assign(unassign) kandy user.
 
-**Live chat configuration:** Live chat feature needs some configurations before using:
+**Live chat configuration:** Live chat feature needs some configurations
+before using:
 
-- **Configure "Excluded Kandy Users" in Kandy Settings page**: these Kandy users will not be assigned to your users. They are reserved to live chat feature or some features in future. Each user separated by comma or whitespace.
+- **Configure "Excluded Kandy Users" in Kandy Settings page**: these Kandy
+ users will not be assigned to your users. They are reserved to live chat
+ feature or some features in future. Each user separated by comma or whitespace.
 
-- **Add Excluded Kandy Users to live chat feature**: From Kandy configuration page, chose **Live Chat Users** tab, this page display your excluded users in previous step. You can assign a user to live chat feature by chosing from select box and click Save.
+- **Add Excluded Kandy Users to live chat feature**: From Kandy configuration
+page, chose **Live Chat Users** tab, this page display your excluded users in
+previous step. You can assign a user to live chat feature by chosing from
+select box and click Save.
 
-- **Add Live Chat Agent**: From Kandy configuration page, click on **Live Chat Agents** Tab . You can add a user from your user system to assign him as a Live Chat Agent
+- **Add Live Chat Agent**: From Kandy configuration page, click on
+**Live Chat Agents** Tab . You can add a user from your user system to assign
+him as a Live Chat Agent.
 
 **Style customization**: help you edit 
 kandy shortcode(video, voice, chat...) style. 
@@ -200,12 +208,14 @@ which help you send sms message to a phone number.
 [/kandySms]
   ```
 
-**Kandy LiveChat**: Make a small widget to help you implement live chat, give your customers ability to chat with customer service agent.
+**Kandy LiveChat**: Make a small widget to help you implement live chat, give
+ your customers ability to chat with customer service agent.
 ```sh
 [kandyLiveChat class="myLiveChat"][/kandyLiveChat]
 ```
 
-**Kandy Co-browsing**: Make a co-browsing component which help you share your browser screen with your friends.
+**Kandy Co-browsing**: Make a co-browsing component which help you share your
+browser screen with your friends.
 ```sh
 [kandyCoBrowsing
         class="myCoBrowsingStyle"
@@ -221,12 +231,14 @@ which help you send sms message to a phone number.
 
 **Kandy Voice Call PSTN**
 ```sh
-[kandyVoiceButton type= "PSTN" class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+[kandyVoiceButton type= "PSTN" class= "myButtonStyle" id="my-button"]
+[/kandyVoiceButton]
 ```
 
 **Kandy Voice Call PSTN with number**
 ```sh
-[kandyVoiceButton type= "PSTN" callTo = "01234xxxx" class= "myButtonStyle" id="my-button"][/kandyVoiceButton]
+[kandyVoiceButton type= "PSTN" callTo = "01234xxxx" class= "myButtonStyle"
+id="my-button"][/kandyVoiceButton]
 ```
 
 **Kandy Video Call**: use a video call button and two video
@@ -403,7 +415,8 @@ at **admin > config > content > kandy**
     * When you uninstall kandy module, make sure to delete the public folder:
     **sites/default/files/kandy**
     * Select proper text format which enable shortcode filter.
-    * From Configuration > Content Authoring > Text Formats: Uncheck **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
+    * From Configuration > Content Authoring > Text Formats: Uncheck
+    **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
     * Check provide menu link to make your content as a menu.
     * Uncheck promoted to front end
     * Uncheck Display author and date information.

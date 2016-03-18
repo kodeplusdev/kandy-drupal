@@ -1,9 +1,12 @@
 /**
- * Created by Khanh on 22/6/2015.
+ * @file
+ *
+ * Kandy cobrowsing feature.
  */
 (function () {
   /**
-   * on join request callback, currently use for co-browser
+   * On join request callback, currently use for co-browser
+   *
    * @param notification
    */
   var kandy_onSessionJoinRequest = function (notification) {
@@ -17,8 +20,8 @@
   };
   var openSessions = [];
   var currentSession;
-  var myOwnSessions = [];// sessions that current user created
-  var mySessions = [];// sessions that current user is a participant
+  var myOwnSessions = [];// Sessions that current user created.
+  var mySessions = [];// Sessions that current user is a participant.
   var browsingType;
   var sessionNames = {};
   var sessionListeners = {
@@ -47,7 +50,7 @@
       isMember = (mySessions.indexOf(currentSession.session_id) > -1 && !isAdmin);
     }
 
-    //if current user is owner of this session
+    // If current user is owner of this session.
     if (isAdmin) {
       btnTerminate.show();
       btnStartCoBrowsing.show();
@@ -80,7 +83,6 @@
     btnTerminate.hide();
   };
 
-
   window.loadSessionList = function (sessions) {
     var i = 0;
     var sessionList = slSessionList;
@@ -88,7 +90,7 @@
     openSessions = [];
     if (sessions.length) {
       sessions.forEach(function (session) {
-        //only use session with type = cobrowsing
+        // Only use session with type = cobrowsing.
         if (session.session_type == 'cobrowsing') {
           sessionNames[session.session_id] = session.session_name;
           openSessions.push(session);
@@ -114,19 +116,28 @@
       sessionList.append(option);
       hideAllButtons();
     }
-
   };
   window.sessionJoinApprovedCallback = function (sessionId) {
     mySessions.push(sessionId);
     displayButtons();
   };
   /**
+   * Start co-browsing agent
+   *
    * @param sessionId
    * @param holder - id of browsing holder
    */
   var kandy_startCoBrowsingAgent = function (sessionId, holder) {
     KandyAPI.CoBrowse.startBrowsingAgent(sessionId, holder);
   };
+
+  /**
+   * Create session
+   *
+   * @param config
+   * @param successCallback
+   * @param failCallback
+   */
 
   var kandy_createSession = function (config, successCallback, failCallback) {
     KandyAPI.Session.create(
@@ -145,36 +156,44 @@
     )
   };
 
+  /**
+   * Activate session.
+   *
+   * @param sessionId
+   */
   var activateSession = function (sessionId) {
     KandyAPI.Session.activate(
       sessionId,
       function () {
-        //success callback
+        // Success callback.
         console.log('activate group successful');
       }, function () {
-        //fail callback
+        // Fail callback.
         console.log('Error activating group');
       }
     );
 
   };
 
+  /* Stop co-browsing agent. */
   var kandy_stopCoBrowsingAgent = function () {
     KandyAPI.CoBrowse.stopBrowsingAgent();
   };
 
+  /* Start co-browsing session. */
   var kandy_startCoBrowsing = function (sessionId) {
     KandyAPI.CoBrowse.startBrowsingUser(sessionId);
   };
 
+  /* Stop co-browsing session. */
   var kandy_stopCoBrowsing = function () {
     KandyAPI.CoBrowse.stopBrowsingUser();
   };
-
+  /* Get all co-browsing sessions. */
   var getCoBrowsingSessions = function () {
     kandy_getOpenSessionsByType('cobrowsing', loadSessionList);
   };
-  /* Document ready */
+  /* Document ready. */
   jQuery(function () {
     jq("#kandy-chat-create-group-modal").dialog({
       autoOpen: false,
@@ -185,7 +204,8 @@
         "Save": function () {
           var groupName = jq('#kandy-chat-create-session-name').val();
           var creationTime = new Date().getTime();
-          var timeExpire = creationTime + 31536000;// expire in 1 year
+          // Expire in 1 year.
+          var timeExpire = creationTime + 31536000;
           if (groupName == '') {
             alert('Session must have a name.');
             jQuery('#kandy-chat-create-session-name').focus();
@@ -221,7 +241,7 @@
     slSessionList.on('change', displayButtons);
 
     btnTerminate.on('click', function () {
-      var confirm = window.confirm("Are you sure to terminate this session?")
+      var confirm = window.confirm("Are you sure to terminate this session?");
       if (confirm) {
         var session = openSessions[parseInt(slSessionList.val())];
         myOwnSessions.splice(myOwnSessions.indexOf(session.session_id, 1));
@@ -265,7 +285,7 @@
       var confirm = window.confirm("Are you sure to leave this session?");
       if (confirm) {
         if (currentSession) {
-          //delete from my session array
+          // Delete from my session array.
           kandy_leaveSession(currentSession.session_id, function (sessionId) {
             mySessions.splice(mySessions.indexOf(sessionId), 1);
             displayButtons();
