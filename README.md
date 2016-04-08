@@ -108,15 +108,9 @@ window.end_all_callback = function (stage) {
    //do something when you click end call button
 }
 
-window.remote_video_initialized_callback(videoTag) {
-   //do something with your remote video
-}
 
-window.local_video_initialized_callback = function(videoTag) {
-    //do some thing with your local video
-}
-
-window.presence_notification_callback = function(userId, state, description, activity) {
+window.presence_notification_callback = function(userId, state, description, activity)
+{
     //do something with status notification
 }
 ```
@@ -412,13 +406,13 @@ at **admin > config > content > kandy**
 - **Jquery conflict**: Set Jquery reload to true 
 at **admin > config > content > kandy**
 - **Note:**
-    * When you uninstall kandy module, make sure to delete the public folder:
-    **sites/default/files/kandy**
-    * Select proper text format which enable shortcode filter.
-    * From Configuration > Content Authoring > Text Formats: Uncheck
-    **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
-    * Check provide menu link to make your content as a menu.
-    * Uncheck promoted to front end
-    * Uncheck Display author and date information.
-    * Close comment settings
-    * Shortcode only work with inline format
+  * When you uninstall kandy module, make sure to delete the public folder:
+  **sites/default/files/kandy**
+  * Select proper text format which enable shortcode filter.
+  * From Configuration > Content Authoring > Text Formats: Uncheck
+  **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
+  * Check provide menu link to make your content as a menu.
+  * Uncheck promoted to front end
+  * Uncheck Display author and date information.
+  * Close comment settings
+  * Shortcode only work with inline format

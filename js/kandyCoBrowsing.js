@@ -2,10 +2,11 @@
  * @file
  *
  * Kandy cobrowsing feature.
+ *
  */
 (function () {
   /**
-   * On join request callback, currently use for co-browser
+   * On join request callback, currently use for co-browser.
    *
    * @param notification
    */
@@ -14,14 +15,14 @@
     var confirm = window.confirm(message);
     if (confirm) {
       kandy_approveJoinSession(notification.session_id, notification.full_user_id);
-    } else {
-      console.log("join request has been disapproved");
     }
   };
   var openSessions = [];
   var currentSession;
-  var myOwnSessions = [];// Sessions that current user created.
-  var mySessions = [];// Sessions that current user is a participant.
+  // Sessions that current user created.
+  var myOwnSessions = [];
+  // Sessions that current user is a participant.
+  var mySessions = [];
   var browsingType;
   var sessionNames = {};
   var sessionListeners = {
@@ -57,14 +58,16 @@
       btnConnect.hide();
       btnStartBrowsingViewer.hide();
       btnLeave.hide();
-    } else {
+    }
+    else {
       if (isMember) {
         btnStartBrowsingViewer.show();
         btnConnect.hide();
         btnStartCoBrowsing.hide();
         btnTerminate.hide();
         btnLeave.show();
-      } else {
+      }
+      else {
         btnConnect.show();
         btnStartCoBrowsing.hide();
         btnStartBrowsingViewer.hide();
@@ -111,7 +114,8 @@
         }
       });
       setTimeout(displayButtons, 3000);
-    } else {
+    }
+    else {
       var option = jQuery("<option>").val('').text('No Session');
       sessionList.append(option);
       hideAllButtons();
@@ -122,7 +126,7 @@
     displayButtons();
   };
   /**
-   * Start co-browsing agent
+   * Start co-browsing agent.
    *
    * @param sessionId
    * @param holder - id of browsing holder
@@ -132,7 +136,7 @@
   };
 
   /**
-   * Create session
+   * Create session.
    *
    * @param config
    * @param successCallback
@@ -163,16 +167,8 @@
    */
   var activateSession = function (sessionId) {
     KandyAPI.Session.activate(
-      sessionId,
-      function () {
-        // Success callback.
-        console.log('activate group successful');
-      }, function () {
-        // Fail callback.
-        console.log('Error activating group');
-      }
+      sessionId
     );
-
   };
 
   /* Stop co-browsing agent. */
@@ -209,8 +205,10 @@
           if (groupName == '') {
             alert('Session must have a name.');
             jQuery('#kandy-chat-create-session-name').focus();
-          } else {
-            var config = { //config
+          }
+          else {
+            // Config.
+            var config = {
               session_type: 'cobrowsing',
               session_name: groupName,
               creation_timestamp: creationTime,
@@ -271,12 +269,12 @@
       try {
         if (browsingType == 'user') {
           kandy_stopCoBrowsing();
-        } else if (browsingType == 'agent') {
+        }
+        else if (browsingType == 'agent') {
           kandy_stopCoBrowsingAgent();
         }
       } catch (e) {
-        console.log("Error:");
-        console.log(e);
+        alert('An error has occurred!');
       } finally {
         slSessionList.attr("disabled", false);
       }

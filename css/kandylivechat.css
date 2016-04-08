@@ -3,14 +3,14 @@
   bottom: 0;
   right: 0;
   width: 300px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   z-index: 9999;
-  border: 1px #E4E4E4 solid;
+  border: 1px #e4e4e4 solid;
 }
 
 .liveChat .header {
-  background-color: #34302A;
-  color: #FFFFFF;
+  background-color: #34302a;
+  color: #ffffff;
   font-size: 20px;
   font-weight: bold;
   padding: 10px;
@@ -32,15 +32,17 @@
   list-style: none;
 }
 
-.liveChat .handle, .liveChat #restoreBtn {
+.liveChat .handle,
+.liveChat #restoreBtn {
   display: inline-block;
   width: 18px;
   height: 18px;
-  color: #FFFFFF;
+  color: #ffffff;
   float: right;
 }
 
-.liveChat .handle:hover, .liveChat #restoreBtn:hover {
+.liveChat .handle:hover,
+.liveChat #restoreBtn:hover {
   cursor: pointer;
 }
 
@@ -62,7 +64,7 @@
 }
 
 .liveChat #messageBox .my-message {
-  color: #0995FF;
+  color: #0995ff;
 }
 
 .liveChat #messageBox .their-message {
@@ -73,7 +75,8 @@
   font-weight: bold;
 }
 
-.liveChat.kandy_hidden .liveChatBody, .liveChat.kandy_hidden .handle {
+.liveChat.kandy_hidden .liveChatBody,
+.liveChat.kandy_hidden .handle {
   display: none;
 }
 
@@ -87,7 +90,7 @@
 }
 
 .liveChat #restoreBtn {
-  border: 2px #FFFFFF solid;
+  border: 2px #ffffff solid;
 }
 
 .liveChat .customerService {
@@ -121,7 +124,7 @@
 }
 
 .liveChat #waiting {
-  background-color: #E4E4E4;
+  background-color: #e4e4e4;
   width: 300px;
   height: 300px;
   padding: 30px 0;
@@ -132,9 +135,6 @@
 .liveChat .helpdeskInfo #agentName {
   font-size: 16px;
   font-weight: bold;
-}
-
-.liveChat .liveChatBody {
 }
 
 .liveChat #ratingForm {

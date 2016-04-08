@@ -4,6 +4,7 @@
  */
 
 window.login_success_callback = function () {
+  "use strict";
   // Do something here.
 };
 
@@ -11,6 +12,7 @@ window.login_success_callback = function () {
  * You login fail.
  */
 window.login_failed_callback = function () {
+  "use strict";
   // Do something here.
 };
 
@@ -21,24 +23,30 @@ window.login_failed_callback = function () {
  * @param isAnonymous
  */
 window.call_incoming_callback = function (call, isAnonymous) {
+  "use strict";
   // Do something here.
 };
 
 /**
  * You are on call.
  *
- * @param call
+ * @param {object} call
+ *   Kandy call object.
  */
 window.on_call_callback = function (call) {
+  "use strict";
   // Do something here.
 };
 /**
  * Some one answer your call.
  *
- * @param call
- * @param isAnonymous
+ * @param {object} call
+ *   Kandy call object.
+ * @param {boolean} isAnonymous
+ *   Is call by anonymous user.
  */
 window.call_answered_callback = function (call, isAnonymous) {
+  "use strict";
   // Do something here.
 };
 
@@ -46,41 +54,50 @@ window.call_answered_callback = function (call, isAnonymous) {
  * End call callback.
  */
 window.call_ended_callback = function () {
+  "use strict";
   // Do something here.
 };
 
 /**
  * Callback when click AnswerVideo Button.
  *
- * @param stage
+ * @param {string} stage
+ *   UI status.
  */
 window.answer_video_call_callback = function (stage) {
+  "use strict";
   // Do something here.
 };
 
 /**
  * Callback when click AnswerVideo Button.
  *
- * @param stage
+ * @param {string} stage
+ *   UI status.
  */
 window.answer_voice_call_callback = function (stage) {
+  "use strict";
   // Do something here.
 };
 
 /**
  * Callback when click Call Button.
  *
- * @param stage
+ * @param {string} stage
+ *   UI status
  */
 window.make_call_callback = function (stage) {
+  "use strict";
   // Do something here.
 };
 
 /**
  * Callback when click End call Button.
  *
- * @param stage
+ * @param {string} stage
+ *   UI status
  */
 window.end_all_callback = function (stage) {
+  "use strict";
   // Do something here.
 };

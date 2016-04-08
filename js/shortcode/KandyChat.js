@@ -4,6 +4,7 @@
  */
 
 window.login_success_callback = function () {
+  "use strict";
   // Do something here.
 };
 
@@ -11,17 +12,19 @@ window.login_success_callback = function () {
  * You login fail.
  */
 window.login_failed_callback = function () {
+  "use strict";
   // Do something here.
 };
 
 /**
  * Status Notification Callback.
  *
- * @param userId
- * @param state
- * @param description
- * @param activity
+ * @param {string} userId
+ * @param {string} state
+ * @param {string} description
+ * @param {string} activity
  */
 window.presence_notification_callback = function (userId, state, description, activity) {
+  "use strict";
   // Do something here.
 };

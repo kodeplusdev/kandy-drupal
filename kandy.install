@@ -76,7 +76,7 @@ function kandy_schema() {
       'type' => array(
         'description' => 'Type of user',
         'type' => 'int',
-        'default' => 0
+        'default' => 0,
       ),
       'created_at' => array(
         'description' => 'The created time of kandy user',
@@ -90,8 +90,8 @@ function kandy_schema() {
         'type' => 'varchar',
         'not null' => FALSE,
         'description' => 'Presence status of user',
-        'length' => '50'
-      )
+        'length' => '50',
+      ),
     ),
     'primary key' => array('id'),
   );
@@ -133,7 +133,7 @@ function kandy_schema() {
         ),
       ),
       'primary key' => array('id'),
-    );
+   );
   $schema['kandy_live_chat_rate'] = array(
     'fields' => array(
       'id' => array(
@@ -145,7 +145,7 @@ function kandy_schema() {
       'main_user_id' => array(
         'type' => 'varchar',
         'length' => 255,
-        'not null' => TRUE
+        'not null' => TRUE,
       ),
       'rated_by' => array(
         'type' => 'varchar',
@@ -155,7 +155,7 @@ function kandy_schema() {
       'rated_time' => array(
         'type' => 'int',
         'length' => 10,
-        'not null' => TRUE
+        'not null' => TRUE,
       ),
       'point' => array(
         'type' => 'int',
@@ -240,7 +240,8 @@ function kandy_uninstall() {
 }
 /**
  * Implements hook_update().
- * Add new table schema for new live chat feature
+ *
+ * Add new table schema for new live chat feature.
  */
 function kandy_update_7000() {
   $schema['kandy_live_chat'] = array(
@@ -285,8 +286,9 @@ function kandy_update_7000() {
   return $schema;
 }
 /**
-* Implement hook_update()
-* Add presence_status field to kandy_users table
+* Implement hook_update().
+*
+* Add presence_status field to kandy_users table.
 */
 function kandy_update_7242() {
   db_add_field('kandy_users', 'presence_status', array(

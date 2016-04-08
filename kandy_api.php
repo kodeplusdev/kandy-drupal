@@ -76,7 +76,8 @@ function kandy_get_domain_access_token() {
 
   try {
     $response = drupal_http_request($url);
-  } catch (Exception $ex) {
+  }
+  catch (Exception $ex) {
     watchdog_exception('kandy ', $ex);
     return array(
       'success' => FALSE,
@@ -92,10 +93,12 @@ function kandy_get_domain_access_token() {
       'message' => '',
       'data' => $response->result->domain_access_token,
     );
-  } else {
+  }
+  else {
     if (isset($response->message)) {
       $error_message = $response->message;
-    } else {
+    }
+    else {
       $error_message = 'Invalid Request Url';
     }
     return array(
@@ -127,7 +130,8 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
       try {
         $response = drupal_http_request($url);
 
-      } catch (Exception $ex) {
+      }
+      catch (Exception $ex) {
         watchdog_exception('kandy ', $ex);
         return array(
           'success' => FALSE,
@@ -141,7 +145,8 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
         $result = $data->users;
       }
     }
-  } else {
+  }
+  else {
     $get_domain_name_response = kandy_get_domain();
     if ($get_domain_name_response['success']) {
       $domain_name = $get_domain_name_response['data'];
@@ -150,13 +155,15 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
           ->fields('kandy_users')
           ->condition('domain_name', $domain_name, '=');
 
-      } else {
+      }
+      else {
         if ($type == KANDY_USER_ASSIGNED) {
           $query = db_select('kandy_users')
             ->fields('kandy_users')
             ->isNotNull('main_user_id')
             ->condition('domain_name', $domain_name, '=');
-        } else {
+        }
+        else {
           if ($type == KANDY_USER_UNASSIGNED) {
             $query = db_select('kandy_users')
               ->fields('kandy_users')
@@ -246,7 +253,8 @@ function kandy_get_user_by_user_mail($kandy_user_mail) {
     if ($query_result) {
       if (!empty($query_result->main_user_id)) {
         $result = user_load($query_result->main_user_id);
-      } else {
+      }
+      else {
         $result = KANDY_UN_ASSIGN_USER;
       }
     }
@@ -288,7 +296,8 @@ function kandy_get_domain() {
     try {
       $request = drupal_http_request($url);
 
-    } catch (Exception $ex) {
+    }
+    catch (Exception $ex) {
       watchdog_exception('kandy ', $ex);
       return array(
         'success' => FALSE,
@@ -305,14 +314,16 @@ function kandy_get_domain() {
         'data' => $response->result->domain->domain_name,
         'message' => '',
       );
-    } else {
+    }
+    else {
       return array(
         'success' => FALSE,
         'data' => '',
         'message' => $response->message,
       );
     }
-  } else {
+  }
+  else {
     return array(
       'success' => FALSE,
       'data' => '',
@@ -373,7 +384,8 @@ function kandy_sync_users() {
           $query = db_insert('kandy_users')
             ->fields($fields)
             ->values($data_values);
-        } else {
+        }
+        else {
           // update.
           $query = db_update('kandy_users')
             ->fields($data_values)
@@ -393,7 +405,8 @@ function kandy_sync_users() {
         'success' => TRUE,
         'message' => "Sync successfully",
       );
-    } catch (Exception $ex) {
+    }
+    catch (Exception $ex) {
       $transaction->rollback();
       watchdog_exception('kandy ', $ex);
       $result = array(
@@ -402,7 +415,8 @@ function kandy_sync_users() {
       );
     }
 
-  } else {
+  }
+  else {
     $result = array(
       'success' => FALSE,
       'message' => "Cannot get domain name.",
@@ -448,11 +462,13 @@ function kandy_assign_user($kandy_user_id, $main_user_id) {
         ->condition('domain_name', $domain_name, '=')
         ->execute();
       return TRUE;
-    } else {
+    }
+    else {
       return FALSE;
     }
 
-  } catch (Exception $ex) {
+  }
+  catch (Exception $ex) {
     watchdog_exception('kandy ', $ex);
     return FALSE;
   }
@@ -483,10 +499,12 @@ function kandy_unassign_user($main_user_id) {
         ->condition('domain_name', $domain_name, '=')
         ->execute();
       return TRUE;
-    } else {
+    }
+    else {
       return FALSE;
     }
-  } catch (Exception $ex) {
+  }
+  catch (Exception $ex) {
     watchdog_exception('kandy ', $ex);
     return FALSE;
   }
@@ -534,14 +552,16 @@ function kandy_logout() {
         'weight' => 1,
       ));
       $result = array("success" => TRUE, "message" => '');
-    } else {
+    }
+    else {
       $result = array(
         "success" => FALSE,
         "message" => 'Can not found kandy user',
       );
     }
 
-  } else {
+  }
+  else {
     $result = array(
       "success" => FALSE,
       "message" => 'Can not found kandy module',
@@ -595,7 +615,7 @@ function kandy_publish_assets() {
 }
 
 /**
- * Get chat agents
+ * Get chat agents.
  *
  * @return array
  */
@@ -623,16 +643,16 @@ function kandy_get_chat_agents() {
       $row->name,
       $row->user_id,
       $row->average,
-      l('Remove', $url_remove) . '&nbsp&nbsp' . t(l('View', $url_view)),
+      l(t('Remove'), $url_remove) . '&nbsp&nbsp' . l(t('View'), $url_view),
     );
     $rows[] = $table_cell;
   }
-  return $rows;
 
+  return $rows;
 }
 
 /**
- * Get all users except agents
+ * Get all users except agents.
  *
  * @return mixed
  */
@@ -647,12 +667,12 @@ function kandy_get_not_agent() {
 }
 
 /**
- * Get agent rate progress
+ * Get agent rate progress.
  *
  * @param $main_user_id
+ *
  * @return array
  */
-
 function kandy_get_agent_progress($main_user_id) {
   $query = db_select('kandy_live_chat_rate', 'kr');
   $query->fields('kr');
@@ -669,18 +689,19 @@ function kandy_get_agent_progress($main_user_id) {
     );
     $rows[] = $table_cell;
   }
+
   return $rows;
 }
 
 /**
- * Log information when user login or logout
+ * Log information when user login or logout.
  *
  * @param $kandy_user_id
  * @param $user_type
  * @param int $log_type
+ *
  * @throws Exception
  */
-
 function kandy_log_user_login($kandy_user_id, $user_type, $log_type = KANDY_USER_STATUS_ONLINE) {
   $now = time();
   $affected_row = db_update("kandy_user_login")
@@ -714,7 +735,8 @@ function kandy_get_last_seen(array $users) {
   $result = kandy_get_domain_access_token();
   if ($result['success'] == TRUE) {
     $domain_access_token = $result['data'];
-  } else {
+  }
+  else {
     // Catch errors.
   }
 
@@ -722,12 +744,13 @@ function kandy_get_last_seen(array $users) {
 
   $params = array(
     'key' => $domain_access_token,
-    'users' => $users
+    'users' => $users,
   );
   $url = KANDY_API_BASE_URL . 'users/presence/last_seen?' . drupal_http_build_query($params);
   try {
     $response = drupal_http_request($url);
-  } catch (Exception $ex) {
+  }
+  catch (Exception $ex) {
     watchdog_exception('kandy ', $ex);
     return array(
       'success' => FALSE,
