@@ -38,7 +38,7 @@
   });
 
   var setup = function () {
-    // Initialize KandyAPI.Phone, passing a config JSON object that contains listeners (event callbacks).
+    // Initialize kandy, passing a config JSON object that contains listeners (event callbacks).
     kandy.setup({
       kandyApiUrl: 'https://api.kandy.io/v1.2',
       remoteVideoContainer: jQuery('#theirVideo')[0],
@@ -1424,7 +1424,7 @@
    * @param {function} successCallback
    */
   window.kandy_approveJoinSession = function (sessionId, userId, successCallback) {
-    KandyAPI.Session.acceptJoinRequest(sessionId, userId,
+    kandy.session.acceptJoinRequest(sessionId, userId,
       function () {
         if (typeof successCallback === 'function') {
           successCallback(sessionId);
@@ -1440,7 +1440,7 @@
    * @param {function} successCallback
    */
   window.kandy_getOpenSessionsByType = function (sessionType, successCallback) {
-    KandyAPI.Session.getOpenSessionsByType(
+    kandy.session.getOpenSessionsByType(
       sessionType,
       function (result) {
         for (var i = 0; i < result.sessions.length; i++) {
@@ -1465,7 +1465,7 @@
    * @param {function} failCallback
    */
   window.kandy_getSessionInfo = function (sessionId, successCallback, failCallback) {
-    KandyAPI.Session.getInfoById(sessionId,
+    kandy.session.getInfoById(sessionId,
       function (result) {
         if (typeof successCallback === 'function') {
           successCallback(result);
@@ -1486,7 +1486,7 @@
    * @param {function} successCallback
    */
   window.kandy_terminateSession = function (sessionId, successCallback) {
-    KandyAPI.Session.terminate(
+    kandy.session.terminate(
       sessionId,
       successCallback
     );
@@ -1498,7 +1498,7 @@
    * @param {function} successCallback
    */
   window.kandy_joinSession = function (sessionId, successCallback) {
-    KandyAPI.Session.join(
+    kandy.session.join(
       sessionId,
       {},
       function () {
@@ -1515,7 +1515,7 @@
    * @param {function} successCallBack
    */
   window.kandy_leaveSession = function (sessionId, successCallBack) {
-    KandyAPI.Session.leave(sessionId,
+    kandy.session.leave(sessionId,
       '',
       function () {
         if (typeof successCallBack === 'function') {

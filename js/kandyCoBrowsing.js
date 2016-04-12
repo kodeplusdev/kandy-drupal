@@ -107,7 +107,7 @@
               }
             })
           });
-          KandyAPI.Session.setListeners(session.session_id, sessionListeners);
+          kandy.session.setListeners(session.session_id, sessionListeners);
           var option = jQuery("<option>").val(i).text(session.session_name || session.session_id);
           sessionList.append(option);
           i++;
@@ -132,7 +132,7 @@
    * @param holder - id of browsing holder
    */
   var kandy_startCoBrowsingAgent = function (sessionId, holder) {
-    KandyAPI.CoBrowse.startBrowsingAgent(sessionId, holder);
+    kandy.coBrowsing.startBrowsingAgent(sessionId, holder);
   };
 
   /**
@@ -144,7 +144,7 @@
    */
 
   var kandy_createSession = function (config, successCallback, failCallback) {
-    KandyAPI.Session.create(
+    kandy.session.create(
       config,
       function (result) {
         if (typeof successCallback == "function") {
@@ -166,24 +166,24 @@
    * @param sessionId
    */
   var activateSession = function (sessionId) {
-    KandyAPI.Session.activate(
+    kandy.session.activate(
       sessionId
     );
   };
 
   /* Stop co-browsing agent. */
   var kandy_stopCoBrowsingAgent = function () {
-    KandyAPI.CoBrowse.stopBrowsingAgent();
+    kandy.coBrowsing.stopBrowsingAgent();
   };
 
   /* Start co-browsing session. */
   var kandy_startCoBrowsing = function (sessionId) {
-    KandyAPI.CoBrowse.startBrowsingUser(sessionId);
+    kandy.coBrowsing.startBrowsingUser(sessionId);
   };
 
   /* Stop co-browsing session. */
   var kandy_stopCoBrowsing = function () {
-    KandyAPI.CoBrowse.stopBrowsingUser();
+    kandy.coBrowsing.stopBrowsingUser();
   };
   /* Get all co-browsing sessions. */
   var getCoBrowsingSessions = function () {

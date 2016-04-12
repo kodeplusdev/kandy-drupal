@@ -1204,10 +1204,6 @@ function kandy_shortcode_kandy_cobrowsing($attr) {
         $module_path = drupal_get_path('module', 'kandy');
         drupal_add_library('system', 'ui.dialog');
         drupal_add_js('var cobrowsing = ' . json_encode($params) . ';', 'inline');
-        drupal_add_js(KANDY_COBROWSING_JS, array(
-          'group' => 'kandy',
-          'weight' => 4,
-        ));
         drupal_add_js($module_path . '/js/kandyCoBrowsing.js', array(
           'group' => 'kandy',
           'weight' => 5,
@@ -1309,14 +1305,7 @@ function kandy_shortcode_kandy_livechat($attr) {
       <div id="ratingForm">
         <h3 class="formTitle">Rate for <span class="agentName"></span> </h3>
         <form>
-          <select id="backing2b">
-            <option title="" value="1">1</option>
-            <option title="" value="2">2</option>
-            <option title="" value="3">3</option>
-            <option title="" value="4">4</option>
-            <option title="" value="5" selected="selected">5</option>
-          </select>
-          <div class="rateit" data-rateit-backingfld="#backing2b"></div>
+          <div class="rateit" data-rateit-value="5" data-rateit-ispreset="true"></div>
           <textarea id="rateComment" rows="3" placeholder="Say something about your supporter"></textarea>
           <a id="btnEndSession" class="button" href="javascript:;">No, thanks</a>
           <input id="btnSendRate" class="form-submit" type="submit"/>
@@ -1348,23 +1337,9 @@ function kandy_shortcode_kandy_livechat($attr) {
   </div>';
     drupal_add_js(
       '//agent user id
-    var agent;
-    var rateData = {};
-    jQuery(function(){
+        jQuery(function(){
       ' . $func . '
-      jQuery(".liveChat #ratingForm .rateit").bind("rated", function(){
-        var ri = jQuery(this);
-        rateData = rateData || {};
-        rateData.rate = {point: ri.rateit("value")}
-      });
-
-    jQuery(".liveChat #ratingForm .rateit").bind("reset", function(){
-      rateData = rateData || {};
-        if(rateData.hasOwnProperty("rate")){
-          delete rateData.rate;
-        }
-      });
-  });'
+      });'
       , 'inline');
     return $output;
   }

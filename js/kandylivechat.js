@@ -10,6 +10,8 @@ var LiveChatUI = {};
 
   var agent;
   var checkAvailable;
+  var rateData = {};
+
   LiveChatUI.changeState = function (state) {
     switch (state) {
       case 'WAITING':
@@ -105,7 +107,6 @@ var LiveChatUI = {};
           login(res.apiKey, username, res.user.password, login_success_callback, login_fail_callback);
           setup();
           agent = res.agent;
-          rateData.agent_id = agent.main_user_id;
           heartBeat(60000);
         }
         else {
@@ -218,7 +219,9 @@ var LiveChatUI = {};
     });
     jQuery('.liveChat #ratingForm #btnSendRate').click(function (e) {
       e.preventDefault();
-      var rateData = rateData || {};
+      if(agent) {
+        rateData.agent_id = agent.main_user_id;
+      }
       var rateComment = jQuery('.liveChat #rateComment').val();
       if (rateComment) {
         rateData.comment = rateComment
@@ -236,6 +239,17 @@ var LiveChatUI = {};
           }
         }
       })
-    })
+    });
+    jQuery(".liveChat #ratingForm .rateit").bind("rated", function(){
+      var ri = jQuery(this);
+      rateData.rate = {point: ri.rateit("value")}
+    });
+
+    jQuery(".liveChat #ratingForm .rateit").bind("reset", function(){
+      if(rateData.hasOwnProperty("rate")){
+        delete rateData.rate;
+      }
+    });
   });
+
 })();
