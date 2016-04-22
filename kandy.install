@@ -99,41 +99,41 @@ function kandy_schema() {
     'fields' => array(
       'id' => array(
         'description' => 'The primary key',
-          'type' => 'serial',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-        ),
-        'agent_user_id' => array(
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
-        ),
-        'customer_user_id' => array(
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
-        ),
-        'customer_name' => array(
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
-        ),
-        'customer_email' => array(
-          'type' => 'varchar',
-          'length' => 255,
-          'not null' => TRUE,
-        ),
-        'begin_at'  => array(
-          'type' => 'int',
-          'length' => 11,
-        ),
-        'end_at'  => array(
-          'type' => 'int',
-          'length' => 11,
-        ),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
-      'primary key' => array('id'),
-   );
+      'agent_user_id' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'customer_user_id' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'customer_name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'customer_email' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'begin_at'  => array(
+        'type' => 'int',
+        'length' => 11,
+      ),
+      'end_at'  => array(
+        'type' => 'int',
+        'length' => 11,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
   $schema['kandy_live_chat_rate'] = array(
     'fields' => array(
       'id' => array(
@@ -286,10 +286,10 @@ function kandy_update_7000() {
   return $schema;
 }
 /**
-* Implement hook_update().
-*
-* Add presence_status field to kandy_users table.
-*/
+ * Implement hook_update().
+ *
+ * Add presence_status field to kandy_users table.
+ */
 function kandy_update_7242() {
   db_add_field('kandy_users', 'presence_status', array(
     'type' => 'varchar',
@@ -305,7 +305,7 @@ function kandy_requirements($phase) {
   $requirements = array();
   $t = get_t();
   $requirements['rateit'] = array(
-      'title' => $t('Jquery Rateit Library'),
+    'title' => $t('Jquery Rateit Library'),
   );
   $libraries = libraries_get_libraries();
   if (isset($libraries['rateit'])) {

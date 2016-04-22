@@ -1,7 +1,7 @@
 /**
  * @file
- *
  * Contains functions used for live chat feature.
+ *
  */
 var LiveChatUI = {};
 (function () {
@@ -219,7 +219,7 @@ var LiveChatUI = {};
     });
     jQuery('.liveChat #ratingForm #btnSendRate').click(function (e) {
       e.preventDefault();
-      if(agent) {
+      if (agent) {
         rateData.agent_id = agent.main_user_id;
       }
       var rateComment = jQuery('.liveChat #rateComment').val();
@@ -240,13 +240,13 @@ var LiveChatUI = {};
         }
       })
     });
-    jQuery(".liveChat #ratingForm .rateit").bind("rated", function(){
+    jQuery(".liveChat #ratingForm .rateit").bind("rated", function () {
       var ri = jQuery(this);
       rateData.rate = {point: ri.rateit("value")}
     });
 
-    jQuery(".liveChat #ratingForm .rateit").bind("reset", function(){
-      if(rateData.hasOwnProperty("rate")){
+    jQuery(".liveChat #ratingForm .rateit").bind("reset", function () {
+      if (rateData.hasOwnProperty("rate")) {
         delete rateData.rate;
       }
     });

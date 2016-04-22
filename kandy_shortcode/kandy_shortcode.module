@@ -491,6 +491,17 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         if (isset($attr['resumecallbuttontext'])) {
           $resume_call_button_text = filter_xss($attr['resumecallbuttontext']);
         }
+        // Init sharescreenbuttontext attribute.
+        $share_screen_button_text = t('Share screen');
+        if(isset($attr['sharescreenbuttontext'])) {
+          $share_screen_button_text = filter_xss($attr['sharescreenbuttontext']);
+        }
+
+        $stop_share_screen_button_text = 'Stop share screen';
+        if(isset($attr['sharescreenbuttontext'])) {
+          $stop_share_screen_button_text = filter_xss($attr['stopsharescreenbuttontext']);
+        }
+
 
         $ajax_user_search_url = url(
           'kandy/get_user_for_search',
@@ -514,8 +525,10 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         <div class="kandyButtonComponent kandyVideoButtonOnCall" id="' . $id . '-onCall">' .
           '<label>' . $on_call_label . '</label>
         <input data-container="' . $id . '"  class="btnEndCall" type="button" value="' . $on_call_button_text . '"/>' .
-          '<input style="visibility: hidden" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
-          '<input style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
+          '<input data-container="' . $id . '" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
+          '<input data-container="' . $id . '" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
+          '<input data-container="' . $id . '" class="btnShareScreen" type="button" value="' . $share_screen_button_text . '"/>' .
+          '<input data-container="' . $id . '" class="btnStopScreenSharing" type="button" value="' . $stop_share_screen_button_text . '"/>' .
           '</div></div>';
 
         if (isset($result['output'])) {
@@ -623,33 +636,44 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
         }
 
         // Init oncalllabel attribute.
-        $on_call_label = 'You are connected!';
+        $on_call_label = t('You are connected!');
         if (isset($attr['oncalllabel'])) {
           $on_call_label = filter_xss($attr['oncalllabel']);
         }
 
         // Init oncallbuttontext attribute.
-        $on_call_button_text = 'End Call';
+        $on_call_button_text = t('End Call');
         if (isset($attr['oncallbuttontext'])) {
           $on_call_button_text = filter_xss($attr['oncallbuttontext']);
         }
 
         // Init holdcallbuttontext attribute.
-        $hold_call_button_text = 'Hold Call';
+        $hold_call_button_text = t('Hold Call');
         if (isset($attr['holdcallbuttontext'])) {
           $hold_call_button_text = filter_xss($attr['holdcallbuttontext']);
         }
 
         // Init resumecallbuttontext attribute.
-        $resume_call_button_text = 'Resume Call';
+        $resume_call_button_text = t('Resume Call');
         if (isset($attr['resumecallbuttontext'])) {
           $resume_call_button_text = filter_xss($attr['resumecallbuttontext']);
         }
 
         // Init rejectbuttontext attribute.
-        $reject_button_text = 'Reject';
+        $reject_button_text = t('Reject');
         if (isset($attr['rejectbuttontext'])) {
-          $incoming_button_text = filter_xss($attr['rejectbuttontext']);
+          $reject_button_text = filter_xss($attr['rejectbuttontext']);
+        }
+
+        // Init sharescreenbuttontext attribute.
+        $share_screen_button_text = t('Share screen');
+        if(isset($attr['sharescreenbuttontext'])) {
+          $share_screen_button_text = filter_xss($attr['sharescreenbuttontext']);
+        }
+
+        $stop_share_screen_button_text = 'Stop share screen';
+        if(isset($attr['sharescreenbuttontext'])) {
+          $stop_share_screen_button_text = filter_xss($attr['stopsharescreenbuttontext']);
         }
 
         $ajax_user_search_url = url(
@@ -733,8 +757,10 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
               '<div class="kandyButtonComponent kandyVideoButtonOnCall" id="' . $id . '-onCall">' .
               '<label>' . $on_call_label . '</label>
             <input data-container="' . $id . '"  class="btnEndCall" type="button" value=" ' . $on_call_button_text . ' "/>' .
-              '<input data-container="' . $id . '"  style="visibility: hidden" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
-              '<input data-container="' . $id . '"  style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnShareScreen" type="button" value="' . $share_screen_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnStopScreenSharing" type="button" value="' . $stop_share_screen_button_text . '"/>' .
               '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';
           }
           else {
@@ -755,9 +781,11 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
             <div class="kandyButtonComponent kandyVideoButtonOnCall" id="' . $id . '-onCall">
             <label>' . $on_call_label . '</label>
             <input data-container="' . $id . '"  class="btnEndCall" type="button" value=" ' . $on_call_button_text . ' "/>' .
-              '<input data-container="' . $id . '"  style="visibility: hidden" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
-              '<input data-container="' . $id . '"  style="visibility: hidden" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
-              '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';;
+              '<input data-container="' . $id . '" class="btnHoldCall" type="button" value="' . $hold_call_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnResumeCall" type="button" value="' . $resume_call_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnShareScreen" type="button" value="' . $share_screen_button_text . '"/>' .
+              '<input data-container="' . $id . '" class="btnStopScreenSharing" type="button" value="' . $stop_share_screen_button_text . '"/>' .
+              '</div><div class="videoVoiceCallHolder"><div id="theirVideo" class="video"></div></div></div>';
           }
         }
 

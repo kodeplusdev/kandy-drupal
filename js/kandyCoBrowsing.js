@@ -1,14 +1,17 @@
 /**
  * @file
- *
  * Kandy cobrowsing feature.
  *
  */
 (function () {
+
+  "use strict";
+
   /**
    * On join request callback, currently use for co-browser.
    *
-   * @param notification
+   * @param {object} notification
+   *   Kandy on join session notification object
    */
   var kandy_onSessionJoinRequest = function (notification) {
     var message = 'User ' + notification.full_user_id + ' request to join session ' + sessionNames[notification.session_id];
@@ -26,19 +29,25 @@
   var browsingType;
   var sessionNames = {};
   var sessionListeners = {
-    'onUserJoinRequest': kandy_onSessionJoinRequest,
-    'onJoinApprove': kandy_onSessionJoinApprove
+    onUserJoinRequest: kandy_onSessionJoinRequest,
+    onJoinApprove: kandy_onSessionJoinApprove
   };
-  var currentKandyUser, btnTerminate, btnStartCoBrowsing, btnStartCoBrowsing, btnConnect,
-    btnStartBrowsingViewer, btnLeave, slSessionList, btnStop;
+  var currentKandyUser;
+  var btnTerminate;
+  var btnStartCoBrowsing;
+  var btnConnect;
+  var btnStartBrowsingViewer;
+  var btnLeave;
+  var slSessionList;
+  var btnStop;
   var cobrowsing = window.cobrowsing || {};
   jQuery(document).ready(function () {
     currentKandyUser = cobrowsing.current_user.user_id + '@' + cobrowsing.current_user.domain_name;
-    btnTerminate = jQuery("#coBrowsing .buttons #" + cobrowsing.btn_terminate_id);
-    btnStartCoBrowsing = jQuery("#coBrowsing .buttons #" + cobrowsing.btn_start_cobrowsing_id);
-    btnConnect = jQuery("#coBrowsing .buttons #" + cobrowsing.btn_connect_session_id);
-    btnStartBrowsingViewer = jQuery("#coBrowsing .buttons #" + cobrowsing.btn_start_browsing_viewer_id);
-    btnLeave = jQuery("#coBrowsing .buttons #" + cobrowsing.btn_leave_id);
+    btnTerminate = jQuery('#coBrowsing .buttons #' + cobrowsing.btn_terminate_id);
+    btnStartCoBrowsing = jQuery('#coBrowsing .buttons #' + cobrowsing.btn_start_cobrowsing_id);
+    btnConnect = jQuery('#coBrowsing .buttons #' + cobrowsing.btn_connect_session_id);
+    btnStartBrowsingViewer = jQuery('#coBrowsing .buttons #' + cobrowsing.btn_start_browsing_viewer_id);
+    btnLeave = jQuery('#coBrowsing .buttons #' + cobrowsing.btn_leave_id);
     slSessionList = jQuery('#' + cobrowsing.session_list_id);
     btnStop = jQuery('#' + cobrowsing.btn_stop_id);
   });
@@ -94,21 +103,21 @@
     if (sessions.length) {
       sessions.forEach(function (session) {
         // Only use session with type = cobrowsing.
-        if (session.session_type == 'cobrowsing') {
+        if (session.session_type === 'cobrowsing') {
           sessionNames[session.session_id] = session.session_name;
           openSessions.push(session);
-          if ((session.admin_full_user_id == currentKandyUser) && (myOwnSessions.indexOf(session.session_id) == -1)) {
+          if ((session.admin_full_user_id === currentKandyUser) && (myOwnSessions.indexOf(session.session_id) === -1)) {
             myOwnSessions.push(session.session_id);
           }
           kandy_getSessionInfo(session.session_id, function (result) {
             result.session.participants.forEach(function (p) {
-              if ((p.full_user_id == currentKandyUser) && (mySessions.indexOf(session.session_id) == -1)) {
+              if ((p.full_user_id === currentKandyUser) && (mySessions.indexOf(session.session_id) === -1)) {
                 mySessions.push(session.session_id);
               }
             })
           });
           kandy.session.setListeners(session.session_id, sessionListeners);
-          var option = jQuery("<option>").val(i).text(session.session_name || session.session_id);
+          var option = jQuery('<option>').val(i).text(session.session_name || session.session_id);
           sessionList.append(option);
           i++;
         }
@@ -116,7 +125,7 @@
       setTimeout(displayButtons, 3000);
     }
     else {
-      var option = jQuery("<option>").val('').text('No Session');
+      var option = jQuery('<option>').val('').text('No Session');
       sessionList.append(option);
       hideAllButtons();
     }
@@ -128,8 +137,10 @@
   /**
    * Start co-browsing agent.
    *
-   * @param sessionId
-   * @param holder - id of browsing holder
+   * @param {string} sessionId
+   *   Co-browsing session Id
+   * @param {string} holder
+   *   Id of browsing holder
    */
   var kandy_startCoBrowsingAgent = function (sessionId, holder) {
     kandy.coBrowsing.startBrowsingAgent(sessionId, holder);
@@ -138,22 +149,24 @@
   /**
    * Create session.
    *
-   * @param config
-   * @param successCallback
-   * @param failCallback
+   * @param {object} config
+   * @param {function} successCallback
+   *   Create session success callback
+   * @param {function} failCallback
+   *   Create session fail callback
    */
 
   var kandy_createSession = function (config, successCallback, failCallback) {
     kandy.session.create(
       config,
       function (result) {
-        if (typeof successCallback == "function") {
+        if (typeof successCallback === 'function') {
           activateSession(result.session_id);
           successCallback(result);
         }
       },
       function () {
-        if (typeof failCallback == "function") {
+        if (typeof failCallback === 'function') {
           failCallback();
         }
       }
@@ -163,7 +176,9 @@
   /**
    * Activate session.
    *
-   * @param sessionId
+   * @param {string} sessionId
+   *   Session Id to activate
+   *
    */
   var activateSession = function (sessionId) {
     kandy.session.activate(
@@ -191,18 +206,18 @@
   };
   /* Document ready. */
   jQuery(function () {
-    jq("#kandy-chat-create-group-modal").dialog({
+    jq('#kandy-chat-create-group-modal').dialog({
       autoOpen: false,
       height: 300,
       width: 600,
       modal: true,
       buttons: {
-        "Save": function () {
+        Save: function () {
           var groupName = jq('#kandy-chat-create-session-name').val();
           var creationTime = new Date().getTime();
           // Expire in 1 year.
           var timeExpire = creationTime + 31536000;
-          if (groupName == '') {
+          if (groupName === '') {
             alert('Session must have a name.');
             jQuery('#kandy-chat-create-session-name').focus();
           }
@@ -218,17 +233,17 @@
               getCoBrowsingSessions();
             });
             jQuery('#kandy-chat-create-session-name').val('');
-            jq(this).dialog("close");
+            jq(this).dialog('close');
           }
         },
         Cancel: function () {
-          jq(this).dialog("close");
+          jq(this).dialog('close');
         }
       }
     });
 
-    jQuery("#btnCreateSession").click(function () {
-      jq("#kandy-chat-create-group-modal").dialog('open');
+    jQuery('#btnCreateSession').click(function () {
+      jq('#kandy-chat-create-group-modal').dialog('open');
       jQuery('#kandy-chat-create-session-name').focus();
     });
 
@@ -239,7 +254,7 @@
     slSessionList.on('change', displayButtons);
 
     btnTerminate.on('click', function () {
-      var confirm = window.confirm("Are you sure to terminate this session?");
+      var confirm = window.confirm('Are you sure to terminate this session?');
       if (confirm) {
         var session = openSessions[parseInt(slSessionList.val())];
         myOwnSessions.splice(myOwnSessions.indexOf(session.session_id, 1));
@@ -249,8 +264,8 @@
     });
     btnStartCoBrowsing.on('click', function () {
       if (currentSession) {
-        jQuery("#coBrowsing").addClass("browsing");
-        slSessionList.attr("disabled", true);
+        jQuery('#coBrowsing').addClass('browsing');
+        slSessionList.attr('disabled', true);
         browsingType = 'user';
         kandy_startCoBrowsing(currentSession.session_id);
       }
@@ -258,29 +273,31 @@
     btnStartBrowsingViewer.on('click', function () {
       if (currentSession) {
         browsingType = 'agent';
-        slSessionList.attr("disabled", true);
-        jQuery("#coBrowsing").addClass("browsing");
+        slSessionList.attr('disabled', true);
+        jQuery('#coBrowsing').addClass('browsing');
         kandy_startCoBrowsingAgent(currentSession.session_id, document.getElementById(cobrowsing.holder_id));
       }
     });
 
     btnStop.on('click', function () {
-      jQuery("#coBrowsing").removeClass("browsing");
+      jQuery('#coBrowsing').removeClass('browsing');
       try {
-        if (browsingType == 'user') {
+        if (browsingType === 'user') {
           kandy_stopCoBrowsing();
         }
-        else if (browsingType == 'agent') {
+        else if (browsingType === 'agent') {
           kandy_stopCoBrowsingAgent();
         }
-      } catch (e) {
+      }
+      catch (e) {
         alert('An error has occurred!');
-      } finally {
-        slSessionList.attr("disabled", false);
+      }
+      finally {
+        slSessionList.attr('disabled', false);
       }
     });
     btnLeave.on('click', function () {
-      var confirm = window.confirm("Are you sure to leave this session?");
+      var confirm = window.confirm('Are you sure to leave this session?');
       if (confirm) {
         if (currentSession) {
           // Delete from my session array.

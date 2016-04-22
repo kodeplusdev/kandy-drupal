@@ -1,7 +1,7 @@
 /**
  * @file
- *
  * Admin functional for Kandy live chat feature.
+ *
  */
 "use strict";
 jQuery(document).ready(function ($) {

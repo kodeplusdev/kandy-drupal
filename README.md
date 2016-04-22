@@ -109,7 +109,7 @@ window.end_all_callback = function (stage) {
 }
 
 
-window.presence_notification_callback = function(userId, state, description, activity)
+window.presence_notification_callback = function(userId, state, description,activity)
 {
     //do something with status notification
 }
@@ -410,7 +410,8 @@ at **admin > config > content > kandy**
   **sites/default/files/kandy**
   * Select proper text format which enable shortcode filter.
   * From Configuration > Content Authoring > Text Formats: Uncheck
-  **Limit allowed HTML tags** to make sure Kandy shortcodes can display properly.
+  **Limit allowed HTML tags** to make sure Kandy shortcodes can display
+  properly.
   * Check provide menu link to make your content as a menu.
   * Uncheck promoted to front end
   * Uncheck Display author and date information.

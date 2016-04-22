@@ -1,7 +1,7 @@
 /**
  * @file
- *
  * KANDY SETUP AND LISTENER CALLBACK.
+ *
  */
 
 (function () {
@@ -43,6 +43,9 @@
       kandyApiUrl: 'https://api.kandy.io/v1.2',
       remoteVideoContainer: jQuery('#theirVideo')[0],
       localVideoContainer: jQuery('#myVideo')[0],
+      screensharing: {
+        chromeExtensionId: 'daohbhpgnnlgkipndobecbmahalalhcp'
+      },
 
       // Respond to Kandy events.
       listeners: {
@@ -56,7 +59,8 @@
         callendedfailed: kandy_on_call_ended_failed,
         callinitiated: kandy_on_call_initiate,
         callinitiatefailed: kandy_on_call_initiate_fail,
-        callrejected: kandy_on_call_rejected
+        callrejected: kandy_on_call_rejected,
+        media: kandy_on_media_error
       }
     });
     if (jQuery(".kandyChat").length) {
@@ -247,6 +251,30 @@
 
   }
 
+  function kandy_on_media_error(error) {
+    switch(error.type)
+    {
+      case kandy.call.MediaErrors.WRONG_VERSION:
+        alert("Media plugin version not supported.");
+        break;
+      case kandy.call.MediaErrors.NEW_VERSION_WARNING:
+        alert("New plugin version available.");
+        break;
+      case kandy.call.MediaErrors.NOT_INITIALIZED:
+        alert("Media couldn't be initialized.");
+        break;
+      case kandy.call.MediaErrors.NOT_FOUND:
+        alert("No WebRTC support was found.");
+        break;
+      case kandy.call.MediaErrors.NO_SCREENSHARING_WARNING:
+        alert("WebRTC supported, but no screensharing support was found.");
+        changeAnswerButtonState('SCREEN_SHARING_NOT_SUPPORTED', '.kandyButton');
+        break;
+      default:
+        break;
+    }
+  }
+
   /**
    * Change AnswerButtonState with KandyButton Widget.
    *
@@ -263,6 +291,8 @@
         kandyButton.find('.kandyVideoButtonCallOut').show();
         kandyButton.find('.kandyVideoButtonCalling').hide();
         kandyButton.find('.kandyVideoButtonOnCall').hide();
+        kandyButton.find('.btnShareScreen').hide();
+        kandyButton.find('.btnStopScreenSharing').hide();
         break;
 
       case 'BEING_CALLED':
@@ -270,6 +300,8 @@
         kandyButton.find('.kandyVideoButtonCallOut').hide();
         kandyButton.find('.kandyVideoButtonCalling').hide();
         kandyButton.find('.kandyVideoButtonOnCall').hide();
+        kandyButton.find('.btnStopScreenSharing').hide();
+
         break;
 
       case 'CALLING':
@@ -297,6 +329,20 @@
         kandyButton.find('.kandyVideoButtonCalling').hide();
         kandyButton.find('.kandyVideoButtonOnCall').show();
         kandyButton.find('.kandyVideoButtonOnCall .btnResumeCall').hide();
+        kandyButton.find('.btnStopScreenSharing').hide();
+        break;
+      case 'SCREEN_SHARING_NOT_SUPPORTED':
+        kandyButton.find('.btnShareScreen').hide().attr('disabled', true);
+        break;
+      case 'SHARING_SCREEN':
+        kandyButton.find('.btnShareScreen').hide().attr('disabled', true);
+        kandyButton.find('.btnStopScreenSharing').show().attr('disabled', null);
+        break;
+      case 'STOP_SHARING_SCREEN':
+        kandyButton.find('.btnShareScreen').show().attr('disabled', null);
+        kandyButton.find('.btnStopScreenSharing').hide().attr('disabled', true);
+        break;
+      default:
         break;
     }
   };
@@ -417,6 +463,17 @@
     }
 
     changeAnswerButtonState('HOLD_CALL', '#' + kandyButtonId);
+  };
+
+  var kandy_unhold_call = function(target) {
+    var kandyButtonId = jQuery(target).data('container');
+    var currentCallId = jQuery('#' + kandyButtonId).attr('data-call-id');
+    activeContainerId = kandyButtonId;
+    kandy.call.unHoldCall(currentCallId, function(){
+      changeAnswerButtonState('ON_CALL', '#' + kandyButtonId);
+    }, function(){
+
+    });
   };
 
   /**
@@ -772,20 +829,20 @@
       uid = real_id;
     }
     var result =
-      '<li ' + userHoldingAttribute + '="' + user + '">'+
-        '<div class="kandyMessages" data-user="' + user + '">'+
-        '</div>'+
-        '<div >Messages:</div>'+
-        '<div>'+
-          '<form class="send-message" data-real-id="' + uid + '" data-user="' + user + '">'+
-            '<div class="input-message">'+
-              '<input class="imMessageToSend chat-input" type="text" data-user="' + user + '">'+
-            '</div>'+
-            '<div class="button-send">'+
-              '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-user="' + user + '" >'+
-            '</div>'+
-          '</form>'+
-        '</div>'+
+      '<li ' + userHoldingAttribute + '="' + user + '">' +
+      '<div class="kandyMessages" data-user="' + user + '">' +
+      '</div>' +
+      '<div >Messages:</div>' +
+      '<div>' +
+      '<form class="send-message" data-real-id="' + uid + '" data-user="' + user + '">' +
+      '<div class="input-message">' +
+      '<input class="imMessageToSend chat-input" type="text" data-user="' + user + '">' +
+      '</div>' +
+      '<div class="button-send">' +
+      '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-user="' + user + '" >' +
+      '</div>' +
+      '</form>' +
+      '</div>' +
       '</li>';
     return result;
 
@@ -854,10 +911,10 @@
     inputMessage.val('');
     kandy.messaging.sendIm(username, message,
       function () {
-        var newMessage = '<div class="my-message">'+
-                    '<b><span class="imUsername">' + displayName + ':</span></b>'+
-                    '<span class="imMessage">' + message + '</span>'+
-                '</div>';
+        var newMessage = '<div class="my-message">' +
+          '<b><span class="imUsername">' + displayName + ':</span></b>' +
+          '<span class="imMessage">' + message + '</span>' +
+          '</div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-user="' + dataHolder + '"]');
         messageDiv.append(newMessage);
         messageDiv.scrollTop(messageDiv[0].scrollHeight);
@@ -898,10 +955,10 @@
       // Process message.
       if ((msg.hasOwnProperty('message'))) {
         var msg = msg.message.text;
-        var newMessage = '<div class="their-message">'+
-                            '<b><span class="imUsername">' + displayName + ':</span></b>'+
-                            '<span class="imMessage">' + msg + '</span>'+
-                        '</div>';
+        var newMessage = '<div class="their-message">' +
+          '<b><span class="imUsername">' + displayName + ':</span></b>' +
+          '<span class="imMessage">' + msg + '</span>' +
+          '</div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-user="' + username + '"]');
         messageDiv.append(newMessage);
         messageDiv.scrollTop(messageDiv[0].scrollHeight);
@@ -1147,19 +1204,19 @@
    */
   var getGroupContent = function (groupId) {
     var result =
-      '<li ' + userHoldingAttribute + '="' + groupId + '">'+
-        '<div class="kandyMessages" data-group="' + groupId + '"></div>'+
-        '<div >Messages:</div>'+
-        '<div class="">'+
-          '<form class="send-message" data-group="' + groupId + '">'+
-            '<div class="input-message">'+
-              '<input class="imMessageToSend chat-input" type="text" data-group="' + groupId + '">'+
-            '</div>'+
-            '<div class="button-send">'+
-              '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-group="' + groupId + '" >'+
-            '</div>'+
-          '</form>'+
-        '</div>'+
+      '<li ' + userHoldingAttribute + '="' + groupId + '">' +
+      '<div class="kandyMessages" data-group="' + groupId + '"></div>' +
+      '<div >Messages:</div>' +
+      '<div class="">' +
+      '<form class="send-message" data-group="' + groupId + '">' +
+      '<div class="input-message">' +
+      '<input class="imMessageToSend chat-input" type="text" data-group="' + groupId + '">' +
+      '</div>' +
+      '<div class="button-send">' +
+      '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-group="' + groupId + '" >' +
+      '</div>' +
+      '</form>' +
+      '</div>' +
       '</li>';
     return result;
   };
@@ -1196,19 +1253,19 @@
     var username = jQuery('input.kandy_current_username').val();
     kandy.messaging.sendGroupIm(groupId, msg,
       function () {
-        var newMessage = '<div class="my-message">'+
-                    '<b><span class="imUsername">' + username + ':</span></b>'+
-                    '<span class="imMessage">' + msg + '</span>'+
-                '</div>';
+        var newMessage = '<div class="my-message">' +
+          '<b><span class="imUsername">' + username + ':</span></b>' +
+          '<span class="imMessage">' + msg + '</span>' +
+          '</div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + groupId + '"]');
         messageDiv.append(newMessage);
         messageDiv.scrollTop(messageDiv[0].scrollHeight);
       },
       function (msg) {
-        // Show error message for current user
-        var errorMessage = '<div class="their-message">'+
-                    '<span class="imMessage"><i>Error: ' + msg + '</i></span>'+
-                '</div>';
+        // Show error message for current user.
+        var errorMessage = '<div class="their-message">' +
+          '<span class="imMessage"><i>Error: ' + msg + '</i></span>' +
+          '</div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + groupId + '"]');
         messageDiv.append(errorMessage);
       }
@@ -1386,7 +1443,8 @@
   };
 
   /**
-   * Login kandy user
+   * Login kandy user.
+   *
    * @param {string} apiKey
    * @param {string} username
    * @param {string} password
@@ -1553,6 +1611,19 @@
     }
   }
 
+  function kandy_start_screen_sharing(callId, success_callback, fail_callback) {
+    var options = {
+      width: 1024,
+      height: 768,
+      frameRate:15
+    };
+    kandy.call.startScreenSharing(callId, success_callback, fail_callback);
+  }
+
+  function kandy_stop_screen_sharing(callId, success_callback, fail_callback) {
+    kandy.call.stopScreenSharing(callId, success_callback, fail_callback);
+  }
+
   /**
    * Kandy Ready.
    */
@@ -1625,7 +1696,7 @@
 
       jQuery('#btnAddContact').bind('click', addContacts);
 
-      jQuery('.removeContactBtn').live('click',function(){
+      jQuery('.removeContactBtn').live('click', function () {
         kandy_removeFromContacts(jQuery(this).data('contact-id'));
       });
 
@@ -1803,5 +1874,37 @@
         sendBtn.attr('disabled', true);
       }
     });
+
+    jQuery('.kandyButton .btnHoldCall').click(function() {
+      kandy_hold_call(this);
+    });
+
+    jQuery('.kandyButton .btnResumeCall').click(function() {
+      kandy_unhold_call(this);
+    });
+
+    jQuery('.kandyButton .btnShareScreen').click(function() {
+      var container = jQuery(this).data('container');
+      var callId = jQuery('#' + container).data('call-id');
+      if(callId) {
+        kandy_start_screen_sharing(callId, function(){
+          changeAnswerButtonState('SHARING_SCREEN', '#' + container);
+        });
+      }
+    });
+    jQuery('.kandyButton .btnStopScreenSharing').click(function() {
+      var container = jQuery(this).data('container');
+      var callId = jQuery('#' + container).data('call-id');
+      if(callId) {
+        kandy_stop_screen_sharing(callId, function(){
+          changeAnswerButtonState('STOP_SHARING_SCREEN', '#' + container);
+        });
+      }
+    })
   });
+  jQuery('#theirVideo, #myVideo').on('DOMSubtreeModified', function() {
+    if(jQuery(this).is(':hidden')) {
+      jQuery(this).show();
+    }
+  })
 })();

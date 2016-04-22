@@ -872,9 +872,6 @@ function kandy_user_logout() {
  * Implements hook_user_login().
  *
  * Log user status when user login.
- *
- * @param $edit
- * @param $account
  */
 
 function kandy_user_login(&$edit, $account) {
@@ -889,6 +886,7 @@ function kandy_user_login(&$edit, $account) {
  * View agents list function.
  *
  * @param $user_id
+ *   Agent real user id.
  * @return mixed
  */
 
