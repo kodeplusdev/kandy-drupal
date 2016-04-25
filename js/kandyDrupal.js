@@ -1,6 +1,7 @@
 /**
  * @file
  * KANDY SETUP AND LISTENER CALLBACK.
+ *
  */
 
 (function () {
@@ -266,9 +267,8 @@
       case kandy.call.MediaErrors.WRONG_VERSION:
         alert('Media plugin version not supported.');
         break;
-
       case kandy.call.MediaErrors.NEW_VERSION_WARNING:
-        alert('New plugin version available.');
+        alert("New plugin version available.");
         break;
 
       case kandy.call.MediaErrors.NOT_INITIALIZED:
@@ -1392,7 +1392,6 @@
    * Clean things up after remove group.
    *
    * @param {string} sessionId
-   *   Session id to be removed
    */
   var removeGroupContent = function (sessionId) {
     var toBeRemove = jQuery(liContentWrapSelector + ' li[data-content="' + sessionId + '"]');
@@ -1899,6 +1898,7 @@
         jQuery(this).toggleClass('fa-plus-square-o').toggleClass('fa-minus-square-o');
         jQuery(this).siblings('.list-users').toggleClass('expanding');
       });
+      var ajaxUrl = jQuery('.kandyChat .select2').attr('data-ajax-url');
       jQuery('.kandyChat .kandyModal .select2').select2({
         ajax: {
           quietMillis: 100,

@@ -1,6 +1,7 @@
 /**
  * @file
  * Kandy cobrowsing feature.
+ *
  */
 
 (function () {
@@ -152,7 +153,6 @@
    * Create session.
    *
    * @param {object} config
-   *   Session config
    * @param {function} successCallback
    *   Create session success callback
    * @param {function} failCallback
