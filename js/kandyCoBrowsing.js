@@ -1,11 +1,12 @@
 /**
  * @file
- * Kandy cobrowsing feature.
  *
+ * Kandy cobrowsing feature.
  */
+
 (function () {
 
-  "use strict";
+  'use strict';
 
   /**
    * On join request callback, currently use for co-browser.
@@ -53,9 +54,10 @@
   });
 
   function displayButtons() {
-    var isAdmin = false, isMember = false;
+    var isAdmin = false;
+    var isMember = false;
     currentSession = openSessions[parseInt(slSessionList.val())];
-    if (typeof  currentSession != 'undefined') {
+    if (typeof currentSession != 'undefined') {
       isAdmin = myOwnSessions.indexOf(currentSession.session_id) > -1;
       isMember = (mySessions.indexOf(currentSession.session_id) > -1 && !isAdmin);
     }
@@ -114,7 +116,7 @@
               if ((p.full_user_id === currentKandyUser) && (mySessions.indexOf(session.session_id) === -1)) {
                 mySessions.push(session.session_id);
               }
-            })
+            });
           });
           kandy.session.setListeners(session.session_id, sessionListeners);
           var option = jQuery('<option>').val(i).text(session.session_name || session.session_id);
@@ -134,6 +136,7 @@
     mySessions.push(sessionId);
     displayButtons();
   };
+
   /**
    * Start co-browsing agent.
    *
@@ -155,7 +158,6 @@
    * @param {function} failCallback
    *   Create session fail callback
    */
-
   var kandy_createSession = function (config, successCallback, failCallback) {
     kandy.session.create(
       config,
@@ -170,7 +172,7 @@
           failCallback();
         }
       }
-    )
+    );
   };
 
   /**
@@ -178,7 +180,6 @@
    *
    * @param {string} sessionId
    *   Session Id to activate
-   *
    */
   var activateSession = function (sessionId) {
     kandy.session.activate(
@@ -200,10 +201,12 @@
   var kandy_stopCoBrowsing = function () {
     kandy.coBrowsing.stopBrowsingUser();
   };
+
   /* Get all co-browsing sessions. */
   var getCoBrowsingSessions = function () {
     kandy_getOpenSessionsByType('cobrowsing', loadSessionList);
   };
+
   /* Document ready. */
   jQuery(function () {
     jq('#kandy-chat-create-group-modal').dialog({
@@ -307,6 +310,6 @@
           });
         }
       }
-    })
+    });
   });
 })();

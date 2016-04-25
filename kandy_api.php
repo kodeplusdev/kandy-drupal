@@ -618,6 +618,7 @@ function kandy_publish_assets() {
  * Get chat agents.
  *
  * @return array
+ *   Array of agent
  */
 function kandy_get_chat_agents() {
   // We are extending the PagerDefault class here.
@@ -655,6 +656,7 @@ function kandy_get_chat_agents() {
  * Get all users except agents.
  *
  * @return mixed
+ *   All user except agents
  */
 function kandy_get_not_agent() {
   $query = db_select("users", 'u');
@@ -669,9 +671,11 @@ function kandy_get_not_agent() {
 /**
  * Get agent rate progress.
  *
- * @param $main_user_id
+ * @param int $main_user_id
+ *   Main user id
  *
  * @return array
+ *   Agent's records
  */
 function kandy_get_agent_progress($main_user_id) {
   $query = db_select('kandy_live_chat_rate', 'kr');
@@ -696,11 +700,12 @@ function kandy_get_agent_progress($main_user_id) {
 /**
  * Log information when user login or logout.
  *
- * @param $kandy_user_id
- * @param $user_type
+ * @param string $kandy_user_id
+ *   Kandy user id
+ * @param int $user_type
+ *   Type of user
  * @param int $log_type
- *
- * @throws Exception
+ *   Online or offline
  */
 function kandy_log_user_login($kandy_user_id, $user_type, $log_type = KANDY_USER_STATUS_ONLINE) {
   $now = time();
@@ -726,13 +731,16 @@ function kandy_log_user_login($kandy_user_id, $user_type, $log_type = KANDY_USER
 }
 
 /**
- * Get last seen of an array users
+ * Get last seen of an array users.
  *
  * @param array $users
+ *
  * @return array|mixed|object
+ *   Last seen of users
  */
 function kandy_get_last_seen(array $users) {
   $result = kandy_get_domain_access_token();
+  $domain_access_token = '';
   if ($result['success'] == TRUE) {
     $domain_access_token = $result['data'];
   }

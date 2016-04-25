@@ -22,9 +22,8 @@ window.login_failed_callback = function () {
  * @param {string} userId
  * @param {string} state
  * @param {string} description
- * @param {string} activity
  */
-window.presence_notification_callback = function (userId, state, description, activity) {
+window.presence_notification_callback = function (userId, state, description) {
   "use strict";
   // Do something here.
 };
