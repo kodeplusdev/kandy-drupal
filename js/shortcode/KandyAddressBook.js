@@ -4,7 +4,7 @@
  */
 
 window.login_success_callback = function () {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -12,7 +12,7 @@ window.login_success_callback = function () {
  * You login fail.
  */
 window.login_failed_callback = function () {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -20,11 +20,13 @@ window.login_failed_callback = function () {
  * Status Notification Callback.
  *
  * @param {string} userId
+ *   Kandy user .
  * @param {string} state
+ *   Presence state.
  * @param {string} description
- * @param {string }activity
+ *   Presence description.
  */
-window.presence_notification_callback = function (userId, state, description, activity) {
-  "use strict";
+window.presence_notification_callback = function (userId, state, description) {
+  'use strict';
   // Do something here.
 };

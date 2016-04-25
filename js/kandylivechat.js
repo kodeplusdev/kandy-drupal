@@ -1,12 +1,12 @@
 /**
  * @file
  * Contains functions used for live chat feature.
- *
  */
+
 var LiveChatUI = {};
 (function () {
 
-  "use strict";
+  'use strict';
 
   var agent;
   var checkAvailable;
@@ -83,7 +83,7 @@ var LiveChatUI = {};
       listeners: {
         message: onMessage
       }
-    })
+    });
   };
 
   var getKandyUsers = function () {
@@ -118,7 +118,7 @@ var LiveChatUI = {};
       error: function () {
         LiveChatUI.changeState('UNAVAILABLE');
       }
-    })
+    });
   };
 
   var endChatSession = function () {
@@ -196,7 +196,7 @@ var LiveChatUI = {};
             getKandyUsers();
           }
         }
-      })
+      });
     });
 
     // Form chat submit handle.
@@ -208,6 +208,7 @@ var LiveChatUI = {};
     window.onbeforeunload = function () {
       endChatSession();
     };
+
     /**
      * Rating for agents JS code.
      */
@@ -238,15 +239,15 @@ var LiveChatUI = {};
             window.location.reload();
           }
         }
-      })
+      });
     });
-    jQuery(".liveChat #ratingForm .rateit").bind("rated", function () {
+    jQuery('.liveChat #ratingForm .rateit').bind('rated', function () {
       var ri = jQuery(this);
-      rateData.rate = {point: ri.rateit("value")}
+      rateData.rate = {point: ri.rateit('value')}
     });
 
-    jQuery(".liveChat #ratingForm .rateit").bind("reset", function () {
-      if (rateData.hasOwnProperty("rate")) {
+    jQuery('.liveChat #ratingForm .rateit').bind('reset', function () {
+      if (rateData.hasOwnProperty('rate')) {
         delete rateData.rate;
       }
     });

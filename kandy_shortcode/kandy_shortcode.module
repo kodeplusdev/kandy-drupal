@@ -184,6 +184,7 @@ function kandy_shortcode_kandy_sms_tip() {
  * Display shortcode kandyCobrowsing tip.
  *
  * @return string
+ *   Kandy co browsing tip
  */
 function kandy_shortcode_kandy_cobrowsing_tip() {
   $output = array();
@@ -197,6 +198,7 @@ function kandy_shortcode_kandy_cobrowsing_tip() {
  * Display shortcode kandyLiveChat tip.
  *
  * @return string
+ *   Kandy live chat tip
  */
 function kandy_shortcode_kandy_livechat_tip() {
   $output = array();
@@ -223,10 +225,11 @@ function kandy_setup() {
       $user_name = $assign_user->user_id;
       $password = $assign_user->password;
       $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
-      drupal_add_js("var current_kandy_user = '" . $user_name . '@' . $assign_user->domain_name . "';", 'inline');
+      drupal_add_js("var current_kandy_user = '" . $user_name . '@'
+        . $assign_user->domain_name . "';", 'inline');
       if (variable_get('kandy_jquery_reload', 1)) {
         if (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1]['function'] == 'kandy_shortcode_kandy_cobrowsing') {
-          // Add jquery no conflict to use built in jquery ui dialog in cobrowsing shortcode.
+          // Add jquery no conflict
           drupal_add_js('var jq = jQuery.noConflict();', 'inline');
         }
         drupal_add_js(KANDY_JQUERY, array(
@@ -301,7 +304,6 @@ function kandy_setup() {
 
 /**
  * Kandy shortcode init every page, clear cace before render shortcode.
- *
  */
 function kandy_shortcode_init() {
   if ($node = menu_get_object()) {
@@ -493,15 +495,14 @@ function kandy_shortcode_kandy_video_button(array $attr) {
         }
         // Init sharescreenbuttontext attribute.
         $share_screen_button_text = t('Share screen');
-        if(isset($attr['sharescreenbuttontext'])) {
+        if (isset($attr['sharescreenbuttontext'])) {
           $share_screen_button_text = filter_xss($attr['sharescreenbuttontext']);
         }
 
         $stop_share_screen_button_text = 'Stop share screen';
-        if(isset($attr['sharescreenbuttontext'])) {
+        if (isset($attr['sharescreenbuttontext'])) {
           $stop_share_screen_button_text = filter_xss($attr['stopsharescreenbuttontext']);
         }
-
 
         $ajax_user_search_url = url(
           'kandy/get_user_for_search',
@@ -667,12 +668,12 @@ function kandy_shortcode_kandy_voice_button(array $attr) {
 
         // Init sharescreenbuttontext attribute.
         $share_screen_button_text = t('Share screen');
-        if(isset($attr['sharescreenbuttontext'])) {
+        if (isset($attr['sharescreenbuttontext'])) {
           $share_screen_button_text = filter_xss($attr['sharescreenbuttontext']);
         }
 
         $stop_share_screen_button_text = 'Stop share screen';
-        if(isset($attr['sharescreenbuttontext'])) {
+        if (isset($attr['sharescreenbuttontext'])) {
           $stop_share_screen_button_text = filter_xss($attr['stopsharescreenbuttontext']);
         }
 
@@ -1198,12 +1199,14 @@ function kandy_shortcode_kandy_sms(array $attr) {
 }
 
 /**
- * Render shortcode kandyCobrowsing
+ * Render shortcode kandyCobrowsing.
  *
  * @param $attr
+ *   Attributes array.
+ *
  * @return string
+ *   Co browsing markup.
  */
-
 function kandy_shortcode_kandy_cobrowsing($attr) {
   module_load_include('php', 'kandy', 'kandy_api');
   global $user;
@@ -1270,6 +1273,15 @@ function kandy_shortcode_kandy_cobrowsing($attr) {
   return $output;
 }
 
+/**
+ * Kandy livechat shortcode function.
+ *
+ * @param $attr
+ *   Attributes array.
+ *
+ * @return string
+ *   Live chat markup.
+ */
 function kandy_shortcode_kandy_livechat($attr) {
   if (!empty($attr)) {
     if (variable_get('kandy_jquery_reload', 1)) {
@@ -1368,7 +1380,7 @@ function kandy_shortcode_kandy_livechat($attr) {
         jQuery(function(){
       ' . $func . '
       });'
-      , 'inline');
+      ,'inline');
     return $output;
   }
 }

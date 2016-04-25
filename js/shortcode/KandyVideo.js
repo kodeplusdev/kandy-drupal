@@ -4,7 +4,7 @@
  */
 
 window.login_success_callback = function () {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -12,7 +12,7 @@ window.login_success_callback = function () {
  * You login fail.
  */
 window.login_failed_callback = function () {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -25,7 +25,7 @@ window.login_failed_callback = function () {
  *   Is call by anonymous user.
  */
 window.call_incoming_callback = function (call, isAnonymous) {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -36,9 +36,10 @@ window.call_incoming_callback = function (call, isAnonymous) {
  *   Kandy call object parameter
  */
 window.on_call_callback = function (call) {
-  "use strict";
+  'use strict';
   // Do something here.
 };
+
 /**
  * Some one answer your call.
  *
@@ -48,7 +49,7 @@ window.on_call_callback = function (call) {
  *   Is call by anonymous user.
  */
 window.call_answered_callback = function (call, isAnonymous) {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -56,7 +57,7 @@ window.call_answered_callback = function (call, isAnonymous) {
  * End call callback.
  */
 window.call_ended_callback = function () {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -64,10 +65,10 @@ window.call_ended_callback = function () {
  * Callback when click AnswerVideo Button.
  *
  * @param {string} stage
- *   State of UI
+ *   State of UI.
  */
 window.answer_video_call_callback = function (stage) {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -75,10 +76,10 @@ window.answer_video_call_callback = function (stage) {
  * Callback when click AnswerVideo Button.
  *
  * @param {string} stage
- *   State of UI
+ *   State of UI.
  */
 window.answer_voice_call_callback = function (stage) {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -86,10 +87,10 @@ window.answer_voice_call_callback = function (stage) {
  * Callback when click Call Button.
  *
  * @param {string} stage
- *   State of UI
+ *   State of UI.
  */
 window.make_call_callback = function (stage) {
-  "use strict";
+  'use strict';
   // Do something here.
 };
 
@@ -97,8 +98,9 @@ window.make_call_callback = function (stage) {
  * Callback when click End call Button.
  *
  * @param {string} stage
- *   State of UI
+ *   State of UI.
  */
 window.end_all_callback = function (stage) {
+  'use strict';
   // Do something here.
 };

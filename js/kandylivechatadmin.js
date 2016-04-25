@@ -1,10 +1,10 @@
 /**
  * @file
  * Admin functional for Kandy live chat feature.
- *
  */
-"use strict";
 jQuery(document).ready(function ($) {
+  'use strict';
+
   $('#kandyBtnAddAgent').click(function () {
     $.ajax({
       url: ajaxurl + '?action=kandy_add_chat_agent',
@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
           window.location.reload();
         }
       }
-    })
+    });
   });
 
   $('.select2').select2({
