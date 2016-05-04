@@ -734,7 +734,7 @@ function kandy_log_user_login($kandy_user_id, $user_type, $log_type = KANDY_USER
  * Get last seen of an array users.
  *
  * @param array $users
- *   Array of users
+ *   Array of users.
  *
  * @return array|mixed|object
  *   Last seen of users

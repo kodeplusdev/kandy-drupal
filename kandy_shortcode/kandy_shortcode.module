@@ -229,7 +229,7 @@ function kandy_setup() {
         . $assign_user->domain_name . "';", 'inline');
       if (variable_get('kandy_jquery_reload', 1)) {
         if (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1]['function'] == 'kandy_shortcode_kandy_cobrowsing') {
-          // Add jquery no conflict
+          // Add jquery no conflict.
           drupal_add_js('var jq = jQuery.noConflict();', 'inline');
         }
         drupal_add_js(KANDY_JQUERY, array(
@@ -1201,7 +1201,7 @@ function kandy_shortcode_kandy_sms(array $attr) {
 /**
  * Render shortcode kandyCobrowsing.
  *
- * @param $attr
+ * @param array $attr
  *   Attributes array.
  *
  * @return string
@@ -1276,7 +1276,7 @@ function kandy_shortcode_kandy_cobrowsing($attr) {
 /**
  * Kandy livechat shortcode function.
  *
- * @param $attr
+ * @param array $attr
  *   Attributes array.
  *
  * @return string
@@ -1356,7 +1356,7 @@ function kandy_shortcode_kandy_livechat($attr) {
       </div>
         <div class="customerService">
           <div class="avatar">
-              <img src="' . KANDY_MODULE_URL . '/img/icon-helpdesk.png' . '">
+              <img src="' . KANDY_MODULE_URL . '/img/icon-helpdesk.png">
           </div>
           <div class="helpdeskInfo">
               <span class="agentName"></span>
@@ -1375,12 +1375,7 @@ function kandy_shortcode_kandy_livechat($attr) {
         </div>
     </div>
   </div>';
-    drupal_add_js(
-      '//agent user id
-        jQuery(function(){
-      ' . $func . '
-      });'
-      ,'inline');
+    drupal_add_js('jQuery(function(){' . $func . '});', 'inline');
     return $output;
   }
 }

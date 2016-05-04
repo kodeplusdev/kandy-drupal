@@ -188,7 +188,9 @@ var LiveChatUI = {};
           if (res.hasOwnProperty('errors')) {
             form.find('span.error').empty().hide();
             for (var e in res.errors) {
-              form.find('span[data-input="' + e + '"]').html(res.errors[e]).show();
+              if(res.errors.hasOwnProperty(e)) {
+                form.find('span[data-input="' + e + '"]').html(res.errors[e]).show();
+              }
             }
           }
           else {
@@ -225,7 +227,7 @@ var LiveChatUI = {};
       }
       var rateComment = jQuery('.liveChat #rateComment').val();
       if (rateComment) {
-        rateData.comment = rateComment
+        rateData.comment = rateComment;
       }
       jQuery.ajax({
         url: '/kandy/kandy_rate_agent',
@@ -243,7 +245,7 @@ var LiveChatUI = {};
     });
     jQuery('.liveChat #ratingForm .rateit').bind('rated', function () {
       var ri = jQuery(this);
-      rateData.rate = {point: ri.rateit('value')}
+      rateData.rate = {point: ri.rateit('value')};
     });
 
     jQuery('.liveChat #ratingForm .rateit').bind('reset', function () {
