@@ -109,7 +109,7 @@ window.end_all_callback = function (stage) {
 }
 
 
-window.presence_notification_callback = 
+window.presence_notification_callback =
   function(userId, state, description, activity) {
     //do something with status notification
   }

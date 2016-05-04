@@ -752,16 +752,12 @@ function kandy_file_edit_form($form, &$form_state, $file_style, $file_name) {
     }
 
     if (file_exists($file_path)) {
-
+      $replace = array(
+        '@fileName' => $file_name,
+        '@fileStyle' => $file_style,
+      );
       $form['label'] = array(
-        '#markup' => '<p>' .
-          t(
-            'File: @fileName.@fileStyle',
-            array(
-              '@fileName' => $file_name,
-              '@fileStyle' => $file_style,
-            )
-          ) . '</p>',
+        '#markup' => '<p>' . t('File: @fileName.@fileStyle', $replace) . '</p>',
       );
       $form['content'] = array(
         '#title' => t('Contents'),
