@@ -754,10 +754,14 @@ function kandy_file_edit_form($form, &$form_state, $file_style, $file_name) {
     if (file_exists($file_path)) {
 
       $form['label'] = array(
-        '#markup' => '<p>' . t('File: @fileName.@fileStyle', array(
-            '@fileName' => $file_name,
-            '@fileStyle' => $file_style,
-          )) . '</p>',
+        '#markup' => '<p>' .
+          t(
+            'File: @fileName.@fileStyle',
+            array(
+              '@fileName' => $file_name,
+              '@fileStyle' => $file_style,
+            )
+          ) . '</p>',
       );
       $form['content'] = array(
         '#title' => t('Contents'),
@@ -782,7 +786,8 @@ function kandy_file_edit_form($form, &$form_state, $file_style, $file_name) {
       );
     }
     else {
-      $markup = '<p>' . t('Not found: @fileName.@fileStyle', array(
+      $markup = '<p>' .
+        t('Not found: @fileName.@fileStyle', array(
           '@fileName' => $file_name,
           '@fileStyle' => $file_style,
         )) . '</p>';
@@ -1152,7 +1157,9 @@ function kandy_get_free_user_callback() {
   if (isset($live_chat_session['agent'])) {
     $query = db_select('kandy_users', 'ku');
     $query->join('users', 'u', 'ku.main_user_id = u.uid');
-    $query->fields('ku', array(
+    $query->fields(
+      'ku',
+      array(
         'user_id',
         'main_user_id',
         'password',
@@ -1226,7 +1233,7 @@ function kandy_get_free_user_callback() {
     );
   }
   else {
-    // Clean inactive user status
+    // Clean inactive user status.
     $query = db_select('kandy_user_login', 'ul');
     $query->fields('ul', array('kandy_user_id'));
     $query->addExpression('UNIX_TIMESTAMP() - time', 'last_active');

@@ -109,10 +109,10 @@ window.end_all_callback = function (stage) {
 }
 
 
-window.presence_notification_callback = function(userId, state, description,activity)
-{
+window.presence_notification_callback = 
+  function(userId, state, description, activity) {
     //do something with status notification
-}
+  }
 ```
 
 ####Kandy components and shortcode syntax:

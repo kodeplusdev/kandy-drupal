@@ -19,9 +19,9 @@ window.login_failed_callback = function () {
 /**
  * Someone are calling you.
  *
- * @param call
+ * @param {object} call
  *   Kandy call object.
- * @param isAnonymous
+ * @param {bool} isAnonymous
  *   Is caller anonymous.
  */
 window.call_incoming_callback = function (call, isAnonymous) {

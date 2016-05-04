@@ -286,9 +286,7 @@ function kandy_update_7000() {
   return $schema;
 }
 /**
- * Implement hook_update().
- *
- * Add presence_status field to kandy_users table.
+ * Implements hook_update().
  */
 function kandy_update_7242() {
   db_add_field('kandy_users', 'presence_status', array(

@@ -1,7 +1,6 @@
 /**
  * @file
  * KANDY SETUP AND LISTENER CALLBACK.
- *
  */
 
 (function () {
@@ -267,8 +266,9 @@
       case kandy.call.MediaErrors.WRONG_VERSION:
         alert('Media plugin version not supported.');
         break;
+
       case kandy.call.MediaErrors.NEW_VERSION_WARNING:
-        alert("New plugin version available.");
+        alert('New plugin version available.');
         break;
 
       case kandy.call.MediaErrors.NOT_INITIALIZED:
@@ -509,7 +509,9 @@
    */
   var presence_changed_callback = function () {
     for (var userId in kandyPresence) {
-      kandy_presence_notification_callback(userId, kandyPresence[userId].toLowerCase(), kandyPresence[userId]);
+      if (kandyPresence.hasOwnProperty(userId)) {
+        kandy_presence_notification_callback(userId, kandyPresence[userId].toLowerCase(), kandyPresence[userId]);
+      }
     }
   };
 
@@ -578,18 +580,16 @@
         else {
           jQuery('.kandyAddressBook .kandyAddressContactList').append("<div class='kandy-contact-heading'><span class='displayname'><b>Username</b></span><span class='userId'><b>Contact</b></span><span class='presence'><b>Status</b></span></div>");
           for (i = 0; i < results.length; i++) {
+            var id_attr = results[i].contact_user_name.replace(/[.@]/g, '_');
             if (results[i].display_name !== 'kandy-un-assign-user') {
               contactListForPresence.push(results[i].contact_user_name);
-
-              var id_attr = results[i].contact_user_name.replace(/[.@]/g, '_');
-              var markup = // HTML id can't contain @ and jquery doesn't like periods (in id).
-                '<div class="kandyContactItem" id="uid_' + id_attr + '">' +
+              // HTML id can't contain @ and jquery doesn't like periods (in id).
+              var markup = '<div class="kandyContactItem" id="uid_' + id_attr + '">' +
                 '<span class="displayname">' + results[i].display_name + '</span>' +
                 '<span class="userId">' + results[i].contact_user_name + '</span>' +
                 '<span id="presence_' + id_attr + '" class="presence"></span>' +
                 '<input class="removeContactBtn" type="button" value="Remove" ' +
-                ' data-contact-id="' + results[i].contact_id + '">' +
-                '</div>';
+                ' data-contact-id="' + results[i].contact_id + '"></div>';
               jQuery('.kandyAddressBook .kandyAddressContactList').append(markup);
             }
             else {
@@ -828,22 +828,15 @@
     if (typeof real_id != 'undefined') {
       uid = real_id;
     }
-    var result =
-      '<li ' + userHoldingAttribute + '="' + user + '">' +
+    var result = '<li ' + userHoldingAttribute + '="' + user + '">' +
       '<div class="kandyMessages" data-user="' + user + '">' +
-      '</div>' +
-      '<div >Messages:</div>' +
-      '<div>' +
+      '</div><div >Messages:</div><div>' +
       '<form class="send-message" data-real-id="' + uid + '" data-user="' + user + '">' +
       '<div class="input-message">' +
       '<input class="imMessageToSend chat-input" type="text" data-user="' + user + '">' +
-      '</div>' +
-      '<div class="button-send">' +
+      '</div><div class="button-send">' +
       '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-user="' + user + '" >' +
-      '</div>' +
-      '</form>' +
-      '</div>' +
-      '</li>';
+      '</div></form></div></li>';
     return result;
 
   };
@@ -914,10 +907,8 @@
     inputMessage.val('');
     kandy.messaging.sendIm(username, message,
       function () {
-        var newMessage = '<div class="my-message">' +
-          '<b><span class="imUsername">' + displayName + ':</span></b>' +
-          '<span class="imMessage">' + message + '</span>' +
-          '</div>';
+        var newMessage = '<div class="my-message"><b><span class="imUsername">' + displayName +
+          ':</span></b><span class="imMessage">' + message + '</span></div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-user="' + dataHolder + '"]');
         messageDiv.append(newMessage);
         messageDiv.scrollTop(messageDiv[0].scrollHeight);
@@ -959,10 +950,8 @@
       // Process message.
       if ((msg.hasOwnProperty('message'))) {
         msg = msg.message.text;
-        var newMessage = '<div class="their-message">' +
-          '<b><span class="imUsername">' + displayName + ':</span></b>' +
-          '<span class="imMessage">' + msg + '</span>' +
-          '</div>';
+        var newMessage = '<div class="their-message"><b><span class="imUsername">' +
+          displayName + ':</span></b><span class="imMessage">' + msg + '</span></div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-user="' + username + '"]');
         messageDiv.append(newMessage);
         messageDiv.scrollTop(messageDiv[0].scrollHeight);
@@ -1072,24 +1061,22 @@
     participants.push({full_user_id: admin_id});
     participants = get_display_name_for_contact(participants, get_name_for_contact_url);
     if (participants.length) {
-      for (var i in participants) {
-        displayNames[participants[i].full_user_id] = participants[i].display_name;
-        if (!jQuery(listUsersGroup).find('li[data-user="' + participants[i].full_user_id + '"]').length) {
+      participants.forEach(function (item) {
+        displayNames[item.full_user_id] = item.display_name;
+        if (!jQuery(listUsersGroup).find('li[data-user="' + item.full_user_id + '"]').length) {
           var status = '';
           var additionBtn = '';
-          var displayName = displayNames[participants[i].full_user_id];
-          if (admin_id === participants[i].full_user_id) {
+          var displayName = displayNames[item.full_user_id];
+          if (admin_id === item.full_user_id) {
             displayName += '<span> (owner)</span>';
           }
           jQuery(listUsersGroup).append(
-            '<li data-user="' + participants[i].full_user_id + '">' +
-            '<a>' + displayName + '</a>' +
-            '<span class="actions">' + additionBtn + '</span>' +
-            '<div class="statusContainer"><i class="status"></i>' + ((status) ? '<i class="group-status">(' + status + ')</i>' : '') + '</div>' +
-            '</li>'
+            '<li data-user="' + item.full_user_id + '"><a>' + displayName + '</a>' +
+            '<span class="actions">' + additionBtn + '</span><div class="statusContainer"><i class="status"></i>' +
+            ((status) ? '<i class="group-status">(' + status + ')</i>' : '') + '</div></li>'
           );
         }
-      }
+      });
     }
 
   };
@@ -1112,13 +1099,8 @@
               if (!jQuery(liTabGroupsWrap + " li[data-group='" + result.groups[i].session_id + "']").length) {
                 jQuery(liTabGroupsWrap).append(
                   '<li data-group="' + result.groups[i].group_id + '" class="group">' +
-                  '<i class="toggle fa fa-plus-square-o"></i>' +
-                  '<a data-content="' + result.groups[i].group_id + '" href="#">' +
-                  result.groups[i].group_name +
-                  '</a>' +
-                  '<div class="groupAction"></div>' +
-                  '<ul class="list-users"></ul>' +
-                  '</li>'
+                  '<i class="toggle fa fa-plus-square-o"></i><a data-content="' + result.groups[i].group_id + '" href="#">' +
+                  result.groups[i].group_name + '</a><div class="groupAction"></div><ul class="list-users"></ul></li>'
                 );
               }
               if (!jQuery(liContentWrapSelector + ' li[' + userHoldingAttribute + '="' + result.groups[i].group_id + '"]').length) {
@@ -1151,8 +1133,7 @@
         if (msg.contentType === 'text') {
           var newMessage = '<div class="their-message">' +
             '<b><span class="imUsername">' + sender + ':</span></b>' +
-            '<span class="imMessage">' + msg.message.text + '</span>' +
-            '</div>';
+            '<span class="imMessage">' + msg.message.text + '</span></div>';
           var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + msg.group_id + '"]');
           messageDiv.append(newMessage);
           messageDiv.scrollTop(messageDiv[0].scrollHeight);
@@ -1203,8 +1184,7 @@
         kandy_loadGroups();
         changeGroupInputState(message.group_id, true);
       }
-      var newMessage = '<div class="their-message"><span class="imMessage">' +
-        '<i>' + notify + '</i></span></div>';
+      var newMessage = '<div class="their-message"><span class="imMessage"><i>' + notify + '</i></span></div>';
       var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + message.group_id + '"]');
       messageDiv.append(newMessage);
     }
@@ -1220,21 +1200,13 @@
    *   Group HTML snippet
    */
   var getGroupContent = function (groupId) {
-    var result =
-      '<li ' + userHoldingAttribute + '="' + groupId + '">' +
+    var result = '<li ' + userHoldingAttribute + '="' + groupId + '">' +
       '<div class="kandyMessages" data-group="' + groupId + '"></div>' +
-      '<div >Messages:</div>' +
-      '<div class="">' +
+      '<div >Messages:</div><div class="">' +
       '<form class="send-message" data-group="' + groupId + '">' +
-      '<div class="input-message">' +
-      '<input class="imMessageToSend chat-input" type="text" data-group="' + groupId + '">' +
-      '</div>' +
-      '<div class="button-send">' +
-      '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-group="' + groupId + '" >' +
-      '</div>' +
-      '</form>' +
-      '</div>' +
-      '</li>';
+      '<div class="input-message"><input class="imMessageToSend chat-input" type="text" data-group="' + groupId + '"></div>' +
+      '<div class="button-send"><input class="btnSendMessage chat-input" type="submit" value="Send"  data-group="' + groupId + '" >' +
+      '</div></form></div></li>';
     return result;
   };
 
@@ -1277,19 +1249,15 @@
     var username = jQuery('input.kandy_current_username').val();
     kandy.messaging.sendGroupIm(groupId, msg,
       function () {
-        var newMessage = '<div class="my-message">' +
-          '<b><span class="imUsername">' + username + ':</span></b>' +
-          '<span class="imMessage">' + msg + '</span>' +
-          '</div>';
+        var newMessage = '<div class="my-message"><b><span class="imUsername">' + username +
+          ':</span></b><span class="imMessage">' + msg + '</span></div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + groupId + '"]');
         messageDiv.append(newMessage);
         messageDiv.scrollTop(messageDiv[0].scrollHeight);
       },
       function (msg) {
         // Show error message for current user.
-        var errorMessage = '<div class="their-message">' +
-          '<span class="imMessage"><i>Error: ' + msg + '</i></span>' +
-          '</div>';
+        var errorMessage = '<div class="their-message"><span class="imMessage"><i>Error: ' + msg + '</i></span></div>';
         var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + groupId + '"]');
         messageDiv.append(errorMessage);
       }
@@ -1313,9 +1281,7 @@
         kandy_loadGroups();
         changeGroupInputState(message.group_id, true);
       }
-      var newMessage = '<div class="their-message">' +
-        '<span class="imMessage"><i>' + leaverDisplayName + ' has left</i></span>' +
-        '</div>';
+      var newMessage = '<div class="their-message"><span class="imMessage"><i>' + leaverDisplayName + ' has left</i></span></div>';
       var messageDiv = jQuery('.kandyChat .kandyMessages[data-group="' + groupId + '"]');
       messageDiv.append(newMessage);
     }
@@ -1363,7 +1329,7 @@
   /**
    * Terminate a session.
    *
-   * @param groupId
+   * @param {string} groupId
    *   Group id to terminate
    * @param {function} successCallback
    *   Terminate success callback
@@ -1392,6 +1358,7 @@
    * Clean things up after remove group.
    *
    * @param {string} sessionId
+   *   Session Id
    */
   var removeGroupContent = function (sessionId) {
     var toBeRemove = jQuery(liContentWrapSelector + ' li[data-content="' + sessionId + '"]');
@@ -1406,13 +1373,16 @@
     if (usersStatus) {
       if (jQuery(liTabGroupsWrap).length) {
         for (var u in usersStatus) {
-          var liUserGroup = jQuery(liTabGroupsWrap + ' li[data-user="' + u + '"]');
-          var status = usersStatus[u].replace(/ /g, '-').toLowerCase();
-          liUserGroup.find('i.status').html(usersStatus[u]);
-          liUserGroup.removeClass();
-          liUserGroup.addClass('kandy-chat-status-' + status);
-          liUserGroup.attr('title', usersStatus[u]);
-          jQuery(liUserGroup).closest('li[data-group]').addClass('kandy-chat-status-g-' + status);
+          if (usersStatus.hasOwnProperty(u)) {
+            var liUserGroup = jQuery(liTabGroupsWrap + ' li[data-user="' + u + '"]');
+            var status = usersStatus[u].replace(/ /g, '-').toLowerCase();
+            liUserGroup.find('i.status').html(usersStatus[u]);
+            liUserGroup.removeClass();
+            liUserGroup.addClass('kandy-chat-status-' + status);
+            liUserGroup.attr('title', usersStatus[u]);
+            jQuery(liUserGroup).closest('li[data-group]').addClass('kandy-chat-status-g-' + status);
+          }
+
         }
       }
     }
@@ -1898,7 +1868,6 @@
         jQuery(this).toggleClass('fa-plus-square-o').toggleClass('fa-minus-square-o');
         jQuery(this).siblings('.list-users').toggleClass('expanding');
       });
-      var ajaxUrl = jQuery('.kandyChat .select2').attr('data-ajax-url');
       jQuery('.kandyChat .kandyModal .select2').select2({
         ajax: {
           quietMillis: 100,
