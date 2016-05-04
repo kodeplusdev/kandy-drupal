@@ -2,7 +2,6 @@
  * @file
  * KANDY SETUP AND LISTENER CALLBACK.
  */
-
 (function () {
 
   'use strict';

@@ -2,7 +2,6 @@
  * @file
  * Kandy cobrowsing feature.
  */
-
 (function () {
 
   'use strict';
