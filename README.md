@@ -68,43 +68,43 @@ Select appropriate file(.js) then click edit them.
 
 ***All support script callback:***
 ```sh
-window.login_success_callback = function () {
+window.loginSuccessCallback = function () {
    //do something when you login successfully
 }
 
-window.login_failed_callback = function () {
+window.loginFailedCallback = function () {
     //do something when you login fail
 }
 
-window.call_incoming_callback = function (call, isAnonymous) {
+window.callIncomingCallback = function (call, isAnonymous) {
     //do something when your are calling
 }
 
-window.on_call_callback = function (call) {
+window.onCallCallback = function (call) {
     //do something when you are on call
 }
 
-window.call_answered_callback = function (call, isAnonymous) {
+window.callAnsweredCallback = function (call, isAnonymous) {
     //do something when someone answer your call
 }
 
-window.call_ended_callback = function () {
+window.callEndedCallback = function () {
    //do something when someone end  your call
 }
 
-window.answer_voice_call_callback = function (stage) {
+window.answerVoiceCallCallback = function (stage) {
     //do something when you answer voice call
 }
 
-window.answer_video_call_callback = function (stage) {
+window.answerVideoCallCallback = function (stage) {
     //do something when you answer video call
 }
 
-window.make_call_callback = function (stage) {
+window.makeCallCallback = function (stage) {
    //do something when you make call
 }
 
-window.end_all_callback = function (stage) {
+window.endCallCallback = function (stage) {
    //do something when you click end call button
 }
 

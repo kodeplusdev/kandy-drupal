@@ -3,7 +3,7 @@
  * You login successfully.
  */
 
-window.login_success_callback = function () {
+window.loginSuccessCallback = function () {
   'use strict';
   // Do something here.
 };
@@ -11,7 +11,7 @@ window.login_success_callback = function () {
 /**
  * You login fail.
  */
-window.login_failed_callback = function () {
+window.loginFailedCallback = function () {
   'use strict';
   // Do something here.
 };
@@ -26,7 +26,7 @@ window.login_failed_callback = function () {
  * @param {string} description
  *   Presence description.
  */
-window.presence_notification_callback = function (userId, state, description) {
+window.presenceNotificationCallback = function (userId, state, description) {
   'use strict';
   // Do something here.
 };

@@ -13,11 +13,11 @@
    * @param {object} notification
    *   Kandy on join session notification object
    */
-  var kandy_onSessionJoinRequest = function (notification) {
+  var kandyOnSessionJoinRequest = function (notification) {
     var message = 'User ' + notification.full_user_id + ' request to join session ' + sessionNames[notification.session_id];
     var confirm = window.confirm(message);
     if (confirm) {
-      kandy_approveJoinSession(notification.session_id, notification.full_user_id);
+      kandyApproveJoinSession(notification.session_id, notification.full_user_id);
     }
   };
   var openSessions = [];
@@ -29,8 +29,8 @@
   var browsingType;
   var sessionNames = {};
   var sessionListeners = {
-    onUserJoinRequest: kandy_onSessionJoinRequest,
-    onJoinApprove: kandy_onSessionJoinApprove
+    onUserJoinRequest: kandyOnSessionJoinRequest,
+    onJoinApprove: kandyOnSessionJoinApprove
   };
   var currentKandyUser;
   var btnTerminate;
@@ -110,7 +110,7 @@
           if ((session.admin_full_user_id === currentKandyUser) && (myOwnSessions.indexOf(session.session_id) === -1)) {
             myOwnSessions.push(session.session_id);
           }
-          kandy_getSessionInfo(session.session_id, function (result) {
+          kandyGetSessionInfo(session.session_id, function (result) {
             result.session.participants.forEach(function (p) {
               if ((p.full_user_id === currentKandyUser) && (mySessions.indexOf(session.session_id) === -1)) {
                 mySessions.push(session.session_id);
@@ -144,7 +144,7 @@
    * @param {string} holder
    *   Id of browsing holder
    */
-  var kandy_startCoBrowsingAgent = function (sessionId, holder) {
+  var kandyStartCoBrowsingAgent = function (sessionId, holder) {
     kandy.coBrowsing.startBrowsingAgent(sessionId, holder);
   };
 
@@ -158,7 +158,7 @@
    * @param {function} failCallback
    *   Create session fail callback
    */
-  var kandy_createSession = function (config, successCallback, failCallback) {
+  var kandyCreateSession = function (config, successCallback, failCallback) {
     kandy.session.create(
       config,
       function (result) {
@@ -188,23 +188,23 @@
   };
 
   /* Stop co-browsing agent. */
-  var kandy_stopCoBrowsingAgent = function () {
+  var kandyStopCoBrowsingAgent = function () {
     kandy.coBrowsing.stopBrowsingAgent();
   };
 
   /* Start co-browsing session. */
-  var kandy_startCoBrowsing = function (sessionId) {
+  var kandyStartCoBrowsing = function (sessionId) {
     kandy.coBrowsing.startBrowsingUser(sessionId);
   };
 
   /* Stop co-browsing session. */
-  var kandy_stopCoBrowsing = function () {
+  var kandyStopCoBrowsing = function () {
     kandy.coBrowsing.stopBrowsingUser();
   };
 
   /* Get all co-browsing sessions. */
   var getCoBrowsingSessions = function () {
-    kandy_getOpenSessionsByType('cobrowsing', loadSessionList);
+    kandyGetOpenSessionsByType('cobrowsing', loadSessionList);
   };
 
   /* Document ready. */
@@ -232,7 +232,7 @@
               creation_timestamp: creationTime,
               expiry_timestamp: timeExpire
             };
-            kandy_createSession(config, function () {
+            kandyCreateSession(config, function () {
               getCoBrowsingSessions();
             });
             jQuery('#kandy-chat-create-session-name').val('');
@@ -252,7 +252,7 @@
 
     btnConnect.click(function () {
       currentSession = openSessions[parseInt(slSessionList.val())];
-      kandy_joinSession(currentSession.session_id);
+      kandyJoinSession(currentSession.session_id);
     });
     slSessionList.on('change', displayButtons);
 
@@ -262,7 +262,7 @@
         var session = openSessions[parseInt(slSessionList.val())];
         myOwnSessions.splice(myOwnSessions.indexOf(session.session_id, 1));
         mySessions.splice(mySessions.indexOf(session.session_id), 1);
-        kandy_terminateSession(session.session_id, getCoBrowsingSessions);
+        kandyTerminateSession(session.session_id, getCoBrowsingSessions);
       }
     });
     btnStartCoBrowsing.on('click', function () {
@@ -270,7 +270,7 @@
         jQuery('#coBrowsing').addClass('browsing');
         slSessionList.attr('disabled', true);
         browsingType = 'user';
-        kandy_startCoBrowsing(currentSession.session_id);
+        kandyStartCoBrowsing(currentSession.session_id);
       }
     });
     btnStartBrowsingViewer.on('click', function () {
@@ -278,7 +278,7 @@
         browsingType = 'agent';
         slSessionList.attr('disabled', true);
         jQuery('#coBrowsing').addClass('browsing');
-        kandy_startCoBrowsingAgent(currentSession.session_id, document.getElementById(cobrowsing.holder_id));
+        kandyStartCoBrowsingAgent(currentSession.session_id, document.getElementById(cobrowsing.holder_id));
       }
     });
 
@@ -286,10 +286,10 @@
       jQuery('#coBrowsing').removeClass('browsing');
       try {
         if (browsingType === 'user') {
-          kandy_stopCoBrowsing();
+          kandyStopCoBrowsing();
         }
         else if (browsingType === 'agent') {
-          kandy_stopCoBrowsingAgent();
+          kandyStopCoBrowsingAgent();
         }
       }
       catch (e) {
@@ -304,7 +304,7 @@
       if (confirm) {
         if (currentSession) {
           // Delete from my session array.
-          kandy_leaveSession(currentSession.session_id, function (sessionId) {
+          kandyLeaveSession(currentSession.session_id, function (sessionId) {
             mySessions.splice(mySessions.indexOf(sessionId), 1);
             displayButtons();
           });

@@ -356,7 +356,6 @@ function kandy_sync_users() {
           'user_id',
           'first_name',
           'last_name',
-          'password',
           'email',
           'domain_name',
           'api_key',
@@ -368,7 +367,6 @@ function kandy_sync_users() {
           'user_id' => $kandy_user->user_id,
           'first_name' => $kandy_user->user_first_name,
           'last_name' => $kandy_user->user_last_name,
-          'password' => $kandy_user->user_password,
           'email' => $kandy_user->user_email,
           'domain_name' => $kandy_user->domain_name,
           'api_key' => $kandy_user->user_api_key,
@@ -769,4 +767,39 @@ function kandy_get_last_seen(array $users) {
   }
   $response = json_decode($response->data);
   return $response;
+}
+
+function kandy_get_user_access_token($user_id) {
+  $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
+  $kandy_domain_secret_key = variable_get(
+    'kandy_domain_secret_key',
+    KANDY_DOMAIN_SECRET_KEY
+  );
+  $params = array(
+    'key' => $kandy_api_key,
+    'domain_api_secret' => $kandy_domain_secret_key,
+    'user_id' => $user_id
+  );
+  $url = KANDY_API_BASE_URL . 'domains/users/accesstokens?' . drupal_http_build_query($params);
+
+  try {
+    $response = drupal_http_request($url);
+  } catch(Exception $ex) {
+    return array(
+      'success' => false,
+      'message' => $ex->getMessage()
+    );
+  }
+  if ($response->code == 200) {
+    $result = json_decode($response->data);
+    return array(
+      'success' => true,
+      'data'    => $result->result->user_access_token,
+    );
+  } else {
+    return array(
+      'success' => false,
+      'message' => $response->status_message
+    );
+  }
 }

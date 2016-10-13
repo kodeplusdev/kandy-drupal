@@ -65,14 +65,15 @@ var LiveChatUI = {};
   var logout = function () {
     kandy.logout();
   };
-  var login_success_callback = function () {
+  function loginSuccessCallback () {
     LiveChatUI.changeState('READY');
   };
-  var login_fail_callback = function () {
+
+  function loginFailCallback () {
     LiveChatUI.changeState('UNAVAILABLE');
   };
 
-  var heartBeat = function (interval) {
+  function heartBeat (interval) {
     return setInterval(function () {
       jQuery.get('/kandy/kandy_still_alive');
     }, parseInt(interval));
@@ -104,7 +105,7 @@ var LiveChatUI = {};
             clearInterval(checkAvailable);
           }
           var username = res.user.full_user_id.split('@')[0];
-          login(res.apiKey, username, res.user.password, login_success_callback, login_fail_callback);
+          login(res.apiKey, username, res.user.password, loginSuccessCallback, loginFailCallback);
           setup();
           agent = res.agent;
           heartBeat(60000);

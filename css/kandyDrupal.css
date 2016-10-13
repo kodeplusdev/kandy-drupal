@@ -369,6 +369,7 @@
 .input-message {
   float: left;
   width: 87%;
+  position: relative;
 }
 
 .button-send {
@@ -602,4 +603,27 @@ iframe {
 .openSessionWrap {
   width: 300px;
   margin-right: 30px;
+}
+
+.send-file {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+}
+
+.send-file span.icon-file {
+  background: #c4ccbe url(../img/icon-file-black.png) no-repeat center center;
+  width: 25px;
+  height: 25px;
+  background-size: 15px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: block;
+}
+
+.send-file input[type='file'] {
+  display: none;
 }

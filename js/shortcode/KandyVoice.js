@@ -3,7 +3,7 @@
  * You login success.
  */
 
-window.login_success_callback = function () {
+window.loginSuccessCallback = function () {
   'use strict';
   // Do something here.
 };
@@ -11,7 +11,7 @@ window.login_success_callback = function () {
 /**
  * You login fail.
  */
-window.login_failed_callback = function () {
+window.loginFailedCallback = function () {
   'use strict';
   // Do something here.
 };
@@ -24,7 +24,7 @@ window.login_failed_callback = function () {
  * @param {bool} isAnonymous
  *   Is caller anonymous.
  */
-window.call_incoming_callback = function (call, isAnonymous) {
+window.callIncomingCallback = function (call, isAnonymous) {
   'use strict';
   // Do something here.
 };
@@ -35,7 +35,7 @@ window.call_incoming_callback = function (call, isAnonymous) {
  * @param {object} call
  *   Kandy call object.
  */
-window.on_call_callback = function (call) {
+window.onCallCallback = function (call) {
   'use strict';
   // Do something here.
 };
@@ -48,7 +48,7 @@ window.on_call_callback = function (call) {
  * @param {boolean} isAnonymous
  *   Is call by anonymous user.
  */
-window.call_answered_callback = function (call, isAnonymous) {
+window.callAnsweredCallback = function (call, isAnonymous) {
   'use strict';
   // Do something here.
 };
@@ -56,7 +56,7 @@ window.call_answered_callback = function (call, isAnonymous) {
 /**
  * End call callback.
  */
-window.call_ended_callback = function () {
+window.callEndedCallback = function () {
   'use strict';
   // Do something here.
 };
@@ -67,7 +67,7 @@ window.call_ended_callback = function () {
  * @param {string} stage
  *   UI status.
  */
-window.answer_video_call_callback = function (stage) {
+window.answerVideoCallCallback = function (stage) {
   'use strict';
   // Do something here.
 };
@@ -78,7 +78,7 @@ window.answer_video_call_callback = function (stage) {
  * @param {string} stage
  *   UI status.
  */
-window.answer_voice_call_callback = function (stage) {
+window.answerVoiceCallCallback = function (stage) {
   'use strict';
   // Do something here.
 };
@@ -89,7 +89,7 @@ window.answer_voice_call_callback = function (stage) {
  * @param {string} stage
  *   UI status
  */
-window.make_call_callback = function (stage) {
+window.makeCallCallback = function (stage) {
   'use strict';
   // Do something here.
 };
@@ -100,7 +100,7 @@ window.make_call_callback = function (stage) {
  * @param {string} stage
  *   UI status
  */
-window.end_all_callback = function (stage) {
+window.endCallCallback = function (stage) {
   'use strict';
   // Do something here.
 };
