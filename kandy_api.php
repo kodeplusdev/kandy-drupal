@@ -139,7 +139,6 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
         );
       }
       $response = json_decode($response->data);
-
       if ($response && isset($response->result)) {
         $data = $response->result;
         $result = $data->users;
@@ -800,6 +799,76 @@ function kandy_get_user_access_token($user_id) {
     return array(
       'success' => false,
       'message' => $response->status_message
+    );
+  }
+}
+
+/**
+ * Get a Kandy anonymous user
+ *
+ * @return array
+ * @throws RestClientException
+ */
+function kandy_get_anonymous_user()
+{
+  $result = kandy_get_domain_access_token();
+  $domainAccessToken = '';
+  if ($result['success'] == true) {
+    $domainAccessToken = $result['data'];
+  } else {
+    // Catch errors
+  }
+
+  $params = array(
+    'key' => $domainAccessToken
+  );
+
+  $fieldsString = http_build_query($params);
+  $url = KANDY_API_BASE_URL . 'domains/access_token/users/user/anonymous' . '?' . $fieldsString;
+  try {
+    $response = drupal_http_request($url,[
+      'headers' => [
+        'Content-Type' => 'application/json'
+      ]
+    ]);
+  } catch (Exception $ex) {
+    return array(
+      'success' => false,
+      'message' => $ex->getMessage()
+    );
+  }
+
+  $response = json_decode($response->data);
+  if ($response) {
+    if (!empty($response->result)) {
+      $res = $response->result;
+      $user = new stdClass();
+      $user->user_id = $res->user_name;
+      $user->password = $res->user_password;
+      $user->email = $res->full_user_id;
+      $user->full_user_id = $res->full_user_id;
+      $user->domain_name = $res->domain_name;
+      $user->user_access_token = $res->user_access_token;
+      return array(
+        'success' => true,
+        'user' => $user
+      );
+    } else {
+      if (!empty($response->message)) {
+        $message = $response->message;
+      } else {
+        $message = "Can not create anonymous user";
+      }
+
+      return array(
+        'success' => false,
+        'message' => $message
+      );
+    }
+  } else {
+    return array(
+      'success' => false,
+      'message' => "Can not create anonymous user"
     );
   }
 }

@@ -62,6 +62,19 @@ var LiveChatUI = {};
     kandy.login(domainApiKey, userName, password, success_callback);
   };
 
+  var loginSSO = function (user_access_token, success_callback, failure_callback, password) {
+    kandy.loginSSO(user_access_token, function(){
+      if(typeof success_callback === 'function') {
+        success_callback();
+      }
+    }, function() {
+      if(typeof failure_callback === 'function') {
+        failure_callback();
+      }
+    }, password);
+
+  }
+
   var logout = function () {
     kandy.logout();
   };
@@ -104,8 +117,7 @@ var LiveChatUI = {};
           if (checkAvailable) {
             clearInterval(checkAvailable);
           }
-          var username = res.user.full_user_id.split('@')[0];
-          login(res.apiKey, username, res.user.password, loginSuccessCallback, loginFailCallback);
+          loginSSO(res.user.user_access_token, loginSuccessCallback, loginFailCallback);
           setup();
           agent = res.agent;
           heartBeat(60000);

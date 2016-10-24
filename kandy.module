@@ -606,7 +606,7 @@ function kandy_get_name_for_chat_content_callback() {
     }
     $sender = $message['sender'];
     $display_name = '';
-    if (in_array($sender['user_id'], variable_get('kandy_live_chat_users', array()))) {
+    if (in_array($sender['user_id'], variable_get('kandy_live_chat_users', array())) || (strpos($sender['user_id'],'anonymous') !== FALSE)) {
       $fake_end_time = PHP_INT_MAX;
       $user = db_select('kandy_live_chat', 'lc')
         ->fields('lc', array('customer_name', 'customer_email'))
@@ -1123,9 +1123,9 @@ function kandy_get_free_user_callback() {
   if (!drupal_session_started()) {
     drupal_session_start();
   }
+  $user = $agent = null;
   $fake_end_time = PHP_INT_MAX;
   $live_chat_session = $_SESSION['kandyLiveChatUserInfo'];
-  $kandy_live_chat_users = variable_get('kandy_live_chat_users', array(''));
   if (isset($live_chat_session['user'])) {
     $query = db_select('kandy_users', 'ku');
     $query->fields('ku')
@@ -1134,20 +1134,10 @@ function kandy_get_free_user_callback() {
     $user = $query->execute()->fetchObject();
   }
   else {
-    $query = db_select('kandy_users', 'ku');
-    $query->leftJoin('kandy_live_chat', 'lc', 'ku.user_id = lc.customer_user_id');
-    $query->leftJoin('kandy_user_login', 'ul', 'ku.user_id = ul.kandy_user_id');
-    $query->fields('ku', array('user_id', 'password'));
-    $query->addExpression('MAX(end_at)', 'last_end_chat');
-    $query->addExpression('CONCAT(ku.user_id, \'@\', ku.domain_name)', 'full_user_id');
-    $query->addField('ul', 'time', 'last_active');
-    $query->condition('ku.user_id', $kandy_live_chat_users, 'IN');
-    $query->havingCondition(db_or()->condition('last_end_chat', $fake_end_time, '<')->isNull('last_end_chat'));
-    $query->groupBy('ku.user_id');
-    $query->orderBy('last_end_chat');
-    $user = $query->execute()->fetchObject();
-    if ($user) {
-      $live_chat_session['user'] = $user->user_id;
+    $res = kandy_get_anonymous_user();
+    if ($res['success'] == true) {
+      $user = $res['user'];
+      $live_chat_session['user'] = $user;
     }
   }
   if (isset($live_chat_session['agent'])) {
@@ -1192,7 +1182,8 @@ function kandy_get_free_user_callback() {
       if ($last_seen->message == 'success') {
         $last_seen_users = $last_seen->result->users;
         foreach ($last_seen_users as $key => $u) {
-          if (($last_active = $last_seen->result->server_timestamp - $u->last_seen) && $last_active < 10000) {
+          $last_active = $last_seen->result->server_timestamp - $u->last_seen;
+          if ($last_active < 10000) {
             $agent = $agents[$key];
           }
           else {

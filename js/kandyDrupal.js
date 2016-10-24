@@ -36,6 +36,9 @@
     $audioRingOut.append($source);
   });
 
+  var displayNames = [];
+  var userEmails = [];
+
   function kandyOnCallHold(call) {
     var callId = call.getId();
     var target = jQuery('.kandyButton[data-call-id="' + callId + '"]');
@@ -674,19 +677,26 @@
    *   Return msg with display name
    */
   var getDisplayNameForChatContent = function (msg, url) {
-    if (msg) {
-      jQuery.ajax({
-        url: url,
-        type: 'POST',
-        data: {data: msg},
-        async: false
-      }).done(function (response) {
-        msg = response;
-      }).fail(function (e) {
-      });
+    if(displayNames[msg.sender.full_user_id]) {
+      msg.sender['display_name'] = displayNames[msg.sender.full_user_id];
+      msg.sender['contact_user_name'] = msg.sender.full_user_id;
+      msg.sender['user_email'] = userEmails[msg.sender.full_user_id];
+    } else {
+      if (msg) {
+        jQuery.ajax({
+          url: url,
+          type: 'POST',
+          data: {data: msg},
+          async: false
+        }).done(function (response) {
+          msg = response;
+          displayNames[msg.sender.full_user_id] = msg.sender.display_name;
+          userEmails[msg.sender.full_user_id] = msg.sender.user_email;
+        }).fail(function (e) {
+        });
+      }
     }
     return msg;
-
   };
 
   /**
@@ -828,7 +838,7 @@
    *   Returns an item of contact list
    */
   var getLiContact = function (user, active) {
-    var username = user.contact_user_name;
+    var username = user.contact_user_name || user.full_user_id;
     var real_id = '';
     if (typeof user.user_email != 'undefined') {
       username = user.user_email;
