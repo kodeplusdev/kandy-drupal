@@ -1895,37 +1895,58 @@
       });
 
       jQuery('.kandyChat #btn-create-group-modal').click(function () {
-        jQuery('#kandy-chat-create-group-modal').show();
-        jQuery('#kandy-chat-create-session-name').focus();
+        jq('#kandy-chat-create-group-modal').dialog('open');
+      });
+      jq('#kandy-chat-create-group-modal').dialog({
+        autoOpen: false,
+        height: 300,
+        width: 600,
+        modal: true,
+        buttons: {
+          Save: function () {
+            var groupName = jq('#kandy-chat-create-session-name').val();
+            var errorContainer = jQuery('.errors');
+            errorContainer.empty();
+            if (groupName === '') {
+              alert('Group must have a name.');
+              jq('#kandy-chat-create-session-name').focus();
+            }
+            else {
+              kandyCreateGroup(groupName, kandyLoadGroups);
+              jq('#kandy-chat-create-session-name').val('');
+              jq(this).dialog('close');
+            }
+          },
+          Cancel: function () {
+            jq(this).dialog('close');
+          }
+        }
       });
 
-      jQuery('#kandy-chat-modal-button-create-group').click(function () {
-        var groupName = jQuery('#kandy-chat-create-session-name').val();
-        var errorContainer = jQuery('.errors');
-        errorContainer.empty();
-        if (groupName === '') {
-          alert('Group must have a name.');
-          jQuery('#kandy-chat-create-session-name').focus();
-        }
-        else {
-          kandyCreateGroup(groupName, kandyLoadGroups);
-          jQuery('#kandy-chat-create-session-name').val('');
-          jQuery('#kandy-chat-create-group-modal').hide();
-        }
-      });
-      jQuery('#kandy-chat-modal-button-add-user').live('click', function () {
-        var username = jQuery('#kandy-chat-invite-username').val();
-        var errorContainer = jQuery('.errors');
-        var groupId = jQuery('#kandy-chat-add-user-modal').data('group');
-        errorContainer.empty();
-        if (username === '') {
-          alert('Please provide a username');
-          jQuery('#kandy-chat-create-session-name').focus();
-        }
-        else {
-          kandyInviteUserToGroup(groupId, [username]);
-          jQuery('#kandy-chat-invite-username').val('');
-          jQuery('#kandy-chat-add-user-modal').hide();
+      jq('#kandy-chat-add-user-modal').dialog({
+        autoOpen: false,
+        height: 300,
+        width: 600,
+        modal: true,
+        buttons: {
+          Save: function () {
+            var username = jQuery('#kandy-chat-invite-username').val();
+            var errorContainer = jQuery('.errors');
+            var groupId = jQuery('#kandy-chat-add-user-modal').data('group');
+            errorContainer.empty();
+            if (username === '') {
+              alert('Please provide a username');
+              jQuery('#kandy-chat-create-session-name').focus();
+            }
+            else {
+              kandyInviteUserToGroup(groupId, [username]);
+              jQuery('#kandy-chat-invite-username').val('');
+              jq(this).dialog('close');
+            }
+          },
+          Cancel: function () {
+            jq(this).dialog('close');
+          }
         }
       });
 
@@ -1933,19 +1954,9 @@
         kandyContactFilterChanged(jQuery(this).val());
       });
 
-      jQuery('#kandy-chat-modal-button-close').click(function () {
-        jQuery('#kandy-chat-create-session-name').val('');
-        jQuery('#kandy-chat-create-group-modal').hide();
-
-      });
-      jQuery('#kandy-chat-modal-invite-button-close').click(function () {
-        jQuery('#kandy-chat-invite-username').val('');
-        jQuery('#kandy-chat-add-user-modal').hide();
-      });
-
       jQuery('.kandyChat .btnInviteUser').live('click', function () {
-        jQuery('#kandy-chat-add-user-modal').attr('data-group', jQuery(this).closest('li.group').data('group')).show();
-        jQuery('#kandy-chat-invite-username').focus();
+        jq('#kandy-chat-add-user-modal').attr('data-group', jQuery(this).closest('li.group').data('group')).dialog('open');
+        jq('#kandy-chat-invite-username').focus();
       });
 
       jQuery('.kandyChat').on('click', '.btnLeaveGroup', function () {
@@ -2007,7 +2018,7 @@
         jQuery(this).toggleClass('fa-plus-square-o').toggleClass('fa-minus-square-o');
         jQuery(this).siblings('.list-users').toggleClass('expanding');
       });
-      jQuery('.kandyChat .kandyModal .select2').select2({
+      jQuery('#kandy-chat-invite-username').select2({
         ajax: {
           quietMillis: 100,
           url: jQuery('.kandyChat .select2').attr('data-ajax-url'),

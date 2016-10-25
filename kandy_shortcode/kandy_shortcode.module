@@ -231,7 +231,7 @@ function kandy_setup() {
       drupal_add_js("var current_kandy_user = '" . $user_name . '@'
         . $assign_user->domain_name . "';", 'inline');
       if (variable_get('kandy_jquery_reload', 1)) {
-        if (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1]['function'] == 'kandy_shortcode_kandy_cobrowsing') {
+        if (in_array(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1]['function'], array('kandy_shortcode_kandy_cobrowsing', 'kandy_shortcode_kandy_chat'))) {
           // Add jquery no conflict.
           drupal_add_js('var jq = jQuery.noConflict();', 'inline');
         }
@@ -992,6 +992,7 @@ function kandy_shortcode_kandy_chat(array $attr) {
     if ($result['success']) {
 
       $kandy_public_path = "public://kandy";
+      drupal_add_library('system', 'ui.dialog');
       drupal_add_js($kandy_public_path . '/js/KandyChat.js');
 
       drupal_add_css(KANDY_FONT_AWESOME, array(
@@ -1083,23 +1084,14 @@ function kandy_shortcode_kandy_chat(array $attr) {
           </nav>' .
           '<ul class="cd-tabs-content"></ul><div style="clear: both;"></div>';
 
-        $output .= '<div class="kandyModal" id="kandy-chat-create-group-modal" title="Create a new group">
-                        <h3>Create a group</h3><hr>
+        $output .= '<div id="kandy-chat-create-group-modal" title="Create a new group">
                         <label for="right-label" class="right inline">Group name</label>
                         <input id="kandy-chat-create-session-name" placeholder="Group name">
-                        <div class="buttons">
-                            <button id="kandy-chat-modal-button-create-group" class="button tiny">Save</button>
-                            <button id="kandy-chat-modal-button-close" class="button tiny">Cancel</button>
-                        </div>
                     </div>
-                    <div class="kandyModal" id="kandy-chat-add-user-modal" title="Add user to group">
+                    <div id="kandy-chat-add-user-modal" title="Add user to group">
                         <h3>Add user to group</h3><hr>
                         <label for="right-label" class="right inline">Username</label>
                         <input class="select2" id="kandy-chat-invite-username" placeholder="Username" data-ajax-url="' . $get_user_for_search_url . '">
-                        <div class="buttons">
-                            <button id="kandy-chat-modal-button-add-user" class="button tiny">Add User</button>
-                            <button id="kandy-chat-modal-invite-button-close" class="button tiny">Cancel</button>
-                        </div>
                     </div></div>';
         if ($assign_user->type == KANDY_USER_TYPE_AGENT) {
           drupal_add_js(
