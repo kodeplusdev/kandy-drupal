@@ -74,15 +74,15 @@ var LiveChatUI = {};
     kandy.logout();
   };
 
-  function loginSuccessCallback () {
+  function loginSuccessCallback() {
     LiveChatUI.changeState('READY');
   }
 
-  function loginFailCallback () {
+  function loginFailCallback() {
     LiveChatUI.changeState('UNAVAILABLE');
   }
 
-  function heartBeat (interval) {
+  function heartBeat(interval) {
     return setInterval(function () {
       jQuery.get('/kandy/kandy_still_alive');
     }, parseInt(interval));
