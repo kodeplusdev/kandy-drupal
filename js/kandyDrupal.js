@@ -824,6 +824,7 @@
     var tabId = 'example';
     jQuery(liContentWrapSelector).append(getLiContent(tabId));
     jQuery(liContentWrapSelector).find('li[data-content="' + tabId + '"]').addClass('selected').find('.chat-input').attr('disabled', true);
+    jQuery(liContentWrapSelector).find('li[data-content="' + tabId + '"]').find('.file-input').attr('disabled', true);
   };
 
   /**
@@ -991,8 +992,6 @@
     var dataHolder = jQuery('.cd-tabs-content > li.selected').data('content');
     var newMessage = '<div class="my-message">\
                     <b><span class="imUsername">' + displayName + ': </span></b>';
-
-
     var fileUrl = kandy.messaging.buildFileUrl(message.message.content_uuid);
     var html = '';
     if (message.contentType == 'image') {
