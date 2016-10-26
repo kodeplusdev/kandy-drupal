@@ -58,39 +58,34 @@ var LiveChatUI = {};
     }
   };
 
-  var login = function (domainApiKey, userName, password, success_callback) {
-    kandy.login(domainApiKey, userName, password, success_callback);
-  };
-
   var loginSSO = function (user_access_token, success_callback, failure_callback, password) {
-    kandy.loginSSO(user_access_token, function(){
+    kandy.loginSSO(user_access_token, function () {
       if(typeof success_callback === 'function') {
         success_callback();
       }
-    }, function() {
+    }, function () {
       if(typeof failure_callback === 'function') {
         failure_callback();
       }
     }, password);
-
-  }
+  };
 
   var logout = function () {
     kandy.logout();
   };
   function loginSuccessCallback () {
     LiveChatUI.changeState('READY');
-  };
+  }
 
   function loginFailCallback () {
     LiveChatUI.changeState('UNAVAILABLE');
-  };
+  }
 
   function heartBeat (interval) {
     return setInterval(function () {
       jQuery.get('/kandy/kandy_still_alive');
     }, parseInt(interval));
-  };
+  }
 
   var setup = function () {
     kandy.setup({

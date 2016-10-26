@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Kandy module for drupal.
@@ -29,6 +30,7 @@ define('KANDY_USER_TYPE_NORMAL', 0);
 define('KANDY_USER_TYPE_END_USER', 2);
 define('KANDY_USER_STATUS_ONLINE', 1);
 define('KANDY_USER_STATUS_OFFLINE', 0);
+
 /**
  * Implements hook_help().
  */
@@ -1123,7 +1125,7 @@ function kandy_get_free_user_callback() {
   if (!drupal_session_started()) {
     drupal_session_start();
   }
-  $user = $agent = null;
+  $user = $agent = NULL;
   $fake_end_time = PHP_INT_MAX;
   $live_chat_session = $_SESSION['kandyLiveChatUserInfo'];
   if (isset($live_chat_session['user'])) {
@@ -1135,7 +1137,7 @@ function kandy_get_free_user_callback() {
   }
   else {
     $res = kandy_get_anonymous_user();
-    if ($res['success'] == true) {
+    if ($res['success'] == TRUE) {
       $user = $res['user'];
       $live_chat_session['user'] = $user;
     }

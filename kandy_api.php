@@ -186,7 +186,7 @@ function kandy_list_users($type = KANDY_USER_ALL, $remote = FALSE) {
  * @param int $main_user_id
  *   Main User Id.
  *
- * @return NULL
+ * @return null
  *   Kandy User Object.
  */
 function kandy_get_assign_user($main_user_id) {
@@ -768,6 +768,15 @@ function kandy_get_last_seen(array $users) {
   return $response;
 }
 
+/**
+ * Get last seen of an array users.
+ *
+ * @param array $user_id
+ *   Id of kandy user.
+ *
+ * @return array|mixed|object
+ *   User access token
+ */
 function kandy_get_user_access_token($user_id) {
   $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
   $kandy_domain_secret_key = variable_get(
@@ -777,50 +786,50 @@ function kandy_get_user_access_token($user_id) {
   $params = array(
     'key' => $kandy_api_key,
     'domain_api_secret' => $kandy_domain_secret_key,
-    'user_id' => $user_id
+    'user_id' => $user_id,
   );
   $url = KANDY_API_BASE_URL . 'domains/users/accesstokens?' . drupal_http_build_query($params);
 
   try {
     $response = drupal_http_request($url);
-  } catch(Exception $ex) {
+  }
+  catch (Exception $ex) {
     return array(
-      'success' => false,
-      'message' => $ex->getMessage()
+      'success' => FALSE,
+      'message' => $ex->getMessage(),
     );
   }
   if ($response->code == 200) {
     $result = json_decode($response->data);
     return array(
-      'success' => true,
+      'success' => TRUE,
       'data'    => $result->result->user_access_token,
     );
   } else {
     return array(
-      'success' => false,
-      'message' => $response->status_message
+      'success' => FALSE,
+      'message' => $response->status_message,
     );
   }
 }
 
 /**
- * Get a Kandy anonymous user
+ * Get a Kandy anonymous user.
  *
  * @return array
- * @throws RestClientException
+ *   Result containing anonymous user
  */
-function kandy_get_anonymous_user()
-{
+function kandy_get_anonymous_user() {
   $result = kandy_get_domain_access_token();
   $domainAccessToken = '';
-  if ($result['success'] == true) {
+  if ($result['success'] == TRUE) {
     $domainAccessToken = $result['data'];
   } else {
-    // Catch errors
+    // Catch errors.
   }
 
   $params = array(
-    'key' => $domainAccessToken
+    'key' => $domainAccessToken,
   );
 
   $fieldsString = http_build_query($params);
@@ -828,13 +837,14 @@ function kandy_get_anonymous_user()
   try {
     $response = drupal_http_request($url,[
       'headers' => [
-        'Content-Type' => 'application/json'
-      ]
+        'Content-Type' => 'application/json',
+      ],
     ]);
-  } catch (Exception $ex) {
+  }
+  catch (Exception $ex) {
     return array(
-      'success' => false,
-      'message' => $ex->getMessage()
+      'success' => FALSE,
+      'message' => $ex->getMessage(),
     );
   }
 
@@ -850,25 +860,26 @@ function kandy_get_anonymous_user()
       $user->domain_name = $res->domain_name;
       $user->user_access_token = $res->user_access_token;
       return array(
-        'success' => true,
-        'user' => $user
+        'success' => TRUE,
+        'user' => $user,
       );
     } else {
       if (!empty($response->message)) {
         $message = $response->message;
-      } else {
+      }
+      else {
         $message = "Can not create anonymous user";
       }
 
       return array(
-        'success' => false,
-        'message' => $message
+        'success' => FALSE,
+        'message' => $message,
       );
     }
   } else {
     return array(
-      'success' => false,
-      'message' => "Can not create anonymous user"
+      'success' => FALSE,
+      'message' => "Can not create anonymous user",
     );
   }
 }

@@ -677,11 +677,12 @@
    *   Return msg with display name
    */
   var getDisplayNameForChatContent = function (msg, url) {
-    if(displayNames[msg.sender.full_user_id]) {
+    if (displayNames[msg.sender.full_user_id]) {
       msg.sender['display_name'] = displayNames[msg.sender.full_user_id];
       msg.sender['contact_user_name'] = msg.sender.full_user_id;
       msg.sender['user_email'] = userEmails[msg.sender.full_user_id];
-    } else {
+    }
+    else {
       if (msg) {
         jQuery.ajax({
           url: url,
@@ -814,7 +815,6 @@
   var groupSeparator = '.' + wrapDivClass + ' .separator.group';
   var liTabLiveChatWrap = liTabWrapSelector + '.livechats';
   var liveChatGroupSeparator = '.' + wrapDivClass + ' .separator.livechatgroup';
-  var displayNames = [];
   var groupNames = [];
   var usersStatus = {};
 
@@ -873,8 +873,7 @@
       '<div class="input-message">' +
       '<input class="imMessageToSend chat-input" type="text" data-user="' + user + '">' +
       '<div class="send-file"><label><span class="icon-file"></span></label><input class="file-input" type="file" />' +
-      '</div>' +
-      '</div><div class="button-send">' +
+      '</div></div><div class="button-send">' +
       '<input class="btnSendMessage chat-input" type="submit" value="Send"  data-user="' + user + '" >' +
       '</div></form></div></li>';
     return result;
@@ -962,23 +961,23 @@
   // Gather the user input then send the image.
   var kandySendFile = function () {
     // Gather user input.
-    var recipient = jQuery(".livechats a.selected").data('real-id');
-    if (typeof recipient == "undefined") {
+    var recipient = jQuery('.livechats a.selected').data('real-id');
+    if (typeof recipient == 'undefined') {
       recipient = jQuery(".contacts a.selected").data('content');
-      if (typeof recipient == "undefined") {
-        recipient = jQuery(".cd-tabs-content form.send-message").data('real-id');
+      if (typeof recipient == 'undefined') {
+        recipient = jQuery('.cd-tabs-content form.send-message').data('real-id');
       }
     }
 
-    var file = jQuery(".send-file input")[0].files[0];
+    var file = jQuery('.send-file input')[0].files[0];
 
-    if (file.type.indexOf('image') >=0) {
+    if (file.type.indexOf('image') >= 0) {
       kandy.messaging.sendImWithImage(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else if (file.type.indexOf('audio') >=0) {
+    } else if (file.type.indexOf('audio') >= 0) {
       kandy.messaging.sendImWithAudio(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else if (file.type.indexOf('video') >=0) {
+    } else if (file.type.indexOf('video') >= 0) {
       kandy.messaging.sendImWithVideo(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else if (file.type.indexOf('vcard') >=0) {
+    } else if (file.type.indexOf('vcard') >= 0) {
       kandy.messaging.sendImWithContact(recipient, file, onFileSendSuccess, onFileSendFailure);
     } else {
       kandy.messaging.sendImWithFile(recipient, file, onFileSendSuccess, onFileSendFailure);
@@ -987,7 +986,6 @@
 
   // What to do on a file send success.
   function onFileSendSuccess(message) {
-    console.log(message.message.content_name + " sent successfully.");
     var displayName = jQuery('.kandyChat .kandy_current_username').val();
     var dataHolder = jQuery('.cd-tabs-content > li.selected').data('content');
     var newMessage = '<div class="my-message">\
@@ -1021,9 +1019,9 @@
       var url = jQuery('.kandyChat #get_name_for_chat_content_url').val();
       msg = getDisplayNameForChatContent(msg, url);
       var sender_full_id = msg.sender.full_user_id;
-      // if user is not chatting with someone
-      if(!jQuery('.cd-tabs-navigation > li > a.selected').length) {
-        setActiveChatWindow(jQuery('.cd-tabs-navigation > li > a[data-content="'+sender_full_id+'"]'));
+      // If user is not chatting with someone.
+      if (!jQuery('.cd-tabs-navigation > li > a.selected').length) {
+        setActiveChatWindow(jQuery('.cd-tabs-navigation > li > a[data-content="' + sender_full_id + '"]'));
       }
     }
     if (msg.messageType === 'chat') {
@@ -1048,12 +1046,13 @@
         var message = msg.message.text;
         var newMessage = '<div class="their-message"><span class="imUsername">' +
           displayName + ':</span> ';
-        if(msg.contentType == 'text' && msg.message.mimeType == 'text/plain') {
+        if (msg.contentType === 'text' && msg.message.mimeType === 'text/plain') {
           newMessage += '<span class="imMessage">' + message + '</span>';
-        } else {
+        }
+        else {
           var fileUrl = kandy.messaging.buildFileUrl(msg.message.content_uuid);
           var html = '';
-          if (msg.contentType == 'image') {
+          if (msg.contentType === 'image') {
             html = '<div class="wrapper-img"><img src="' + fileUrl + '"></div>';
           }
           html += '<a class="icon-download" href="' + fileUrl + '" target="_blank">' + msg.message.content_name + '</a>';
@@ -1593,12 +1592,12 @@
   };
 
   var loginSSO = function (user_access_token, success_callback, failure_callback, password) {
-    kandy.loginSSO(user_access_token, function(){
-      if(typeof success_callback === 'function') {
+    kandy.loginSSO(user_access_token, function () {
+      if (typeof success_callback === 'function') {
         success_callback();
       }
     }, function() {
-      if(typeof failure_callback === 'function') {
+      if (typeof failure_callback === 'function') {
         failure_callback();
       }
     }, password);
@@ -1797,9 +1796,10 @@
   jQuery(document).ready(function (jQuery) {
     // Register kandy widget event.
     setup();
-    if(Drupal.settings.loginInfo.password) {
+    if (Drupal.settings.loginInfo.password) {
       login(Drupal.settings.loginInfo.apiKey, Drupal.settings.loginInfo.username, Drupal.settings.loginInfo.password, kandyLoginSuccessCallback, kandyLoginFailedCallback);
-    } else {
+    }
+    else {
       loginSSO(Drupal.settings.loginInfo.user_access_token, kandyLoginSuccessCallback, kandyLoginFailedCallback);
     }
 
@@ -1966,12 +1966,12 @@
         kandyTerminateGroup($(this).data('group-id'), kandyLoadGroups);
       });
 
-      jQuery('.kandyChat').on('click','.send-file label', function(){
+      jQuery('.kandyChat').on('click', '.send-file label', function () {
         $(this).siblings('input[type="file"]').trigger('click');
       });
 
-      jQuery('.kandyChat').on('change', '.send-file input[type="file"]', function(){
-        if($(this).val()) {
+      jQuery('.kandyChat').on('change', '.send-file input[type="file"]', function () {
+        if ($(this).val()) {
           kandySendFile();
         }
       });

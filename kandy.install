@@ -238,6 +238,7 @@ function kandy_uninstall() {
   variable_del('kandy_fcs_url');
   variable_del('kandy_jquery_reload');
 }
+
 /**
  * Implements hook_update().
  *
@@ -285,6 +286,7 @@ function kandy_update_7000() {
   );
   return $schema;
 }
+
 /**
  * Implements hook_update().
  */
@@ -296,6 +298,7 @@ function kandy_update_7242() {
     'length' => '50',
   ));
 }
+
 /**
  * Implements hook_requirements().
  */
