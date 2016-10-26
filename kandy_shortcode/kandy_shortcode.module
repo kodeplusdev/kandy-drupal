@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Define our shortcode and their titles, descriptions, and callback functions.
@@ -224,7 +225,7 @@ function kandy_setup() {
     if ($assign_user) {
       $user_name = $assign_user->user_id;
       $password = $assign_user->password;
-      if(!$password) {
+      if (!$password) {
         $user_access_token = kandy_get_user_access_token($user_name);
       }
       $kandy_api_key = variable_get('kandy_api_key', KANDY_API_KEY);
@@ -260,9 +261,10 @@ function kandy_setup() {
         'username' => $user_name,
       );
 
-      if(isset($user_access_token)) {
+      if (isset($user_access_token)) {
         $login_info['user_access_token'] = $user_access_token['data'];
-      } else {
+      }
+      else {
         $login_info['password'] = $password;
       }
 

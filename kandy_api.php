@@ -805,7 +805,8 @@ function kandy_get_user_access_token($user_id) {
       'success' => TRUE,
       'data'    => $result->result->user_access_token,
     );
-  } else {
+  }
+  else {
     return array(
       'success' => FALSE,
       'message' => $response->status_message,
@@ -824,7 +825,8 @@ function kandy_get_anonymous_user() {
   $domainAccessToken = '';
   if ($result['success'] == TRUE) {
     $domainAccessToken = $result['data'];
-  } else {
+  }
+  else {
     // Catch errors.
   }
 
@@ -835,7 +837,7 @@ function kandy_get_anonymous_user() {
   $fieldsString = http_build_query($params);
   $url = KANDY_API_BASE_URL . 'domains/access_token/users/user/anonymous' . '?' . $fieldsString;
   try {
-    $response = drupal_http_request($url,[
+    $response = drupal_http_request($url, [
       'headers' => [
         'Content-Type' => 'application/json',
       ],
@@ -863,7 +865,8 @@ function kandy_get_anonymous_user() {
         'success' => TRUE,
         'user' => $user,
       );
-    } else {
+    }
+    else {
       if (!empty($response->message)) {
         $message = $response->message;
       }
@@ -876,7 +879,8 @@ function kandy_get_anonymous_user() {
         'message' => $message,
       );
     }
-  } else {
+  }
+  else {
     return array(
       'success' => FALSE,
       'message' => "Can not create anonymous user",

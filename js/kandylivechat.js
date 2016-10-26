@@ -60,11 +60,11 @@ var LiveChatUI = {};
 
   var loginSSO = function (user_access_token, success_callback, failure_callback, password) {
     kandy.loginSSO(user_access_token, function () {
-      if(typeof success_callback === 'function') {
+      if (typeof success_callback === 'function') {
         success_callback();
       }
     }, function () {
-      if(typeof failure_callback === 'function') {
+      if (typeof failure_callback === 'function') {
         failure_callback();
       }
     }, password);
@@ -73,6 +73,7 @@ var LiveChatUI = {};
   var logout = function () {
     kandy.logout();
   };
+
   function loginSuccessCallback () {
     LiveChatUI.changeState('READY');
   }

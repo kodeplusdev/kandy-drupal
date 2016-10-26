@@ -963,7 +963,7 @@
     // Gather user input.
     var recipient = jQuery('.livechats a.selected').data('real-id');
     if (typeof recipient == 'undefined') {
-      recipient = jQuery(".contacts a.selected").data('content');
+      recipient = jQuery('.contacts a.selected').data('content');
       if (typeof recipient == 'undefined') {
         recipient = jQuery('.cd-tabs-content form.send-message').data('real-id');
       }
@@ -973,13 +973,17 @@
 
     if (file.type.indexOf('image') >= 0) {
       kandy.messaging.sendImWithImage(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else if (file.type.indexOf('audio') >= 0) {
+    }
+    else if (file.type.indexOf('audio') >= 0) {
       kandy.messaging.sendImWithAudio(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else if (file.type.indexOf('video') >= 0) {
+    }
+    else if (file.type.indexOf('video') >= 0) {
       kandy.messaging.sendImWithVideo(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else if (file.type.indexOf('vcard') >= 0) {
+    }
+    else if (file.type.indexOf('vcard') >= 0) {
       kandy.messaging.sendImWithContact(recipient, file, onFileSendSuccess, onFileSendFailure);
-    } else {
+    }
+    else {
       kandy.messaging.sendImWithFile(recipient, file, onFileSendSuccess, onFileSendFailure);
     }
   };
@@ -988,11 +992,10 @@
   function onFileSendSuccess(message) {
     var displayName = jQuery('.kandyChat .kandy_current_username').val();
     var dataHolder = jQuery('.cd-tabs-content > li.selected').data('content');
-    var newMessage = '<div class="my-message">\
-                    <b><span class="imUsername">' + displayName + ': </span></b>';
+    var newMessage = '<div class="my-message"><b><span class="imUsername">' + displayName + ': </span></b>';
     var fileUrl = kandy.messaging.buildFileUrl(message.message.content_uuid);
     var html = '';
-    if (message.contentType == 'image') {
+    if (message.contentType === 'image') {
       html = '<div class="wrapper-img"><img src="' + fileUrl + '"></div>';
     }
     html += '<a class="icon-download" href="' + fileUrl + '" target="_blank">' + message.message.content_name + '</a>';
@@ -1005,7 +1008,6 @@
   }
 
   function onFileSendFailure() {
-    console.log('File wasn\'t sent!');
   }
 
   /**
@@ -1596,13 +1598,13 @@
       if (typeof success_callback === 'function') {
         success_callback();
       }
-    }, function() {
+    }, function () {
       if (typeof failure_callback === 'function') {
         failure_callback();
       }
     }, password);
 
-  }
+  };
 
   /**
    * OnJoinApprove event use for co-browsing session.
